@@ -9,6 +9,9 @@ float ref_voltage = 5.0;
 int adc_value = 0;
 int SD_PIN=10;
 float resistance = 220;
+unsigned long timeNow = 0;
+unsigned long lastTime = 0;
+
 
 void prepareSdCard() {
     Serial.println("Preparing SD card...");
@@ -54,19 +57,20 @@ File createCsvFile(String fileName,File csvFile) {
 }
 
 void writeData(File logFile,File csvFile,float V1,float V2) {
-    long currentTime = generateTimestamp();
-    float current=calculateCurrent(getVoltageReading(V2));
-    float capacity = calculateCapacity(current,currentTime);
+    lastTime = timeNow;
+    long timeNow = millis();
+    float current=calculateCurrent(V2);
+    float capacity = calculateCapacity(current,timeNow);
 
     String formattedStringForSerial =
-    "T: "+String(currentTime) 
+    "T: "+String(timeNow) 
     + " | V1: " + String(V1)+"V"
     + " | V2: " + String(V2)+"V"
     + " | I: " + String(current)+"mA"
     + " | C: " + String(capacity) + "mAh";
 
     String formattedStringForLog = 
-    String(currentTime) 
+    String(timeNow) 
     +"," 
     + String(V1)
     +"," 
@@ -77,7 +81,7 @@ void writeData(File logFile,File csvFile,float V1,float V2) {
     + String(capacity);
 
     String formattedStringForCsv = 
-    String(currentTime) 
+    String(timeNow) 
     +"," 
     + String(V1)
     +"," 
@@ -123,15 +127,17 @@ void deleteFile(String fileName){
 
 float calculateCurrent(float voltage) {
   // Calculate current using Ohm's Law: I = V / R
-  voltage=voltage*1000;
-  float current = voltage / resistance;
-  // Serial.println("I="+String(current));
+  // voltage=voltage*1000;
+  Serial.println("V="+String(voltage));
+  float current = (voltage / resistance)*1000;
+  Serial.println("I="+String(current));
   return current;
 }
 
 float calculateCapacity(float current, long time) {
   // Capacity = I/Time
-   float capacity_mAh = (current * time) / 3600000.0;
+  // float capacity_mAh = (current * time) / 36000000;
+   float capacity_mAh = (current * (time-lastTime)) / 36000000;
   // Serial.println("C="+String(capacity));
   return capacity_mAh;
 }

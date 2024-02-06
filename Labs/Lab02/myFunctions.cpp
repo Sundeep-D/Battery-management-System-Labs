@@ -153,5 +153,3 @@ float calculateCapacity(float current_mA, long currentMillis) {
 
 }
 
-// I=V/R = 41mA
-// Capacity = I/Time

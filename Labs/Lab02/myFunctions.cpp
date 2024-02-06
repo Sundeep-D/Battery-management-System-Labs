@@ -9,8 +9,9 @@ float ref_voltage = 5.0;
 int adc_value = 0;
 int SD_PIN=10;
 float resistance = 220;
-unsigned long timeNow = 0;
-unsigned long lastTime = 0;
+unsigned long previousMillis = 0;
+float totalCapacity=0;
+float currentCapacity=0;
 
 
 void prepareSdCard() {
@@ -47,7 +48,7 @@ File createCsvFile(String fileName,File csvFile) {
     csvFile = SD.open(fileName, FILE_WRITE);
 
     if (csvFile) {
-        csvFile.println("Timestamp,Voltage1,Voltage2,Current,Capacity");
+        csvFile.println("Timestamp,Voltage1,Voltage2,Current,CurrentCapacity,TotalCapacity");
         csvFile.close();
         return csvFile;
     } else {
@@ -57,20 +58,20 @@ File createCsvFile(String fileName,File csvFile) {
 }
 
 void writeData(File logFile,File csvFile,float V1,float V2) {
-    lastTime = timeNow;
-    long timeNow = millis();
-    float current=calculateCurrent(V2);
-    float capacity = calculateCapacity(current,timeNow);
+    long currentTime = millis();
+    float current=calculateCurrent(V1,V2);
+    calculateCapacity(current,currentTime);
 
     String formattedStringForSerial =
-    "T: "+String(timeNow) 
+    "T: "+String(currentTime) 
     + " | V1: " + String(V1)+"V"
     + " | V2: " + String(V2)+"V"
     + " | I: " + String(current)+"mA"
-    + " | C: " + String(capacity) + "mAh";
+    + " | CC: " + String(currentCapacity,6) + "mAh"
+    + " | TC: " + String(totalCapacity,6) + "mAh";
 
     String formattedStringForLog = 
-    String(timeNow) 
+    String(currentTime) 
     +"," 
     + String(V1)
     +"," 
@@ -78,10 +79,12 @@ void writeData(File logFile,File csvFile,float V1,float V2) {
     +"," 
     + String(current)
     +"," 
-    + String(capacity);
+    + String(currentCapacity,6)
+    +"," 
+    + String(totalCapacity,6);
 
     String formattedStringForCsv = 
-    String(timeNow) 
+    String(currentTime) 
     +"," 
     + String(V1)
     +"," 
@@ -89,7 +92,9 @@ void writeData(File logFile,File csvFile,float V1,float V2) {
     +"," 
     + String(current)
     +"," 
-    + String(capacity);
+    + String(currentCapacity,6)
+    +"," 
+    + String(totalCapacity,6);
 
     Serial.println(formattedStringForSerial);
     logFile.println(formattedStringForLog);
@@ -119,21 +124,33 @@ void deleteFile(String fileName){
   }
 }
 
-float calculateCurrent(float voltage) {
+float calculateCurrent(float voltage1,float voltage2) {
   // Calculate current using Ohm's Law: I = V / R
-  // voltage=voltage*1000;
-  Serial.println("V="+String(voltage));
-  float current = (voltage / resistance)*1000;
-  Serial.println("I="+String(current));
-  return current;
+  float current = voltage2 / resistance;
+  return current * 1000.0;  // Convert current to milliamperes
 }
 
-float calculateCapacity(float current, long time) {
-  // Capacity = I/Time
-  // float capacity_mAh = (current * time) / 36000000;
-   float capacity_mAh = (current * (time-lastTime)) / 36000000;
-  // Serial.println("C="+String(capacity));
-  return capacity_mAh;
+float calculateCapacity(float current_mA, long currentMillis) {
+  // // Capacity = I/Time
+  // // float capacity_mAh = (current * time) / 36000000;
+  //  float capacity_mAh = (current * (time-lastTime)) / 36000000;
+  // // Serial.println("C="+String(capacity));
+  // return capacity_mAh;
+
+    // Calculate elapsed time since the previous timestamp
+  float elapsedTime = (currentMillis - previousMillis) / 3600000.0;  // Convert milliseconds to hours
+
+  // Calculate capacity using the formula: Capacity (mAh) = Current (mA) * Time (hours)
+  currentCapacity = current_mA * elapsedTime;
+
+  // Add the current capacity to the total capacity
+  totalCapacity += currentCapacity;
+
+  // Update the previous timestamp and current value for the next calculation
+  previousMillis = currentMillis;
+
+  return currentCapacity;
+
 }
 
 // I=V/R = 41mA

@@ -96,12 +96,6 @@ void writeData(File logFile,File csvFile,float V1,float V2) {
     csvFile.println(formattedStringForCsv);
 }
 
-long generateTimestamp() {
-    unsigned long currentTime = millis();
-    unsigned long elapsedTime = currentTime - startTime;
-    return elapsedTime;
-}
-
 float getVoltageReading(int analogPin) {
     adc_value = analogRead(analogPin);
     adc_voltage = (adc_value * ref_voltage) / 1024.0;

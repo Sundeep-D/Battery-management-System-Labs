@@ -13,7 +13,7 @@ void writeData(File logFile,File csvFile,float V1,float V2);
 long generateTimestamp();
 float getVoltageReading(int analogPin);
 void deleteFile(String fileName);
-float calculateCurrent(float voltage);
+float calculateCurrent(float voltage1,float voltage2);
 float calculateCapacity(float current, long time);
 
 #endif

@@ -8,12 +8,9 @@
 void prepareSdCard();
 int addNumbers(int a, int b);
 File createLogFile(String fileName, File logFile);
-File createCsvFile(String fileName,File csvFile);
-void writeData(File logFile,File csvFile,float V1,float V2);
+String getFormattedTimestamp(float voltage);
 long generateTimestamp();
 float getVoltageReading(int analogPin);
-void deleteFile(String fileName);
-float calculateCurrent(float voltage1,float voltage2);
-float calculateCapacity(float current, long time);
+void deleteLogFile(String fileName);
 
 #endif

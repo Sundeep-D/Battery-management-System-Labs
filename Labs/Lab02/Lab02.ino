@@ -2,44 +2,27 @@
 #include <SD.h>
 #include "myFunctions.h"
 
-String logFileName;
-String csvFileName;
-#define ANALOG_IN_PIN_V1 A0 //OUTER CIRCUIT
-#define ANALOG_IN_PIN_V2 A1 //INNER CIRCUIT
+String fileName;
+#define ANALOG_IN_PIN A0
 File logFile;
-File csvFile;
 
 void setup() {
   Serial.begin(115200);
   while (!Serial);
   
-  logFileName = "Log.txt";
-  csvFileName = "Log.csv";
-
-  deleteFile(logFileName);
-  deleteFile(csvFileName);
+  fileName = "Log.txt";
+  deleteLogFile(fileName);
   prepareSdCard();  
-  logFile = createLogFile(logFileName,logFile);
-  csvFile = createCsvFile(csvFileName,csvFile);
+  logFile = createLogFile(fileName,logFile);
   
 }
 
 void loop() {
-  logFile = SD.open(logFileName, FILE_WRITE);
-  csvFile = SD.open(csvFileName, FILE_WRITE);
+  logFile = SD.open(fileName, FILE_WRITE);
 
   if (logFile) {
-    writeData(
-    logFile,
-    csvFile,
-    getVoltageReading(ANALOG_IN_PIN_V1),
-    getVoltageReading(ANALOG_IN_PIN_V2)
-    );
-    // logFile.println());
+    logFile.println(getFormattedTimestamp(getVoltageReading(ANALOG_IN_PIN)));
     logFile.close();
-    csvFile.close();
-    
-
   } else {
     Serial.println("SD card ejected!");
     while(1);

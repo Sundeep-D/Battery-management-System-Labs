@@ -1,6 +1,6 @@
 #include "myFunctions.h"
 
-static unsigned long startTime;
+unsigned long startTime;
 float adc_voltage = 0.0;
 float in_voltage = 0.0;
 float R1 = 30000.0;
@@ -8,11 +8,6 @@ float R2 = 7500.0;
 float ref_voltage = 5.0;
 int adc_value = 0;
 int SD_PIN=10;
-float resistance = 220;
-unsigned long previousMillis = 0;
-float totalCapacity=0;
-float currentCapacity=0;
-
 
 void prepareSdCard() {
     Serial.println("Preparing SD card...");
@@ -28,13 +23,13 @@ int addNumbers(int a, int b) {
 }
 
 File createLogFile(String fileName,File logFile) {
-    Serial.println("Creating log file " + fileName);
+    Serial.println("Creating " + fileName);
     logFile = SD.open(fileName, FILE_WRITE);
 
     if (logFile) {
-        // Serial.println("==========================");
-        // Serial.println("|  Timestamp  | SoC (V)  |");
-        // Serial.println("==========================");
+        Serial.println("==========================");
+        Serial.println("|  Timestamp  | SoC (V)  |");
+        Serial.println("==========================");
         logFile.close();
         return logFile;
     } else {
@@ -43,62 +38,20 @@ File createLogFile(String fileName,File logFile) {
     }
 }
 
-File createCsvFile(String fileName,File csvFile) {
-    Serial.println("Creating CSV file " + fileName);
-    csvFile = SD.open(fileName, FILE_WRITE);
+String getFormattedTimestamp(float voltage) {
+    unsigned long currentMillis = millis();
+    String formattedString = String(generateTimestamp()) + "        |      " + String(voltage);
 
-    if (csvFile) {
-        csvFile.println("Timestamp,Voltage1,Voltage2,Current,CurrentCapacity,TotalCapacity");
-        csvFile.close();
-        return csvFile;
-    } else {
-        Serial.println("Error opening the file " + fileName);
-        return csvFile;
-    }
+    String formattedStringForLog = String(generateTimestamp()) + "," + String(voltage);
+
+    Serial.println(formattedString);
+    return formattedStringForLog;
 }
 
-void writeData(File logFile,File csvFile,float V1,float V2) {
-    long currentTime = millis();
-    float current=calculateCurrent(V1,V2);
-    calculateCapacity(current,currentTime);
-
-    String formattedStringForSerial =
-    "T: "+String(currentTime) 
-    + " | V1: " + String(V1)+"V"
-    + " | V2: " + String(V2)+"V"
-    + " | I: " + String(current)+"mA"
-    + " | CC: " + String(currentCapacity,6) + "mAh"
-    + " | TC: " + String(totalCapacity,6) + "mAh";
-
-    String formattedStringForLog = 
-    String(currentTime) 
-    +"," 
-    + String(V1)
-    +"," 
-    + String(V2)
-    +"," 
-    + String(current)
-    +"," 
-    + String(currentCapacity,6)
-    +"," 
-    + String(totalCapacity,6);
-
-    String formattedStringForCsv = 
-    String(currentTime) 
-    +"," 
-    + String(V1)
-    +"," 
-    + String(V2)
-    +"," 
-    + String(current)
-    +"," 
-    + String(currentCapacity,6)
-    +"," 
-    + String(totalCapacity,6);
-
-    Serial.println(formattedStringForSerial);
-    logFile.println(formattedStringForLog);
-    csvFile.println(formattedStringForCsv);
+long generateTimestamp() {
+    unsigned long currentTime = millis();
+    unsigned long elapsedTime = currentTime - startTime;
+    return elapsedTime;
 }
 
 float getVoltageReading(int analogPin) {
@@ -109,21 +62,22 @@ float getVoltageReading(int analogPin) {
     return in_voltage;
 }
 
-void deleteFile(String fileName){
+void deleteLogFile(String fileName){
 
     if (!SD.begin(SD_PIN)) {
     Serial.println("SD card not found!");
     while (1);
   }
-  Serial.println("Deleting file: "+fileName);
+  Serial.print("Deleting file: ");
+  Serial.println(fileName);
 
   if (SD.remove(fileName)) {
-    Serial.println("File "+fileName+" deleted successfully.");
+    Serial.println("File deleted successfully.");
   } else {
-    Serial.println("Error deleting file "+fileName);
+    Serial.println("Error deleting file.");
   }
 }
-
+ 
 float calculateCurrent(float voltage1,float voltage2) {
   // Calculate current using Ohm's Law: I = V / R
   float current = voltage2 / resistance;
@@ -152,4 +106,4 @@ float calculateCapacity(float current_mA, long currentMillis) {
   return currentCapacity;
 
 }
-
+ 

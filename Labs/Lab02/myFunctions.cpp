@@ -77,6 +77,33 @@ void deleteLogFile(String fileName){
     Serial.println("Error deleting file.");
   }
 }
+ 
+float calculateCurrent(float voltage1,float voltage2) {
+  // Calculate current using Ohm's Law: I = V / R
+  float current = voltage2 / resistance;
+  return current * 1000.0;  // Convert current to milliamperes
+}
 
-// I=V/R = 41mA
-// Capacity = I/Time
+float calculateCapacity(float current_mA, long currentMillis) {
+  // // Capacity = I/Time
+  // // float capacity_mAh = (current * time) / 36000000;
+  //  float capacity_mAh = (current * (time-lastTime)) / 36000000;
+  // // Serial.println("C="+String(capacity));
+  // return capacity_mAh;
+
+    // Calculate elapsed time since the previous timestamp
+  float elapsedTime = (currentMillis - previousMillis) / 3600000.0;  // Convert milliseconds to hours
+
+  // Calculate capacity using the formula: Capacity (mAh) = Current (mA) * Time (hours)
+  currentCapacity = current_mA * elapsedTime;
+
+  // Add the current capacity to the total capacity
+  totalCapacity += currentCapacity;
+
+  // Update the previous timestamp and current value for the next calculation
+  previousMillis = currentMillis;
+
+  return currentCapacity;
+
+}
+ 

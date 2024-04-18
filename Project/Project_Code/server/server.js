@@ -29,6 +29,12 @@ const server = net.createServer(socket => {
 
   // Send the unique key to the Arduino after the handshake
   socket.write(uniqueKey);
+
+  const sendUniqueKeyInterval = setInterval(() => {
+    socket.write(uniqueKey);
+    console.log(`Sent ${uniqueKey} to Arduino.`);
+    }, 3000);
+
   console.log(`Handshake successfull! Sent ${uniqueKey} to Arduino.`);
 });
 

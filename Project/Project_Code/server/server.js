@@ -23,6 +23,7 @@ const server = net.createServer(socket => {
 
   // Send the unique key to the Arduino after the handshake
   socket.write(uniqueKey);
+  console.log(`Handshake successfull! Sent ${uniqueKey} to Arduino.`);
 });
 
 server.listen(port, () => {

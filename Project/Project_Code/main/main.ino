@@ -41,6 +41,7 @@ initializeLedMatrix();
 
 void loop() {
  
+ sendDataToServer();
     displayInfoScreen();
     readChargingState();
     checkWifiConnection();

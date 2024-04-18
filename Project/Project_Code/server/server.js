@@ -1,6 +1,7 @@
 const net = require('net');
 const { v4: uuidv4 } = require('uuid');
 const port = 8000;
+const clear = require('cli-clear');
 
 const server = net.createServer(socket => {
   console.log('Client connected');
@@ -11,6 +12,7 @@ const server = net.createServer(socket => {
   socket.on('data', data => {
     const jsonData = parseJson(data.toString());
     if (jsonData) {
+        clear();
         console.log('UNOR4:', jsonData);
     } else {
         // console.log('Invalid JSON data or empty:', data.toString());

@@ -11,6 +11,7 @@
 #define SENSOR_PIN 7 // Pin to detect charging in the Battery module
 #define ONE_WIRE_BUS 2 //Pin to read temperature data
 #define ALERT_THRESHOLD 20 // Set alert threshold to 20% for LIPO Fuel guage
+#define RELAY_PIN 8 // Pin to detect charging in the Battery module
 
 extern double voltage;
 extern double soc;
@@ -28,5 +29,7 @@ void readTemperature();
 void initializeFuelGauge();
 void readFuelGaugeData();
 void initializeVariables();
+void circuitShutdown(bool shutdown);
+float calculateCapacity(float voltage, float soc);
 
 #endif

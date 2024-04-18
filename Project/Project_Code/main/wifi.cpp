@@ -14,10 +14,23 @@ void connectToWiFi() {
     displayWifiConnectScreen();
     
   }
-  
+  displayHealthCheckScreen();
   isWifiConnected=true;
   Serial.println("Connected to Wi-Fi!");
   Serial.print("IP Address: ");
   Serial.println(WiFi.localIP());
+  
+}
+
+
+void checkWifiConnection() {
+  
+  
+  if (WiFi.status() != WL_CONNECTED) {
+    isWifiConnected=false;
+    
+  }else{
+    isWifiConnected=true;
+  }
   
 }

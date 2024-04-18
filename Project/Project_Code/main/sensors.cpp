@@ -1,5 +1,5 @@
 #include "sensors.h"
-
+#include "MAX17043.h"
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 
@@ -17,6 +17,7 @@ bool tempSensorHealth=false;
 // Function to initialize sensor pins
 void initializeSensorPins() {
     pinMode(SENSOR_PIN, INPUT);
+    pinMode(RELAY_PIN, OUTPUT);
 }
 
 void initializeVariables() {
@@ -41,10 +42,10 @@ void initializeTemperatureSensor() {
 void readChargingState() {
   bool currentState = digitalRead(SENSOR_PIN);
   
-  if(currentState != previousState) { // Check if state has changed
-    lipo.quickStart(); // Execute quickStart() only when state changes
-    previousState = currentState; // Update previous state
-  }
+  // if(currentState != previousState) { // Check if state has changed
+  //   lipo.quickStart(); // Execute quickStart() only when state changes
+  //   previousState = currentState; // Update previous state
+  // }
   
   isCharging = currentState; // Update current state
 }
@@ -59,6 +60,7 @@ void readTemperature() {
   }
 }
 void initializeFuelGauge() {
+  // FuelGauge.begin();
   static bool initialized = false; // Static variable to track initialization status
   static bool retryInProgress = false; // Static variable to track retry in progress
   static unsigned long lastRetryTime = 0; // Variable to store the time of the last retry
@@ -66,11 +68,11 @@ void initializeFuelGauge() {
   static unsigned long retryInterval = 1000; // Retry interval in milliseconds
   static int maxRetries = 5000;
 
-  Wire.begin();
+  // Wire.begin();
 
   // If initialization is already done, return immediately
   if (initialized) {
-    if (!lipo.begin()) {
+    if (!FuelGauge.begin()) {
       initialized = false; // Set initialized flag to true
       lipoHealth = false;
     }
@@ -86,10 +88,9 @@ void initializeFuelGauge() {
   retryInProgress = false;
 
   // Attempt to initialize the fuel gauge
-  if (lipo.begin()) { // If initialization is successful
+  if (FuelGauge.begin()) { // If initialization is successful
     Serial.println(F("MAX17043 detected."));
-    lipo.quickStart();
-    lipo.setThreshold(ALERT_THRESHOLD);
+    FuelGauge.quickstart();
     initialized = true; // Set initialized flag to true
     lipoHealth = true;
   } else {
@@ -113,10 +114,33 @@ void initializeFuelGauge() {
 
 void readFuelGaugeData() {
   // lipo.quickStart();
-  voltage = lipo.getVoltage();
-  soc = lipo.getSOC();
+  voltage = FuelGauge.voltage() / 1000;
+  soc = FuelGauge.percent();
   if (soc > 100) {
     soc = 100; // Set SOC value to 100
   }
-  alert = lipo.getAlert();
+  // alert = lipo.getAlert();
+}
+
+void circuitShutdown(bool shutdown){
+  if(shutdown){
+    digitalWrite(RELAY_PIN, HIGH);
+    Serial.println("Circuit SHUTDOWN enabled");
+  }else{
+    digitalWrite(RELAY_PIN, LOW);
+    Serial.println("Circuit SHUTDOWN disabled");
+  }
+}
+// Function to calculate current capacity based on voltage and SoC
+float calculateCapacity(float voltage, float soc) {
+    // Rated capacity of the LiPo battery (in mAh)
+    float ratedCapacity = 250.0;  // Change this value to match your battery's rated capacity
+
+    // Convert SoC to fraction
+    float socFraction = soc / 100.0;
+
+    // Calculate available charge (in mAh)
+    float availableCharge = ratedCapacity * socFraction;
+
+    return availableCharge;
 }

@@ -3,5 +3,7 @@
 
 // Function prototypes
 void printLog();
+void initializeLedMatrix();
+void ledMatrixPrintLogo();
 
 #endif

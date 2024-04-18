@@ -14,5 +14,6 @@ void testdrawcircle();
 void displayLogo();
 void displayWifiConnectScreen();
 void clearDisplay();
-
+void displayHealthCheckScreen();
+void displayInfoScreen();
 #endif  // DISPLAY_H

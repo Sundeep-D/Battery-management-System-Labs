@@ -7,5 +7,6 @@
 extern bool isWifiConnected;
 
 void connectToWiFi();
+void checkWifiConnection();
 
 #endif

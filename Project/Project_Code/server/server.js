@@ -34,7 +34,7 @@ const server = net.createServer(socket => {
     const key = generateUniqueKey();
     socket.write(key);
     console.log(`Sent ${key} to Arduino.`);
-    }, 3000);
+    }, 10000);
 
   console.log(`Handshake successfull! Sent ${uniqueKey} to Arduino.`);
 });

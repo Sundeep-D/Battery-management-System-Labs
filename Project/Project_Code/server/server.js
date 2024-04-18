@@ -9,8 +9,12 @@ const server = net.createServer(socket => {
   const uniqueKey = generateUniqueKey();
 
   socket.on('data', data => {
-    console.log('UNOR4:', data.toString());
-    // You can add logic here to handle incoming data from Arduino
+    const jsonData = parseJson(data.toString());
+    if (jsonData) {
+        console.log('UNOR4:', jsonData);
+    } else {
+        // console.log('Invalid JSON data or empty:', data.toString());
+    }
   });
 
   socket.on('end', () => {
@@ -25,6 +29,20 @@ const server = net.createServer(socket => {
   socket.write(uniqueKey);
   console.log(`Handshake successfull! Sent ${uniqueKey} to Arduino.`);
 });
+
+function parseJson(dataString) {
+    try {
+        const jsonData = JSON.parse(dataString);
+        if (Object.keys(jsonData).length === 0 && jsonData.constructor === Object) {
+            // Check if it's empty JSON
+            return null;
+        }
+        return jsonData;
+    } catch (error) {
+        // If parsing fails, it's not valid JSON
+        return null;
+    }
+}
 
 server.listen(port, () => {
   const address = server.address();

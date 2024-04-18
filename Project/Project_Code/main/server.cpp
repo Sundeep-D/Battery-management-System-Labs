@@ -30,6 +30,10 @@ void connectToServer() {
       
       // Send JSON data over the connection
       client.println(jsonString);
+       // Read the unique key sent by the server
+      String uniqueKey = client.readStringUntil('\n');
+      Serial.print("Unique Key from Server: ");
+      Serial.println(uniqueKey);
       
       isServerConnected = true;
       displayHealthCheckScreen();

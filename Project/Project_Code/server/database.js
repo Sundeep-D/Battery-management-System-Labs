@@ -1,16 +1,14 @@
 const { MongoClient } = require('mongodb');
+const constants = require('./constants'); 
 
-// Connection URI
-const uri = 'mongodb://localhost:27017';
-// Database Name
-const dbName = 'skybms';
 
 let client;
 
 async function connect() {
   if (!client) {
-    client = new MongoClient(uri, { useUnifiedTopology: true });
+    client = new MongoClient(constants.MongoConnectionString, { useUnifiedTopology: true });
     await client.connect();
+    console.log('MongoDB client connected');
   }
   return client.db(dbName);
 }

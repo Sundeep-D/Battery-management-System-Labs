@@ -1,8 +1,10 @@
 // created by Sundeep Dayalan at 2024/04/18 18:58.
 // Website:  www.sundeepdayalan.in
 // Email: contact@sundeepdayalan.in
+// const host = "ec2-204-236-220-172.compute-1.amazonaws.com"
+const host = "localhost"
 const db_name = "skybms";
-const MongoConnectionString = `mongodb://skybms:12345678@localhost:27017/?authSource=${db_name}`;
+const MongoConnectionString = `mongodb://skybms:12345678@${host}:27017/?authSource=${db_name}`;
 // 204.236.220.172
 
 //mongo db collections
@@ -31,7 +33,8 @@ module.exports = {
     MongoConnectionString,
     collection_arduino_raw_data,
     getTimestamp,
-    getTimestampHumanReadableFormat
+    getTimestampHumanReadableFormat,
+    host
 
 
 

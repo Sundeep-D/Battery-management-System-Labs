@@ -7,7 +7,9 @@ function App() {
 
   // Establish WebSocket connection
   useEffect(() => {
-    const ws = new WebSocket('ws://ec2-204-236-220-172.compute-1.amazonaws.com:8000');
+    // const ws = new WebSocket('ws://ec2-204-236-220-172.compute-1.amazonaws.com:8000');
+    const ws = new WebSocket('ws://localhost:8001');
+    // const ws = new WebSocket('wss://echo.websocket.org');
 
     ws.onopen = () => {
       console.log('WebSocket connected');

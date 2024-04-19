@@ -1,13 +1,33 @@
 const net = require('net');
 const { v4: uuidv4 } = require('uuid');
-const port = 8000;
+const websocketPort = 8001;
+const tcpPort = 8000;
 const clear = require('cli-clear');
 const insertData = require('./databaseUtils');
+const WebSocket = require('ws');
+const constants = require('./constants'); 
 
+const wss = new WebSocket.Server({ port: websocketPort });
+console.log(`Websocket Server running on ${constants.host}:${websocketPort}`);
+wss.on('connection', function connection(ws) {
+  console.log('Websocket Client connected');
+
+  ws.on('message', function incoming(message) {
+    console.log('Received:', message);
+    // Echo back the received message to the client
+    ws.send(message);
+  });
+
+  ws.on('close', function() {
+    console.log('Websocket Client disconnected');
+  });
+});
 
 
 const server = net.createServer(socket => {
   console.log('Client connected');
+
+  
 
   // Generate a unique key
   const uniqueKey = generateUniqueKey();
@@ -18,6 +38,11 @@ const server = net.createServer(socket => {
         clear();
         console.log('UNOR4:', jsonData);
         insertData(jsonData).catch(console.error);
+        wss.clients.forEach(client => {
+          if (client.readyState === WebSocket.OPEN) {
+              client.send(JSON.stringify(jsonData));
+          }
+      });
     } else {
         // console.log('Invalid JSON data or empty:', data.toString());
     }
@@ -30,7 +55,7 @@ const server = net.createServer(socket => {
         }
       });
     }
-    
+
   });
 
   socket.on('end', () => {
@@ -55,20 +80,6 @@ const server = net.createServer(socket => {
 
 
 
-const WebSocket = require('ws');
-const wss = new WebSocket.Server({ server });
-
-wss.on('connection', ws => {
-  console.log('WebSocket client connected');
-
-  ws.on('message', message => {
-    console.log(`Received message from client: ${message}`);
-  });
-
-  ws.on('close', () => {
-    console.log('WebSocket client disconnected');
-  });
-});
 
 
 function parseJson(dataString) {
@@ -85,9 +96,10 @@ function parseJson(dataString) {
     }
 }
 
-server.listen(port, () => {
+server.listen(tcpPort, () => {
   const address = server.address();
-  console.log(`Server running on ${address.address}:${address.port}`);
+  console.log(`TCP Server running on ${constants.host}:${address.port}`);
+  
 });
 
 // Function to generate a unique key

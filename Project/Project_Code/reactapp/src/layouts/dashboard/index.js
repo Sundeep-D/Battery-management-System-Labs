@@ -38,6 +38,8 @@ import WorkWithTheRockets from "layouts/dashboard/components/WorkWithTheRockets"
 import Projects from "layouts/dashboard/components/Projects";
 import OrderOverview from "layouts/dashboard/components/OrderOverview";
 
+import React, { useState, useEffect } from 'react';
+
 // Data
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData";
@@ -45,6 +47,50 @@ import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData"
 function Dashboard() {
   const { size } = typography;
   const { chart, items } = reportsBarChartData;
+  const [data, setData] = useState(null);
+
+  // Establish WebSocket connection
+  useEffect(() => {
+    let ws;
+  
+    const connectWebSocket = () => {
+      ws = new WebSocket('ws://ec2-204-236-220-172.compute-1.amazonaws.com:8001');
+      // const ws = new WebSocket('ws://localhost:8001');
+      // const ws = new WebSocket('wss://echo.websocket.org');
+  
+      ws.onopen = () => {
+        console.log('WebSocket connected');
+      };
+  
+      ws.onmessage = event => {
+        const jsonData = JSON.parse(event.data);
+        console.log('Received JSON data from server:', jsonData);
+        setData(jsonData); // Update state with received data
+      };
+  
+      ws.onclose = () => {
+        console.log('WebSocket disconnected');
+        // Attempt to reconnect
+        setTimeout(connectWebSocket, 3000); // Try reconnecting after 3 seconds
+      };
+  
+      ws.onerror = error => {
+        console.error('WebSocket error:', error);
+        // Attempt to reconnect
+        setTimeout(connectWebSocket, 3000); // Try reconnecting after 3 seconds
+      };
+    };
+  
+    // Start WebSocket connection
+    connectWebSocket();
+  
+    return () => {
+      // Clean up WebSocket connection on component unmount
+      if (ws) {
+        ws.close();
+      }
+    };
+  }, []); // Empty dependency array ensures effect runs only once on mount
 
   return (
     <DashboardLayout>
@@ -55,7 +101,7 @@ function Dashboard() {
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "Current SOC" }}
-                count="55%"
+                count={data ? data.soc : "--"}
                 // percentage={{ color: "success", text: "+55%" }}
                 icon={{ color: "info", component: "paid" }}
               />
@@ -63,7 +109,7 @@ function Dashboard() {
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "Current Voltage" }}
-                count="3.3V"
+                count={data ? data.voltage : "--"}
                 // percentage={{ color: "success", text: "+3%" }}
                 icon={{ color: "info", component: "public" }}
               />
@@ -71,7 +117,7 @@ function Dashboard() {
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "Current Temperataure" }}
-                count="38C"
+                count={data ? data.temperature : "--"}
                 // percentage={{ color: "error", text: "-2%" }}
                 icon={{ color: "info", component: "emoji_events" }}
               />
@@ -79,7 +125,7 @@ function Dashboard() {
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "Current Capacity" }}
-                count="180mAh"
+                count={data ? data.current_capacity : "--"}
                 // percentage={{ color: "success", text: "+5%" }}
                 icon={{
                   color: "info",

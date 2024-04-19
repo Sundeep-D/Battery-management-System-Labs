@@ -21,6 +21,16 @@ const server = net.createServer(socket => {
     } else {
         // console.log('Invalid JSON data or empty:', data.toString());
     }
+
+    if (jsonData) {
+      // Send data to WebSocket clients
+      wss.clients.forEach(client => {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(JSON.stringify(jsonData));
+        }
+      });
+    }
+    
   });
 
   socket.on('end', () => {
@@ -42,6 +52,24 @@ const server = net.createServer(socket => {
 
   console.log(`Handshake successfull! Sent ${uniqueKey} to Arduino.`);
 });
+
+
+
+const WebSocket = require('ws');
+const wss = new WebSocket.Server({ server });
+
+wss.on('connection', ws => {
+  console.log('WebSocket client connected');
+
+  ws.on('message', message => {
+    console.log(`Received message from client: ${message}`);
+  });
+
+  ws.on('close', () => {
+    console.log('WebSocket client disconnected');
+  });
+});
+
 
 function parseJson(dataString) {
     try {

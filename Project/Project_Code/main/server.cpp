@@ -82,3 +82,12 @@ void sendDataToServer() {
     }
   }
 }
+
+void readDataFromServer() {
+  String data = client.readStringUntil('\n');
+  if (data.length() > 0) { // Check if data is not empty
+    Serial.print("From Server: ");
+    Serial.print(data);
+    Serial.println();
+  }
+}

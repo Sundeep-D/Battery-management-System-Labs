@@ -10,5 +10,6 @@ extern bool isServerConnected;
 
 void connectToServer();
 void sendDataToServer();
+void readDataFromServer();
 
 #endif

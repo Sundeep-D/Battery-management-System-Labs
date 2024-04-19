@@ -68,7 +68,6 @@ void initializeFuelGauge() {
   static unsigned long retryInterval = 1000; // Retry interval in milliseconds
   static int maxRetries = 5000;
 
-  // Wire.begin();
 
   // If initialization is already done, return immediately
   if (initialized) {

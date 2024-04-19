@@ -10,7 +10,7 @@ async function connect() {
     await client.connect();
     console.log('MongoDB client connected');
   }
-  return client.db(dbName);
+  return client.db(constants.db_name);
 }
 
 async function close() {

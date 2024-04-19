@@ -6,7 +6,7 @@ let client;
 
 async function connect() {
   if (!client) {
-    client = new MongoClient(constants.MongoConnectionString, { useUnifiedTopology: true });
+    client = new MongoClient(constants.MongoConnectionString, { useNewUrlParser: true });
     await client.connect();
     console.log('MongoDB client connected');
   }

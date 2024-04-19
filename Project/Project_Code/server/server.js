@@ -37,12 +37,15 @@ const server = net.createServer(socket => {
     if (jsonData) {
         clear();
         console.log('UNOR4:', jsonData);
-        insertData(jsonData).catch(console.error);
         wss.clients.forEach(client => {
           if (client.readyState === WebSocket.OPEN) {
               client.send(JSON.stringify(jsonData));
+          }else{
+            // console.log('Error sending data to websocket clients:');
           }
       });
+        insertData(jsonData).catch(console.error);
+       
     } else {
         // console.log('Invalid JSON data or empty:', data.toString());
     }

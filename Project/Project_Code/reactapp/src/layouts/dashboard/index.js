@@ -48,39 +48,48 @@ function Dashboard() {
   const { size } = typography;
   const { chart, items } = reportsBarChartData;
   const [data, setData] = useState(null);
+  const [connecting, setConnecting] = useState(true); // State to track initial connection
+  const [reconnecting, setReconnecting] = useState(false); // State to track reconnection
 
-  // Establish WebSocket connection
-  useEffect(() => {
+
+   // Establish WebSocket connection
+   useEffect(() => {
     let ws;
-  
+
     const connectWebSocket = () => {
       ws = new WebSocket('ws://ec2-204-236-220-172.compute-1.amazonaws.com:8001');
       // const ws = new WebSocket('ws://localhost:8001');
       // const ws = new WebSocket('wss://echo.websocket.org');
-  
+
       ws.onopen = () => {
         console.log('WebSocket connected');
+        setConnecting(false); // Update connecting state
+        setReconnecting(false); // Reset reconnecting state
       };
-  
+
       ws.onmessage = event => {
         const jsonData = JSON.parse(event.data);
         console.log('Received JSON data from server:', jsonData);
         setData(jsonData); // Update state with received data
       };
-  
+
       ws.onclose = () => {
         console.log('WebSocket disconnected');
+        setConnecting(false); // Reset connecting state
+        setReconnecting(true); // Update reconnecting state
         // Attempt to reconnect
         setTimeout(connectWebSocket, 3000); // Try reconnecting after 3 seconds
       };
-  
+
       ws.onerror = error => {
         console.error('WebSocket error:', error);
+        setConnecting(false); // Reset connecting state
+        setReconnecting(true); // Update reconnecting state
         // Attempt to reconnect
         setTimeout(connectWebSocket, 3000); // Try reconnecting after 3 seconds
       };
     };
-  
+
     // Start WebSocket connection
     connectWebSocket();
   
@@ -94,15 +103,29 @@ function Dashboard() {
 
   return (
     <DashboardLayout>
+   <div style={{ position: 'absolute', justifyContent: 'center',margin: '10', left: '40%', transform: 'translateX(-500%)',  transform: 'translateY(-10%)', width: '100%' }}>
+  {connecting && (
+    <div style={{ backgroundColor: '#f0f0f0', padding: '10px', borderRadius: '8px', display: 'inline-block' }}>
+      <p style={{ fontSize: '0.8rem', textAlign: 'center', margin: '0' }}>Connecting...</p>
+    </div>
+  )}
+  {reconnecting && (
+    <div style={{ backgroundColor: '#f0f0f0', padding: '10px', borderRadius: '8px', display: 'inline-block' }}>
+      <p style={{ fontSize: '0.8rem', textAlign: 'center', margin: '0' }}>Reconnecting...</p>
+    </div>
+  )}
+</div>
+
       <DashboardNavbar />
       <SoftBox py={3}>
+        
         <SoftBox mb={3}>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "Current SOC" }}
                 count={data ? data.soc : "--"}
-                // percentage={{ color: "success", text: "+55%" }}
+                percentage={{ color: "success", text: "+13213" }}
                 icon={{ color: "info", component: "paid" }}
               />
             </Grid>
@@ -110,7 +133,7 @@ function Dashboard() {
               <MiniStatisticsCard
                 title={{ text: "Current Voltage" }}
                 count={data ? data.voltage : "--"}
-                // percentage={{ color: "success", text: "+3%" }}
+                percentage={{ color: "success", text: "5685686" }}
                 icon={{ color: "info", component: "public" }}
               />
             </Grid>

@@ -48,7 +48,8 @@ import { json } from "react-router-dom";
 function Dashboard() {
   const { size } = typography;
   const { chart, items } = reportsBarChartData;
-  const [data, setData] = useState(null);
+  const [dashboardData, setDashBoardData] = useState(null);
+  const [socVoltageChartData, setSocVoltageChartData] = useState(null);
   const [connecting, setConnecting] = useState(true); // State to track initial connection
   const [reconnecting, setReconnecting] = useState(false); // State to track reconnection
   const [arduinoConnecting, setArduinoConnecting] = useState(false); // State to track reconnection
@@ -74,9 +75,13 @@ function Dashboard() {
         const jsonData = JSON.parse(event.data);
         
         if(jsonData && jsonData.type == "arduino_data"){
-          console.log(`Received ${jsonData.type} from server:`, jsonData);
-           setData(jsonData); // Update state with received data
+          // console.log(`Received ${jsonData.type} from server:`, jsonData);
+          setDashBoardData(jsonData); 
           setArduinoConnecting(false);
+        }else if(jsonData && jsonData.type == "soc_voltage_chart_data"){
+          console.log(`Received ${jsonData.type} from server:`, jsonData);
+          delete jsonData.type;
+          setSocVoltageChartData(jsonData); 
         }
       };
 
@@ -136,7 +141,7 @@ function Dashboard() {
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "SOC" }}
-                count={data ? `${Math.floor(data.soc)}` : "--"}
+                count={dashboardData ? `${Math.floor(dashboardData.soc)}` : "--"}
                 percentage={{ color: "success", text: "%" }}
                 icon={{ color: "info", component: "battery_full" }}
               />
@@ -144,7 +149,7 @@ function Dashboard() {
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "Voltage" }}
-                count={data ? data.voltage.toFixed(2)  : "--"}
+                count={dashboardData ? dashboardData.voltage.toFixed(2)  : "--"}
                 percentage={{ color: "success", text: "V" }}
                 icon={{ color: "info", component: "bolt" }}
               />
@@ -152,7 +157,7 @@ function Dashboard() {
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "Temperature" }}
-                count={data ? data.temperature : "--"}
+                count={dashboardData ? dashboardData.temperature : "--"}
                 percentage={{ color: "success", text: "C" }}
                 icon={{ color: "info", component: "thermostat" }}
               />
@@ -160,7 +165,7 @@ function Dashboard() {
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "Current Capacity" }}
-                count={data ? data.current_capacity : "--"}
+                count={dashboardData ? dashboardData.current_capacity : "--"}
                 percentage={{ color: "success", text: "mAh" }}
                 icon={{
                   color: "info",
@@ -175,7 +180,7 @@ function Dashboard() {
         <SoftBox mb={3}>
           <Grid container spacing={3}>
             <Grid item xs={12} lg={7}>
-              <BuildByDevelopers soc={data ? data.soc : null} isCharging={data ? data.is_charging : null} />
+              <BuildByDevelopers soc={dashboardData ? dashboardData.soc : null} isCharging={dashboardData ? dashboardData.is_charging : null} />
             </Grid>
             <Grid item xs={12} lg={5}>
               <WorkWithTheRockets />
@@ -197,7 +202,7 @@ function Dashboard() {
               />
             </Grid>
             <Grid item xs={12} lg={7}>
-              <GradientLineChart
+              {socVoltageChartData && <GradientLineChart
                 title="Sales Overview"
                 description={
                   <SoftBox display="flex" alignItems="center">
@@ -213,8 +218,8 @@ function Dashboard() {
                   </SoftBox>
                 }
                 height="20.25rem"
-                chart={gradientLineChartData}
-              />
+                chart={socVoltageChartData}
+              />}
             </Grid>
           </Grid>
         </SoftBox>

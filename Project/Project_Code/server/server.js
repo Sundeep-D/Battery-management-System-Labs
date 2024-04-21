@@ -98,8 +98,7 @@ function parseJson(dataString) {
 async function fetchDataAndProcess() {
 
   try {
-      const data = getSocVoltageDataForChart();
-
+    const data = await getSocVoltageDataForChart();
       // Process your data
       const processedData = processData(data);
 
@@ -122,7 +121,7 @@ function sendToUI(processedData) {
       client.send(JSON.stringify(processedData));
     }
   });
-  console.log('Sending data to UI:', processedData);
+  console.log('Sending data to UI:', JSON.stringify(processedData));
 }
 
 // Set interval to run the function every 2 seconds

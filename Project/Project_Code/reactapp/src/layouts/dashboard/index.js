@@ -202,23 +202,29 @@ function Dashboard() {
               />
             </Grid>
             <Grid item xs={12} lg={7}>
-              {socVoltageChartData && <GradientLineChart
-                title="Sales Overview"
+              { <GradientLineChart
+                title="Soc and Voltage Overview"
                 description={
                   <SoftBox display="flex" alignItems="center">
                     <SoftBox fontSize={size.lg} color="success" mb={0.3} mr={0.5} lineHeight={0}>
-                      <Icon className="font-bold">arrow_upward</Icon>
+                      {socVoltageChartData && <Icon className="font-bold">arrow_upward</Icon>}
                     </SoftBox>
-                    <SoftTypography variant="button" color="text" fontWeight="medium">
+
+                    {!socVoltageChartData && <SoftTypography variant="button" color="text" fontWeight="regular">
+                        Waiting for SOC information...
+                      </SoftTypography>}
+
+
+                    {socVoltageChartData && <SoftTypography variant="button" color="text" fontWeight="medium">
                       4% more{" "}
-                      <SoftTypography variant="button" color="text" fontWeight="regular">
+                      {socVoltageChartData && <SoftTypography variant="button" color="text" fontWeight="regular">
                         in 2021
-                      </SoftTypography>
-                    </SoftTypography>
+                      </SoftTypography>}
+                    </SoftTypography>}
                   </SoftBox>
                 }
                 height="20.25rem"
-                chart={socVoltageChartData}
+                chart={socVoltageChartData ?  socVoltageChartData : gradientLineChartData}
               />}
             </Grid>
           </Grid>

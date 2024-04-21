@@ -2,7 +2,7 @@ const net = require('net');
 const { v4: uuidv4 } = require('uuid');
 const WebSocket = require('ws');
 const clear = require('cli-clear');
-const insertData = require('./databaseUtils');
+const {insertData} = require('./databaseUtils');
 const { getSocVoltageDataForChart } = require('./databaseUtils');
 const constants = require('./constants');
 

@@ -72,9 +72,10 @@ function Dashboard() {
 
       ws.onmessage = event => {
         const jsonData = JSON.parse(event.data);
-        console.log('Received JSON data from server:', jsonData);
-        setData(jsonData); // Update state with received data
-        if(jsonData){
+        
+        if(jsonData && jsonData.type == "arduino_data"){
+          console.log(`Received ${jsonData.type} from server:`, jsonData);
+           setData(jsonData); // Update state with received data
           setArduinoConnecting(false);
         }
       };

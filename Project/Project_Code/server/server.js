@@ -3,6 +3,7 @@ const { v4: uuidv4 } = require('uuid');
 const WebSocket = require('ws');
 const clear = require('cli-clear');
 const insertData = require('./databaseUtils');
+const { getSocVoltageDataForChart } = require('./databaseUtils');
 const constants = require('./constants');
 
 const websocketPort = 8001;
@@ -92,6 +93,40 @@ function parseJson(dataString) {
     return null;
   }
 }
+
+// Function to make a database call and process data
+async function fetchDataAndProcess() {
+
+  try {
+      const data = getSocVoltageDataForChart();
+
+      // Process your data
+      const processedData = processData(data);
+
+      // Send processed data to UI (Assuming you have a function named sendToUI)
+      sendToUI(processedData);
+  } catch (err) {
+      console.error('Error fetching and processing data:', err);
+  }
+}
+
+function processData(data) {
+  return data;
+}
+
+// Function to send processed data to UI
+function sendToUI(processedData) {
+  processedData.type = "soc_voltage_chart_data"
+  wss.clients.forEach(client => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify(processedData));
+    }
+  });
+  console.log('Sending data to UI:', processedData);
+}
+
+// Set interval to run the function every 2 seconds
+setInterval(fetchDataAndProcess, 2000);
 
 server.listen(tcpPort, () => {
   const address = server.address();

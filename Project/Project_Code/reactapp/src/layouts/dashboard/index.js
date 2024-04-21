@@ -43,6 +43,7 @@ import React, { useState, useEffect } from 'react';
 // Data
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData";
+import { json } from "react-router-dom";
 
 function Dashboard() {
   const { size } = typography;
@@ -50,6 +51,7 @@ function Dashboard() {
   const [data, setData] = useState(null);
   const [connecting, setConnecting] = useState(true); // State to track initial connection
   const [reconnecting, setReconnecting] = useState(false); // State to track reconnection
+  const [arduinoConnecting, setArduinoConnecting] = useState(false); // State to track reconnection
 
 
    // Establish WebSocket connection
@@ -65,12 +67,16 @@ function Dashboard() {
         console.log('WebSocket connected');
         setConnecting(false); // Update connecting state
         setReconnecting(false); // Reset reconnecting state
+        setArduinoConnecting(true);
       };
 
       ws.onmessage = event => {
         const jsonData = JSON.parse(event.data);
         console.log('Received JSON data from server:', jsonData);
         setData(jsonData); // Update state with received data
+        if(jsonData){
+          setArduinoConnecting(false);
+        }
       };
 
       ws.onclose = () => {
@@ -114,6 +120,11 @@ function Dashboard() {
       <p style={{ fontSize: '0.8rem', textAlign: 'center', margin: '0' }}>Reconnecting...</p>
     </div>
   )}
+  {arduinoConnecting && (
+    <div style={{ backgroundColor: '#f0f0f0', padding: '10px', borderRadius: '8px', display: 'inline-block' }}>
+      <p style={{ fontSize: '0.8rem', textAlign: 'center', margin: '0' }}>Waiting for BMS information...</p>
+    </div>
+  )}
 </div>
 
       <DashboardNavbar />
@@ -123,45 +134,47 @@ function Dashboard() {
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
-                title={{ text: "Current SOC" }}
-                count={data ? data.soc : "--"}
-                percentage={{ color: "success", text: "+13213" }}
-                icon={{ color: "info", component: "paid" }}
+                title={{ text: "SOC" }}
+                count={data ? `${Math.floor(data.soc)}` : "--"}
+                percentage={{ color: "success", text: "%" }}
+                icon={{ color: "info", component: "battery_full" }}
               />
             </Grid>
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
-                title={{ text: "Current Voltage" }}
-                count={data ? data.voltage : "--"}
-                percentage={{ color: "success", text: "5685686" }}
-                icon={{ color: "info", component: "public" }}
+                title={{ text: "Voltage" }}
+                count={data ? data.voltage.toFixed(2)  : "--"}
+                percentage={{ color: "success", text: "V" }}
+                icon={{ color: "info", component: "bolt" }}
               />
             </Grid>
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
-                title={{ text: "Current Temperataure" }}
+                title={{ text: "Temperature" }}
                 count={data ? data.temperature : "--"}
-                // percentage={{ color: "error", text: "-2%" }}
-                icon={{ color: "info", component: "emoji_events" }}
+                percentage={{ color: "success", text: "C" }}
+                icon={{ color: "info", component: "thermostat" }}
               />
             </Grid>
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "Current Capacity" }}
                 count={data ? data.current_capacity : "--"}
-                // percentage={{ color: "success", text: "+5%" }}
+                percentage={{ color: "success", text: "mAh" }}
                 icon={{
                   color: "info",
-                  component: "shopping_cart",
+                  component: "battery_unknown",
                 }}
               />
             </Grid>
           </Grid>
         </SoftBox>
+
+        
         <SoftBox mb={3}>
           <Grid container spacing={3}>
             <Grid item xs={12} lg={7}>
-              <BuildByDevelopers />
+              <BuildByDevelopers soc={data ? data.soc : null} isCharging={data ? data.is_charging : null} />
             </Grid>
             <Grid item xs={12} lg={5}>
               <WorkWithTheRockets />

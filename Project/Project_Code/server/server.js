@@ -38,6 +38,7 @@ const server = net.createServer(socket => {
       console.log('UNOR4:', jsonData);
       wss.clients.forEach(client => {
         if (client.readyState === WebSocket.OPEN) {
+          jsonData.type = "arduino_data"
           client.send(JSON.stringify(jsonData));
         } else {
           // console.log('Error sending data to websocket clients:');

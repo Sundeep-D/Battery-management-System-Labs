@@ -24,9 +24,26 @@ import SoftTypography from "components/SoftTypography";
 
 // Images
 import wavesWhite from "assets/images/shapes/waves-white.svg";
-import rocketWhite from "assets/images/illustrations/rocket-white.png";
+import batteryFull from "assets/images/illustrations/battery.png";
+import batteryCharge from "assets/images/illustrations/batteryCharge.png";
 
-function BuildByDevelopers() {
+  
+import React, { useState, useEffect } from 'react';
+
+function BuildByDevelopers({ soc, isCharging }) {
+
+
+
+
+const [socLoaded, setSocLoaded] = useState(false);
+// Update the SOC loaded state when the SOC value is received
+useEffect(() => {
+  if (soc !== null) {
+    setSocLoaded(true);
+  }
+}, [soc]);
+
+
   return (
     <Card>
       <SoftBox p={2}>
@@ -35,11 +52,11 @@ function BuildByDevelopers() {
             <SoftBox display="flex" flexDirection="column" height="100%">
               <SoftBox pt={1} mb={0.5}>
                 <SoftTypography variant="body2" color="text" fontWeight="medium">
-                  Build by developers
+                  Sky BMS
                 </SoftTypography>
               </SoftBox>
               <SoftTypography variant="h5" fontWeight="bold" gutterBottom>
-                Soft UI Dashboard
+                Battery Status
               </SoftTypography>
               <SoftBox mb={6}>
                 <SoftTypography variant="body2" color="text">
@@ -49,30 +66,16 @@ function BuildByDevelopers() {
               </SoftBox>
               <SoftTypography
                 component="a"
-                href="#"
-                variant="button"
-                color="text"
-                fontWeight="medium"
                 sx={{
                   mt: "auto",
                   mr: "auto",
                   display: "inline-flex",
                   alignItems: "center",
-                  cursor: "pointer",
-
-                  "& .material-icons-round": {
-                    fontSize: "1.125rem",
-                    transform: `translate(2px, -0.5px)`,
-                    transition: "transform 0.2s cubic-bezier(0.34,1.61,0.7,1.3)",
-                  },
-
-                  "&:hover .material-icons-round, &:focus  .material-icons-round": {
-                    transform: `translate(6px, -0.5px)`,
-                  },
+                  fontSize: "0.8rem" ,
+                  color: "#b8bfbf"
                 }}
               >
-                Read More
-                <Icon sx={{ fontWeight: "bold" }}>arrow_forward</Icon>
+                Last updated: Few seconds ago
               </SoftTypography>
             </SoftBox>
           </Grid>
@@ -82,22 +85,47 @@ function BuildByDevelopers() {
               display="grid"
               justifyContent="center"
               alignItems="center"
-              bgColor="info"
               borderRadius="lg"
               variant="gradient"
+              position="relative" // Ensure proper positioning of nested elements
             >
-              <SoftBox
-                component="img"
+              {/* Image of waves */}
+              <img
                 src={wavesWhite}
                 alt="waves"
-                display="block"
-                position="absolute"
-                left={0}
-                width="100%"
-                height="100%"
+                style={{ position: "absolute", left: 0, width: "100%", height: "100%" }}
               />
-              <SoftBox component="img" src={rocketWhite} alt="rocket" width="100%" pt={3} />
+
+              {/* Image of rocket */}
+              {/* Image of rocket */}
+              <img
+                src={isCharging ? batteryCharge : batteryFull}
+                alt="rocket"
+                style={{ width: "100%", paddingTop: "3%" }}
+              />
+
+
+
+              {/* Text to display centered on top */}
+              {!isCharging && socLoaded && (
+                <SoftTypography
+                variant="h2"
+                  style={{
+                    position: "absolute",
+                    zIndex: 3,
+                    textAlign: "center",
+                    width: "100%",
+                    paddingTop: "10%",
+                    paddingLeft: "2%",
+                    animation: "zoomIn 0.5s",
+                  }}
+                >
+                  {soc !== null ? `${Math.floor(soc)}%` : ""}
+                </SoftTypography>
+              )}
+
             </SoftBox>
+
           </Grid>
         </Grid>
       </SoftBox>

@@ -100,7 +100,7 @@ async function fetchDataAndProcess() {
 
   try {
     const data = await getSocVoltageDataForChart();
-    // console.error('DATA:', JSON.stringify(data));
+    console.error('DATA:', JSON.stringify(data));
       // Process your data
       const processedData = processData(data);
 

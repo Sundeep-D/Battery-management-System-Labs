@@ -118,7 +118,14 @@ function feedDataIntoJson(pickedDocuments) {
     if (pickedDocuments.hasOwnProperty(timestamp)) {
       const doc = pickedDocuments[timestamp];
       // labels[startIndex] = doc.timestamp;
-      socData[startIndex] = doc.soc;
+      if(doc.soc){
+        socData[startIndex] = doc.soc;
+      }else if(socData[startIndex-1]){
+        socData[startIndex] =socData[startIndex-1];
+      }else{
+        socData[startIndex] =0;
+      }
+      
       voltageData[startIndex] = doc.voltage;
       startIndex++;
     }

@@ -148,11 +148,31 @@ function feedDataIntoJson(pickedDocuments) {
       // },
     ],
   };
-
+  console.log(findIncreaseOrDecrease(socData));
+  jsonData.stat=findIncreaseOrDecrease(socData);
   return jsonData;
 }
 
+function findIncreaseOrDecrease(socData) {
+  const halfIndex = Math.floor(socData.length / 2);
 
+  // Calculate the sum of the first half of the data
+  const sumFirstHalf = socData.slice(0, halfIndex).reduce((acc, val) => acc + val, 0);
+
+  // Calculate the sum of the second half of the data
+  const sumSecondHalf = socData.slice(halfIndex).reduce((acc, val) => acc + val, 0);
+
+  // Calculate the average of the first half
+  const averageFirstHalf = sumFirstHalf / halfIndex;
+
+  // Calculate the average of the second half
+  const averageSecondHalf = sumSecondHalf / (socData.length - halfIndex);
+
+  // Calculate the difference between the averages
+  const difference = averageSecondHalf - averageFirstHalf;
+
+  return difference;
+}
 
 module.exports = {
   insertData,

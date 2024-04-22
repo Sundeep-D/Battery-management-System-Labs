@@ -115,6 +115,7 @@ async function fetchSocDataAndProcess() {
 function sendToUI(processedData,type) {
   if (processedData) {
     processedData.type =type 
+    console.log(JSON.stringify(processedData));
     wss.clients.forEach(client => {
       if (client.readyState === WebSocket.OPEN) {
         client.send(JSON.stringify(processedData));

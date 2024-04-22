@@ -153,7 +153,7 @@ function feedDataIntoJson(pickedDocuments) {
       }
     }
 
-    const jsonData = {
+    const socJsonData = {
       labels: labels,
       datasets: [
         {
@@ -170,12 +170,24 @@ function feedDataIntoJson(pickedDocuments) {
     };
 
 
+    const voltageJsonData = {
+      labels: socData.map(value => Math.round(value)),
+      datasets: [
+        {
+          label: "Voltage",
+          color: "dark",
+          data: voltageData,
+        }
+      ],
+    };
+
     // console.log(findIncreaseOrDecrease(socData));
-    jsonData.stat = findIncreaseOrDecrease(socData);
+    socJsonData.stat = findIncreaseOrDecrease(socData);
 
 
     jsonResult = {};
-    jsonResult.socChartData=jsonData
+    jsonResult.socChartData=socJsonData
+    jsonResult.voltageChartData=voltageJsonData
     return jsonResult;
   }
 

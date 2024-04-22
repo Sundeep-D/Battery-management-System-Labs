@@ -4,6 +4,7 @@ const WebSocket = require('ws');
 const clear = require('cli-clear');
 const {insertData} = require('./databaseUtils');
 const { getSocVoltageDataForChart } = require('./databaseUtils');
+const { connectToDb } = require('./databaseUtils');
 const constants = require('./constants');
 
 const websocketPort = 8001;
@@ -36,7 +37,7 @@ const server = net.createServer(socket => {
     const jsonData = parseJson(data.toString());
     if (jsonData) {
       clear();
-      console.log('UNOR4:', jsonData);
+      // console.log('UNOR4:', jsonData);
       wss.clients.forEach(client => {
         if (client.readyState === WebSocket.OPEN) {
           jsonData.type = "arduino_data"
@@ -99,6 +100,7 @@ async function fetchDataAndProcess() {
 
   try {
     const data = await getSocVoltageDataForChart();
+    console.error('DATA:', JSON.stringify(data));
       // Process your data
       const processedData = processData(data);
 
@@ -115,21 +117,24 @@ function processData(data) {
 
 // Function to send processed data to UI
 function sendToUI(processedData) {
-  processedData.type = "soc_voltage_chart_data"
+  if(processedData){
+    processedData.type = "soc_voltage_chart_data"
   wss.clients.forEach(client => {
     if (client.readyState === WebSocket.OPEN) {
       client.send(JSON.stringify(processedData));
     }
   });
-  console.log('Sending data to UI:', JSON.stringify(processedData));
+  // console.log('Sending data to UI:', JSON.stringify(processedData));
+  }
 }
 
 // Set interval to run the function every 2 seconds
-setInterval(fetchDataAndProcess, 2000);
+setInterval(fetchDataAndProcess, 10000);
 
 server.listen(tcpPort, () => {
   const address = server.address();
   console.log(`TCP Server running on ${constants.host}:${address.port}`);
+  connectToDb();
 });
 
 // Function to generate a unique key

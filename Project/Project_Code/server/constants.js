@@ -1,8 +1,8 @@
 // created by Sundeep Dayalan at 2024/04/18 18:58.
 // Website:  www.sundeepdayalan.in
 // Email: contact@sundeepdayalan.in
-// const host = "ec2-204-236-220-172.compute-1.amazonaws.com"
-const host = "localhost"
+const host = "ec2-204-236-220-172.compute-1.amazonaws.com"
+// const host = "localhost"
 const db_name = "skybms";
 const MongoConnectionString = `mongodb://skybms:12345678@${host}:27017/?authSource=${db_name}`;
 // 204.236.220.172
@@ -12,15 +12,19 @@ const collection_arduino_raw_data = "arduino_data";
 
 
 function getTimestamp() {
-    // return new Date(Date.now()).toLocaleString("en-US", { timeZone: 'Asia/Kolkata' });
-    // return new Date().toUTCString();
-    return new Date(Date.now());
-
+    const options = { timeZone: 'America/Denver' };
+    return new Date(Date.now()).toLocaleString("en-US", options);
 }
 
+
+function getFormattedTimestamp(timestamp) {
+    // Implement logic to format the timestamp as needed
+    return timestamp.toLocaleString(); // Example formatting, change according to your requirements
+  }
+
 function getTimestampHumanReadableFormat() {
-    // return new Date(Date.now()).toLocaleString("en-US", { timeZone: 'Asia/Kolkata' });
-    return new Date().toUTCString();
+    return new Date(Date.now()).toLocaleString("en-US", { timeZone: 'America/Denver' });
+    // return new Date().toUTCString();
     // return new Date(Date.now());
 
 }
@@ -34,7 +38,8 @@ module.exports = {
     collection_arduino_raw_data,
     getTimestamp,
     getTimestampHumanReadableFormat,
-    host
+    host,
+    getFormattedTimestamp: getFormattedTimestamp
 
 
 

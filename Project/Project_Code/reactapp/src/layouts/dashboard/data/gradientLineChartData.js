@@ -31,18 +31,18 @@ Coded by www.creative-tim.com
 
 
 const gradientLineChartData = {
-  labels: ["a", "b", "c", "d", "Aug", "Sep", "Oct", "Nov", "Dec","Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  labels: [],
   datasets: [
     {
-      label: "Voltage",
+      label: "--",
       color: "info",
-      data: [50, 40, 300, 220, 500, 250, 400, 230, 500,50, 40, 300, 220, 500, 250, 400, 230, 500],
+      data: [],
     },
     {
-      label: "SOC",
+      label: "--",
       color: "dark",
-      data: [30, 90, 40, 140, 290, 290, 340, 230, 400,30, 90, 40, 140, 290, 290, 340, 230, 400],
-    }
+      data: [],
+    },
   ],
 };
 

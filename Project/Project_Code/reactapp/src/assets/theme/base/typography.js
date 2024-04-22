@@ -27,6 +27,21 @@ import pxToRem from "assets/theme/functions/pxToRem";
 
 const { dark } = colors;
 
+// const baseProperties = {
+//   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+//   fontWeightLight: 300,
+//   fontWeightRegular: 400,
+//   fontWeightMedium: 500,
+//   fontWeightBold: 700,
+//   fontSizeXXS: pxToRem(10.4),
+//   fontSizeXS: pxToRem(12),
+//   fontSizeSM: pxToRem(14),
+//   fontSizeMD: pxToRem(16),
+//   fontSizeLG: pxToRem(18),
+//   fontSizeXL: pxToRem(20),
+// };
+
+
 const baseProperties = {
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
   fontWeightLight: 300,
@@ -34,11 +49,11 @@ const baseProperties = {
   fontWeightMedium: 500,
   fontWeightBold: 700,
   fontSizeXXS: pxToRem(10.4),
-  fontSizeXS: pxToRem(12),
-  fontSizeSM: pxToRem(14),
-  fontSizeMD: pxToRem(16),
-  fontSizeLG: pxToRem(18),
-  fontSizeXL: pxToRem(20),
+  fontSizeXS: pxToRem(9),
+  fontSizeSM: pxToRem(12),
+  fontSizeMD: pxToRem(12),
+  fontSizeLG: pxToRem(6),
+  fontSizeXL: pxToRem(7),
 };
 
 const baseHeadingProperties = {

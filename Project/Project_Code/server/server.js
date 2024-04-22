@@ -3,8 +3,8 @@ const { v4: uuidv4 } = require('uuid');
 const WebSocket = require('ws');
 const clear = require('cli-clear');
 const { insertData } = require('./databaseUtils');
-const { getSocDataForChart } = require('./databaseUtils');
-const { connectToDb } = require('./databaseUtils');
+const { getSocVoltageDataForChart } = require('./databaseUtils');
+const { connectToDb, deleteOldDocuments } = require('./databaseUtils');
 const constants = require('./constants');
 
 const websocketPort = 8001;
@@ -99,7 +99,7 @@ function parseJson(dataString) {
 async function fetchSocDataAndProcess() {
 
   try {
-    const data = await getSocDataForChart();
+    const data = await getSocVoltageDataForChart();
     // console.error('DATA:', JSON.stringify(data));
 
     // Send processed data to UI (Assuming you have a function named sendToUI)
@@ -109,18 +109,7 @@ async function fetchSocDataAndProcess() {
   }
 }
 
-async function fetchVoltageDataAndProcess() {
 
-  try {
-    const data = await getSocVoltageDataForChart();
-    console.error('DATA:', JSON.stringify(data));
-
-    // Send processed data to UI (Assuming you have a function named sendToUI)
-    sendToUI(data);
-  } catch (err) {
-    console.error('Error fetching and processing data:', err);
-  }
-}
 
 // Function to send processed data to UI
 function sendToUI(processedData,type) {
@@ -135,10 +124,14 @@ function sendToUI(processedData,type) {
   }
 }
 
+
+async function clearOldDocuments(){
+  await deleteOldDocuments();
+}
 // Set interval to run the function every 2 seconds
 // setInterval(fetchDataAndProcess, 180000);
 setInterval(fetchSocDataAndProcess, 5000);
-// setInterval(fetchVoltageDataAndProcess, 5000);
+setInterval(clearOldDocuments, 5000);
 
 
 

@@ -23,7 +23,7 @@ async function insertData(dataToInsert) {
   }
 }
 
-async function getSocDataForChart() {
+async function getSocVoltageDataForChart() {
   if (!db) {
     await connectToDb();
   }
@@ -38,7 +38,9 @@ async function getSocDataForChart() {
 
     if (documents.length === 0) {
       console.log("No documents found in the past 1 hour");
-      return {
+
+      jsonObject = {};
+      jsonObject.socChartData={
         labels: [],
         datasets: [
           {
@@ -52,7 +54,24 @@ async function getSocDataForChart() {
             data: [],
           },
         ],
-      };
+      }
+
+      jsonObject.voltageChartData={
+        labels: [],
+        datasets: [
+          {
+            label: "--",
+            color: "info",
+            data: [],
+          },
+          {
+            label: "--",
+            color: "dark",
+            data: [],
+          },
+        ],
+      }
+      return jsonObject;
     }
 
     // Initialize an object to store documents in 3-minute intervals
@@ -78,15 +97,15 @@ async function getSocDataForChart() {
     // Initialize an object to store one document from each interval
     const pickedDocuments = {};
 
-// Iterate over each interval and pick the last document
-for (const intervalStart in segregatedData) {
-  if (segregatedData.hasOwnProperty(intervalStart)) {
-    const documentsInInterval = segregatedData[intervalStart];
-    const lastDocumentIndex = documentsInInterval.length - 1;
-    pickedDocuments[intervalStart] = documentsInInterval[lastDocumentIndex]; // Pick the last document in each interval
-  }
-}
-    
+    // Iterate over each interval and pick the last document
+    for (const intervalStart in segregatedData) {
+      if (segregatedData.hasOwnProperty(intervalStart)) {
+        const documentsInInterval = segregatedData[intervalStart];
+        const lastDocumentIndex = documentsInInterval.length - 1;
+        pickedDocuments[intervalStart] = documentsInInterval[lastDocumentIndex]; // Pick the last document in each interval
+      }
+    }
+
     return feedDataIntoJson(pickedDocuments);
     // Now, pickedDocuments contains one document from each 3-minute interval
     // console.log("One document picked from each 3-minute interval:", JSON.stringify(feedDataIntoJson(pickedDocuments)));
@@ -99,84 +118,109 @@ for (const intervalStart in segregatedData) {
   }
 }
 
+
 function feedDataIntoJson(pickedDocuments) {
-  const labels = new Array(20).fill(0);
-  const socData = new Array(20).fill(0);
-  const voltageData = new Array(20).fill(0);
+    const labels = new Array(20).fill(0);
+    const socData = new Array(20).fill(0);
+    const voltageData = new Array(20).fill(0);
 
-  const numDocuments = Object.keys(pickedDocuments).length;
-  let startIndex = Math.max(0, 20 - numDocuments); // Calculate the starting index to fill documents
+    const numDocuments = Object.keys(pickedDocuments).length;
+    let startIndex = Math.max(0, 20 - numDocuments); // Calculate the starting index to fill documents
 
-  for (let i = startIndex; i < 20; i++) {
-    if (i === 19) {
-      labels[i] = "Now";
-    } else if (i < 20) {
-      tmp = 20 - i;
-      labels[i] = tmp*3+"m";
-    }
-  }
-
-  for (const timestamp in pickedDocuments) {
-    if (pickedDocuments.hasOwnProperty(timestamp)) {
-      const doc = pickedDocuments[timestamp];
-      // labels[startIndex] = doc.timestamp;
-      if(doc.soc){
-        socData[startIndex] = doc.soc;
-      }else if(socData[startIndex-1]){
-        socData[startIndex] =socData[startIndex-1];
-      }else{
-        socData[startIndex] =0;
+    for (let i = startIndex; i < 20; i++) {
+      if (i === 19) {
+        labels[i] = "Now";
+      } else if (i < 20) {
+        tmp = 20 - i;
+        labels[i] = tmp * 3 + "m";
       }
-      
-      voltageData[startIndex] = doc.voltage;
-      startIndex++;
     }
+
+    for (const timestamp in pickedDocuments) {
+      if (pickedDocuments.hasOwnProperty(timestamp)) {
+        const doc = pickedDocuments[timestamp];
+        // labels[startIndex] = doc.timestamp;
+        if (doc.soc) {
+          socData[startIndex] = doc.soc;
+        } else if (socData[startIndex - 1]) {
+          socData[startIndex] = socData[startIndex - 1];
+        } else {
+          socData[startIndex] = 0;
+        }
+
+        voltageData[startIndex] = doc.voltage;
+        startIndex++;
+      }
+    }
+
+    const jsonData = {
+      labels: labels,
+      datasets: [
+        {
+          label: "SOC",
+          color: "info",
+          data: socData,
+        },
+        // {
+        //   label: "Voltage",
+        //   color: "dark",
+        //   data: voltageData,
+        // },
+      ],
+    };
+
+
+    // console.log(findIncreaseOrDecrease(socData));
+    jsonData.stat = findIncreaseOrDecrease(socData);
+
+
+    jsonResult = {};
+    jsonResult.socChartData=jsonData
+    return jsonResult;
   }
 
-  const jsonData = {
-    labels: labels,
-    datasets: [
-      {
-        label: "SOC",
-        color: "info",
-        data: socData,
-      },
-      // {
-      //   label: "Voltage",
-      //   color: "dark",
-      //   data: voltageData,
-      // },
-    ],
+  function findIncreaseOrDecrease(socData) {
+    const halfIndex = Math.floor(socData.length / 2);
+
+    // Calculate the sum of the first half of the data
+    const sumFirstHalf = socData.slice(0, halfIndex).reduce((acc, val) => acc + val, 0);
+
+    // Calculate the sum of the second half of the data
+    const sumSecondHalf = socData.slice(halfIndex).reduce((acc, val) => acc + val, 0);
+
+    // Calculate the average of the first half
+    const averageFirstHalf = sumFirstHalf / halfIndex;
+
+    // Calculate the average of the second half
+    const averageSecondHalf = sumSecondHalf / (socData.length - halfIndex);
+
+    // Calculate the difference between the averages
+    const difference = averageSecondHalf - averageFirstHalf;
+
+    return difference;
+  }
+
+
+  async function deleteOldDocuments() {
+    if (!db) {
+      await connectToDb();
+    }
+
+    const collection = db.collection(constants.collection_arduino_raw_data);
+    const tenHoursAgo = new Date(Date.now() - 1 * 60 * 60 * 1000);
+    const query = { timestamp: { $lt: tenHoursAgo } };
+
+    try {
+      const result = await collection.deleteMany(query);
+      console.log(`${result.deletedCount} documents deleted.`);
+    } catch (error) {
+      console.log("Error occurred while deleting documents:", error);
+    }
+  }
+  module.exports = {
+    insertData,
+    getSocVoltageDataForChart,
+    connectToDb,
+    deleteOldDocuments
+
   };
-  // console.log(findIncreaseOrDecrease(socData));
-  jsonData.stat=findIncreaseOrDecrease(socData);
-  return jsonData;
-}
-
-function findIncreaseOrDecrease(socData) {
-  const halfIndex = Math.floor(socData.length / 2);
-
-  // Calculate the sum of the first half of the data
-  const sumFirstHalf = socData.slice(0, halfIndex).reduce((acc, val) => acc + val, 0);
-
-  // Calculate the sum of the second half of the data
-  const sumSecondHalf = socData.slice(halfIndex).reduce((acc, val) => acc + val, 0);
-
-  // Calculate the average of the first half
-  const averageFirstHalf = sumFirstHalf / halfIndex;
-
-  // Calculate the average of the second half
-  const averageSecondHalf = sumSecondHalf / (socData.length - halfIndex);
-
-  // Calculate the difference between the averages
-  const difference = averageSecondHalf - averageFirstHalf;
-
-  return difference;
-}
-
-module.exports = {
-  insertData,
-  getSocDataForChart,
-  connectToDb,
-  db // Export the db variable for future use
-};

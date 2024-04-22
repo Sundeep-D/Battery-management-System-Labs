@@ -81,10 +81,10 @@ function Dashboard() {
           setArduinoConnecting(false);
         } else if (jsonData && jsonData.type == "soc_chart_data") {
           console.log(`Received ${jsonData.type} from server:`, JSON.stringify(jsonData));
-          setSocChartStat(jsonData.stat);
+          setSocChartStat(jsonData.socChartData.stat);
           delete jsonData.type;
-          delete jsonData.stat;
-          setSocChartData(jsonData);
+          delete jsonData.socChartData.stat;
+          setSocChartData(jsonData.socChartData);
         }
       };
 
@@ -192,7 +192,7 @@ function Dashboard() {
         </SoftBox>
         <SoftBox mb={3}>
           <Grid container spacing={3}>
-            <Grid item xs={12} lg={5}>
+            <Grid item xs={12} lg={6}>
               {/* <ReportsBarChart
                 title="active users"
                 description={
@@ -204,7 +204,7 @@ function Dashboard() {
                 items={items}
               /> */}
               <GradientLineChart
-                title="Soc and Voltage Overview"
+                title="Voltage Overview"
                 description={
                   <SoftBox display="flex" alignItems="center">
                     <SoftBox fontSize={size.lg} color="success" mb={0.3} mr={0.5} lineHeight={0}>
@@ -231,10 +231,10 @@ function Dashboard() {
               />
             </Grid>
             
-            <Grid item xs={12} lg={7}>
+            <Grid item xs={12} lg={6}>
               
               <GradientLineChart
-                title="Soc and Voltage Overview"
+                title="Soc Overview"
                 description={
                   <SoftBox display="flex" alignItems="center">
                     <SoftBox fontSize={size.lg} color="success" mb={0.3} mr={0.5} lineHeight={0}>

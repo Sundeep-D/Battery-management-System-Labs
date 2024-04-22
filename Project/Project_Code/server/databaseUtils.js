@@ -103,7 +103,7 @@ function feedDataIntoJson(pickedDocuments) {
   const numDocuments = Object.keys(pickedDocuments).length;
   let startIndex = Math.max(0, 20 - numDocuments); // Calculate the starting index to fill documents
 
-  for (let i = startIndex; i <= 20; i++) {
+  for (let i = startIndex+1; i <= 20; i++) {
     if (i === 20) {
       labels[i] = "Now";
     } else if (i < 20) {

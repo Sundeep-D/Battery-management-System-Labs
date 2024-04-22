@@ -27,12 +27,7 @@ async function getSocVoltageDataForChart() {
         label: "SOC",
         color: "dark",
         data: [30, 90, 40, 140, 290, 290, 340, 230, 400,30, 90, 40, 140, 290, 290, 340, 230, 400],
-      },
-      {
-        label: "SOC",
-        color: "success",
-        data: [10, 15, 20],
-      },
+      }
     ],
   };
 }

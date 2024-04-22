@@ -23,7 +23,7 @@ async function insertData(dataToInsert) {
   }
 }
 
-async function getSocVoltageDataForChart() {
+async function getSocDataForChart() {
   if (!db) {
     await connectToDb();
   }
@@ -148,7 +148,7 @@ function feedDataIntoJson(pickedDocuments) {
       // },
     ],
   };
-  console.log(findIncreaseOrDecrease(socData));
+  // console.log(findIncreaseOrDecrease(socData));
   jsonData.stat=findIncreaseOrDecrease(socData);
   return jsonData;
 }
@@ -176,7 +176,7 @@ function findIncreaseOrDecrease(socData) {
 
 module.exports = {
   insertData,
-  getSocVoltageDataForChart,
+  getSocDataForChart,
   connectToDb,
   db // Export the db variable for future use
 };

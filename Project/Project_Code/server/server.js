@@ -131,6 +131,7 @@ function sendToUI(processedData) {
 // Set interval to run the function every 2 seconds
 setInterval(fetchDataAndProcess, 10000);
 
+
 server.listen(tcpPort, () => {
   const address = server.address();
   console.log(`TCP Server running on ${constants.host}:${address.port}`);

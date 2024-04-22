@@ -12,14 +12,21 @@ const collection_arduino_raw_data = "arduino_data";
 
 
 function getTimestamp() {
-    const options = { timeZone: 'America/Denver' };
-    return new Date(Date.now()).toLocaleString("en-US", options);
+    return new Date(Date.now());
 }
 
 
 function getFormattedTimestamp(timestamp) {
-    // Implement logic to format the timestamp as needed
-    return timestamp.toLocaleString(); // Example formatting, change according to your requirements
+    // Convert the timestamp to a Date object
+  const date = new Date(timestamp);
+
+  // Set the time zone to Denver
+  const options = { timeZone: 'America/Denver' };
+
+  // Format the date and time as required
+  const formattedDate = date.toLocaleString('en-US', options);
+
+  return formattedDate;
   }
 
 function getTimestampHumanReadableFormat() {

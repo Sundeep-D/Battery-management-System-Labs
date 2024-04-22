@@ -55,6 +55,7 @@ async function getSocVoltageDataForChart() {
 
     // Start time for selecting documents
     let startTime = Date.now() - 60 * 60 * 1000; // 1 hour ago
+    console.log(startTime);
 
     // Iterate over each 3-minute interval
     for (let i = 0; i < numDocumentsNeeded - 1; i++) {

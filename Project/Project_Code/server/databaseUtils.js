@@ -130,11 +130,11 @@ function feedDataIntoJson(pickedDocuments) {
         color: "info",
         data: socData,
       },
-      {
-        label: "Voltage",
-        color: "dark",
-        data: voltageData,
-      },
+      // {
+      //   label: "Voltage",
+      //   color: "dark",
+      //   data: voltageData,
+      // },
     ],
   };
 

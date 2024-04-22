@@ -36,7 +36,7 @@ const server = net.createServer(socket => {
   socket.on('data', data => {
     const jsonData = parseJson(data.toString());
     if (jsonData) {
-      clear();
+      // clear();
       console.log('UNOR4:', jsonData);
       wss.clients.forEach(client => {
         if (client.readyState === WebSocket.OPEN) {

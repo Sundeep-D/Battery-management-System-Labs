@@ -50,6 +50,7 @@ function Dashboard() {
   const { chart, items } = reportsBarChartData;
   const [dashboardData, setDashBoardData] = useState(null);
   const [socVoltageChartData, setSocVoltageChartData] = useState(null);
+  const [socChartStat, setSocChartStat] = useState(null);
   const [connecting, setConnecting] = useState(true); // State to track initial connection
   const [reconnecting, setReconnecting] = useState(false); // State to track reconnection
   const [arduinoConnecting, setArduinoConnecting] = useState(false); // State to track reconnection
@@ -80,6 +81,7 @@ function Dashboard() {
           setArduinoConnecting(false);
         }else if(jsonData && jsonData.type == "soc_voltage_chart_data"){
           console.log(`Received ${jsonData.type} from server:`, jsonData);
+          setSocChartStat(jsonData.stat);
           delete jsonData.type;
           setSocVoltageChartData(jsonData); 
         }
@@ -207,7 +209,9 @@ function Dashboard() {
                 description={
                   <SoftBox display="flex" alignItems="center">
                     <SoftBox fontSize={size.lg} color="success" mb={0.3} mr={0.5} lineHeight={0}>
-                      {socVoltageChartData && <Icon className="font-bold">arrow_upward</Icon>}
+                      {socVoltageChartData &&  <Icon className="font-bold">
+    {socChartStat > 0 ? "arrow_upward" : "arrow_downward"}
+  </Icon>}
                     </SoftBox>
 
                     {!socVoltageChartData && <SoftTypography variant="button" color="text" fontWeight="regular">
@@ -216,9 +220,9 @@ function Dashboard() {
 
 
                     {socVoltageChartData && <SoftTypography variant="button" color="text" fontWeight="medium">
-                      4% more{" "}
+                      {Math.floor(socChartStat)}%  {socChartStat > 0 ? "high" : "less"}{" "}
                       {socVoltageChartData && <SoftTypography variant="button" color="text" fontWeight="regular">
-                        in 2021
+                        in 30minutes
                       </SoftTypography>}
                     </SoftTypography>}
                   </SoftBox>

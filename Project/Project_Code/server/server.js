@@ -129,7 +129,9 @@ function sendToUI(processedData) {
 }
 
 // Set interval to run the function every 2 seconds
-setInterval(fetchDataAndProcess, 10000);
+// setInterval(fetchDataAndProcess, 180000);
+setInterval(fetchDataAndProcess, 5000);
+
 
 
 server.listen(tcpPort, () => {

@@ -17,7 +17,7 @@ async function insertData(dataToInsert) {
 
   try {
     const result = await db.collection(constants.collection_arduino_raw_data).insertOne(dataToInsert);
-    // console.log(`Inserted ${result} document into the collection`);
+    console.log(`Inserted!`);
   } catch (error) {
     console.log("Error occurred while inserting data:", error);
   }
@@ -71,6 +71,8 @@ async function getSocVoltageDataForChart() {
       segregatedData[intervalStart].push(doc);
     });
 
+    // console.log(JSON.stringify(segregatedData));
+
     // Now, segregatedData contains documents grouped by 3-minute intervals
 
     // Initialize an object to store one document from each interval
@@ -82,7 +84,7 @@ async function getSocVoltageDataForChart() {
         pickedDocuments[intervalStart] = segregatedData[intervalStart][0]; // Pick the first document in each interval
       }
     }
-
+    
     return feedDataIntoJson(pickedDocuments);
     // Now, pickedDocuments contains one document from each 3-minute interval
     // console.log("One document picked from each 3-minute interval:", JSON.stringify(feedDataIntoJson(pickedDocuments)));

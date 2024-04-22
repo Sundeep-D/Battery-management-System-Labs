@@ -37,7 +37,7 @@ const server = net.createServer(socket => {
     const jsonData = parseJson(data.toString());
     if (jsonData) {
       clear();
-      // console.log('UNOR4:', jsonData);
+      console.log('UNOR4:', jsonData);
       wss.clients.forEach(client => {
         if (client.readyState === WebSocket.OPEN) {
           jsonData.type = "arduino_data"
@@ -100,7 +100,7 @@ async function fetchDataAndProcess() {
 
   try {
     const data = await getSocVoltageDataForChart();
-    console.error('DATA:', JSON.stringify(data));
+    // console.error('DATA:', JSON.stringify(data));
       // Process your data
       const processedData = processData(data);
 

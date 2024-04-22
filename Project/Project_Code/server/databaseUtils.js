@@ -78,12 +78,14 @@ async function getSocVoltageDataForChart() {
     // Initialize an object to store one document from each interval
     const pickedDocuments = {};
 
-    // Iterate over each interval and pick one document
-    for (const intervalStart in segregatedData) {
-      if (segregatedData.hasOwnProperty(intervalStart)) {
-        pickedDocuments[intervalStart] = segregatedData[intervalStart][0]; // Pick the first document in each interval
-      }
-    }
+// Iterate over each interval and pick the last document
+for (const intervalStart in segregatedData) {
+  if (segregatedData.hasOwnProperty(intervalStart)) {
+    const documentsInInterval = segregatedData[intervalStart];
+    const lastDocumentIndex = documentsInInterval.length - 1;
+    pickedDocuments[intervalStart] = documentsInInterval[lastDocumentIndex]; // Pick the last document in each interval
+  }
+}
     
     return feedDataIntoJson(pickedDocuments);
     // Now, pickedDocuments contains one document from each 3-minute interval

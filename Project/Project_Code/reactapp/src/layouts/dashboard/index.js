@@ -50,11 +50,17 @@ function Dashboard() {
   const { chart, items } = reportsBarChartData;
   const [dashboardData, setDashBoardData] = useState(null);
   const [socChartData, setSocChartData] = useState(null);
+  const [voltageChartData, setVoltageChartData] = useState(null);
   const [socChartStat, setSocChartStat] = useState(null);
+  const [voltageChartAvg, setVoltageChartAvg] = useState(null);
   const [connecting, setConnecting] = useState(true); // State to track initial connection
   const [reconnecting, setReconnecting] = useState(false); // State to track reconnection
   const [arduinoConnecting, setArduinoConnecting] = useState(false); // State to track reconnection
 
+  useEffect(() => {
+    console.log("Updated socChartData:", JSON.stringify(socChartData));
+    console.log("Updated gradientLineChartData:", JSON.stringify(gradientLineChartData));
+  }, [socChartData]);
 
   // Establish WebSocket connection
   useEffect(() => {
@@ -80,11 +86,36 @@ function Dashboard() {
           setDashBoardData(jsonData);
           setArduinoConnecting(false);
         } else if (jsonData && jsonData.type == "soc_chart_data") {
+
+          if (jsonData.socChartData.labels.length > 0) {
+            setSocChartData(jsonData.socChartData);
+          }
+
+          if (jsonData.voltageChartData.labels.length > 0) {
+            setVoltageChartData(jsonData.voltageChartData);
+          }
+
+
           console.log(`Received ${jsonData.type} from server:`, JSON.stringify(jsonData));
-          setSocChartStat(jsonData.socChartData.stat);
+
+          if (jsonData.socChartData && jsonData.socChartData.stat) {
+            setSocChartStat(jsonData.socChartData.stat);
+            delete jsonData.socChartData.stat;
+          }
+
+          if (jsonData.voltageChartData && jsonData.voltageChartData.avg) {
+            setVoltageChartAvg(jsonData.voltageChartData.avg);
+            delete jsonData.voltageChartData.avg;
+          }
+
           delete jsonData.type;
-          delete jsonData.socChartData.stat;
-          setSocChartData(jsonData.socChartData);
+
+
+
+          console.log("data");
+          console.log(socChartData);
+          console.log(jsonData.voltageChartData);
+          console.log(jsonData.socChartData.stat);
         }
       };
 
@@ -152,7 +183,7 @@ function Dashboard() {
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "Voltage" }}
-                count={dashboardData ? dashboardData.voltage.toFixed(2) : "--"}
+                count={dashboardData && dashboardData.voltage ? dashboardData.voltage.toFixed(2) : "--"}
                 percentage={{ color: "success", text: "V" }}
                 icon={{ color: "info", component: "bolt" }}
               />
@@ -208,18 +239,16 @@ function Dashboard() {
                 description={
                   <SoftBox display="flex" alignItems="center">
                     <SoftBox fontSize={size.lg} color="success" mb={0.3} mr={0.5} lineHeight={0}>
-                      {socChartData && <Icon className="font-bold">
-                        {socChartStat > 0 ? "arrow_upward" : "arrow_downward"}
-                      </Icon>}
+                      
                     </SoftBox>
 
                     {!socChartData && <SoftTypography variant="button" color="text" fontWeight="regular">
-                      Waiting for SOC information...
+                      Waiting for Voltage information...
                     </SoftTypography>}
 
 
-                    {socChartData && <SoftTypography variant="button" color="text" fontWeight="medium">
-                      {Math.floor(socChartStat)}%  {socChartStat > 0 ? "high" : "less"}{" "}
+                    {voltageChartData && <SoftTypography variant="button" color="text" fontWeight="medium">
+                      Average voltage: {voltageChartAvg && Math.floor(voltageChartAvg)}V  {" "}
                       {socChartData && <SoftTypography variant="button" color="text" fontWeight="regular">
                         in 30 minutes
                       </SoftTypography>}
@@ -227,19 +256,19 @@ function Dashboard() {
                   </SoftBox>
                 }
                 height="20.25rem"
-                chart={socChartData ? socChartData : gradientLineChartData}
+                chart={voltageChartData ? voltageChartData : gradientLineChartData}
               />
             </Grid>
-            
+
             <Grid item xs={12} lg={6}>
-              
+
               <GradientLineChart
                 title="Soc Overview"
                 description={
                   <SoftBox display="flex" alignItems="center">
                     <SoftBox fontSize={size.lg} color="success" mb={0.3} mr={0.5} lineHeight={0}>
                       {socChartData && <Icon className="font-bold">
-                        {socChartStat > 0 ? "arrow_upward" : "arrow_downward"}
+                        {socChartStat && socChartStat > 0 ? "arrow_upward" : "arrow_downward"}
                       </Icon>}
                     </SoftBox>
 
@@ -249,7 +278,7 @@ function Dashboard() {
 
 
                     {socChartData && <SoftTypography variant="button" color="text" fontWeight="medium">
-                      {Math.floor(socChartStat)}%  {socChartStat > 0 ? "high" : "less"}{" "}
+                      {socChartStat && Math.floor(socChartStat)}%  {socChartStat > 0 ? "high" : "less"}{" "}
                       {socChartData && <SoftTypography variant="button" color="text" fontWeight="regular">
                         in 30 minutes
                       </SoftTypography>}

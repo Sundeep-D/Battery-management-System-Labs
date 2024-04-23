@@ -132,7 +132,7 @@ async function clearOldDocuments(){
 // Set interval to run the function every 2 seconds
 // setInterval(fetchDataAndProcess, 180000);
 setInterval(fetchSocDataAndProcess, 5000);
-setInterval(clearOldDocuments, 5000);
+// setInterval(clearOldDocuments, 5000);
 
 
 

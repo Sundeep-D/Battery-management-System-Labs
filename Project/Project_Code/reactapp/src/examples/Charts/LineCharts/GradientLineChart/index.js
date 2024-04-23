@@ -36,6 +36,7 @@ import configs from "examples/Charts/LineCharts/GradientLineChart/configs";
 
 // Soft UI Dashboard React base styles
 import colors from "assets/theme/base/colors";
+import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData";
 
 function GradientLineChart({ title, description, height, chart }) {
   const chartRef = useRef(null);
@@ -43,6 +44,8 @@ function GradientLineChart({ title, description, height, chart }) {
   const { data, options } = chartData;
 
   useEffect(() => {
+
+    console.log("CHART: ",chart)
     const chartDatasets = chart.datasets
       ? chart.datasets.map((dataset) => ({
           ...dataset,

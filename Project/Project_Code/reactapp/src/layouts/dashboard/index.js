@@ -248,9 +248,8 @@ function Dashboard() {
 
 
                     {voltageChartData && <SoftTypography variant="button" color="text" fontWeight="medium">
-                      Average voltage: {voltageChartAvg && Math.floor(voltageChartAvg)}V  {" "}
+                      Average voltage: {voltageChartAvg && voltageChartAvg.toFixed(2)}V  {" "}
                       {socChartData && <SoftTypography variant="button" color="text" fontWeight="regular">
-                        in 30 minutes
                       </SoftTypography>}
                     </SoftTypography>}
                   </SoftBox>

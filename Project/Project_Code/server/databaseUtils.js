@@ -142,9 +142,11 @@ function feedDataIntoJson(pickedDocuments) {
       // labels[startIndex] = doc.timestamp;
       if (doc.soc) {
         socData[startIndex] = doc.soc;
-      } else if (socData[startIndex - 1]) {
-        socData[startIndex] = socData[startIndex - 1];
-      } else {
+      } 
+      // else if (socData[startIndex - 1]) {
+      //   socData[startIndex] = socData[startIndex - 1];
+      // } 
+      else {
         socData[startIndex] = 0;
       }
 

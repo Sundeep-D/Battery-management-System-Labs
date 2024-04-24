@@ -52,5 +52,9 @@ def process_query():
     chat_history.append((query, result['answer']))
     return jsonify(result)
 
+@app.route('/status', methods=['GET'])
+def server_status():
+    return "OPENAI SERVER is running"
+    
 if __name__ == '__main__':
     app.run(host='::1', port=os.getenv("OPENAI_SERVER_PORT"))

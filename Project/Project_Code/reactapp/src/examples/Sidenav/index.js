@@ -1,4 +1,17 @@
+/**
+=========================================================
+* Soft UI Dashboard React - v4.0.1
+=========================================================
 
+* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
+* Copyright 2023 Creative Tim (https://www.creative-tim.com)
+
+Coded by www.creative-tim.com
+
+ =========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+*/
 
 import { useEffect } from "react";
 
@@ -116,7 +129,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
 
   return (
     <SidenavRoot {...rest} variant="permanent" ownerState={{ transparentSidenav, miniSidenav }}>
-      <SoftBox pt={3} pb={1} px={4} textAlign="center">
+      <SoftBox pt={3} pb={1} px={4} textAlign="center" >
         <SoftBox
           display={{ xs: "block", xl: "none" }}
           position="absolute"
@@ -130,8 +143,8 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
             <Icon sx={{ fontWeight: "bold" }}>close</Icon>
           </SoftTypography>
         </SoftBox>
-        <SoftBox component={NavLink} to="/" display="flex" alignItems="center">
-          {brand && <SoftBox component="img" src={brand} alt="Sky BMS Logo" width="12rem" />}
+        <SoftBox component={NavLink} to="/" display="flex" alignItems="center" >
+          {brand && <SoftBox component="img" src={brand} alt="Sky BMS Logo" width="8rem" />}
          
         </SoftBox>
       </SoftBox>
@@ -139,7 +152,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       <List>{renderRoutes}</List>
       <SoftBox pt={2} my={2} mx={2} mt="auto">
         {/* <SidenavCard /> */}
-        <SoftBox mt={2}>
+        <SoftBox mt={2} width="8rem">
           <SoftButton
             component="a"
             href="https://github.com/Sundeep-D/Battery-management-System-Labs/"

@@ -43,7 +43,9 @@ function SidenavCollapse({ color, icon, name, children, active, noCollapse, open
 
   return (
     <>
-      <ListItem component="li">
+      <ListItem component="li" style={{ 
+            width: "180px"
+        }}>
         <SoftBox {...rest} sx={(theme) => collapseItem(theme, { active, transparentSidenav })}>
           <ListItemIcon
             sx={(theme) => collapseIconBox(theme, { active, transparentSidenav, color })}

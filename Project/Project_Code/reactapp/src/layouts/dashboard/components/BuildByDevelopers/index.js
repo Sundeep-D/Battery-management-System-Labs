@@ -26,11 +26,12 @@ import SoftTypography from "components/SoftTypography";
 import wavesWhite from "assets/images/shapes/waves-white.svg";
 import batteryFull from "assets/images/illustrations/battery.png";
 import batteryCharge from "assets/images/illustrations/batteryCharge.png";
+import MiniHealthCard from "examples/Cards/StatisticsCards/MiniHealthCard";
 
   
 import React, { useState, useEffect } from 'react';
 
-function BuildByDevelopers({ soc, isCharging }) {
+function BuildByDevelopers({ soc, isCharging , lastUpdated}) {
 
 
 
@@ -64,6 +65,12 @@ useEffect(() => {
                   documentation.
                 </SoftTypography>
               </SoftBox>
+              <MiniHealthCard
+                title={{ text: "Voltage" }}
+                count={"--"}
+                percentage={{ color: "success", text: "V" }}
+                icon={{ color: "info", component: "bolt" }}
+              />
               <SoftTypography
                 component="a"
                 sx={{
@@ -75,7 +82,7 @@ useEffect(() => {
                   color: "#b8bfbf"
                 }}
               >
-                Last updated: Few seconds ago
+                Last updated: {lastUpdated!=null ? lastUpdated : "--"}
               </SoftTypography>
             </SoftBox>
           </Grid>

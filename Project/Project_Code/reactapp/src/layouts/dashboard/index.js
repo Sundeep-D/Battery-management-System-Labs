@@ -56,11 +56,38 @@ function Dashboard() {
   const [connecting, setConnecting] = useState(true); // State to track initial connection
   const [reconnecting, setReconnecting] = useState(false); // State to track reconnection
   const [arduinoConnecting, setArduinoConnecting] = useState(false); // State to track reconnection
+  const [lastUpdatedArduino, setLastUpdatedArduino] = useState(null);
+  const [lastUpdatedSOC, setLastUpdatedSOC] = useState(null);
 
   useEffect(() => {
     console.log("Updated socChartData:", JSON.stringify(socChartData));
     console.log("Updated gradientLineChartData:", JSON.stringify(gradientLineChartData));
   }, [socChartData]);
+
+
+  const formatTimeDifference = (timestamp) => {
+    if (!timestamp) {
+      // setArduinoConnecting(true); // Set state if timestamp is not available
+      return "Unknown";
+    }
+    const now = new Date();
+    const diff = now - timestamp;
+    const seconds = Math.floor(diff / 1000);
+  
+    if (seconds < 5) {
+      return "Just now";
+    } else if (seconds < 60) {
+      return "Few seconds ago";
+    }
+  
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+    const days = Math.floor(hours / 24);
+    return `${days} day${days !== 1 ? 's' : ''} ago`;
+  };
+  
 
   // Establish WebSocket connection
   useEffect(() => {
@@ -85,7 +112,9 @@ function Dashboard() {
           // console.log(`Received ${jsonData.type} from server:`, jsonData);
           setDashBoardData(jsonData);
           setArduinoConnecting(false);
+          setLastUpdatedArduino(new Date()); // Update timestamp for arduino_data
         } else if (jsonData && jsonData.type == "soc_chart_data") {
+          setLastUpdatedSOC(new Date());
 
           if (jsonData.socChartData.labels.length > 0) {
             setSocChartData(jsonData.socChartData);
@@ -148,7 +177,7 @@ function Dashboard() {
   }, []); // Empty dependency array ensures effect runs only once on mount
 
   return (
-    <DashboardLayout>
+    <DashboardLayout >
       <div style={{ position: 'absolute', justifyContent: 'center', margin: '10', left: '40%', transform: 'translateX(-500%)', transform: 'translateY(-10%)', width: '100%' }}>
         {connecting && (
           <div style={{ backgroundColor: '#f0f0f0', padding: '10px', borderRadius: '8px', display: 'inline-block' }}>
@@ -214,7 +243,7 @@ function Dashboard() {
         <SoftBox mb={3}>
           <Grid container spacing={3}>
             <Grid item xs={12} lg={7}>
-              <BuildByDevelopers soc={dashboardData ? dashboardData.soc : null} isCharging={dashboardData ? dashboardData.is_charging : null} />
+              <BuildByDevelopers lastUpdated={formatTimeDifference(lastUpdatedArduino)} soc={dashboardData ? dashboardData.soc : null} isCharging={dashboardData ? dashboardData.is_charging : null} />
             </Grid>
             <Grid item xs={12} lg={5}>
               <WorkWithTheRockets />

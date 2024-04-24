@@ -82,15 +82,15 @@ function collapseIconBox(theme, ownerState) {
       background: () => {
         let background;
 
-        if (!active) {
-          background = transparentSidenav ? white.main : light.main;
-        } else if (color === "default") {
-          background = info.main;
-        } else if (color === "warning") {
-          background = gradients.warning.main;
-        } else {
-          background = palette[color].main;
-        }
+        // if (!active) {
+        //   background = transparentSidenav ? white.main : light.main;
+        // } else if (color === "default") {
+        //   background = info.main;
+        // } else if (color === "warning") {
+        //   background = gradients.warning.main;
+        // } else {
+        //   background = palette[color].main;
+        // }
 
         return background;
       },

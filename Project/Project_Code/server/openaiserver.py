@@ -57,5 +57,5 @@ def server_status():
     return "OPENAI SERVER is running"
 
 if __name__ == '__main__':
-    # app.run(port=os.getenv("OPENAI_SERVER_PORT"))
-    app.run(host='::1', port=os.getenv("OPENAI_SERVER_PORT"))
+    app.run(port=os.getenv("OPENAI_SERVER_PORT"))
+    # app.run(host='::1', port=os.getenv("OPENAI_SERVER_PORT"))

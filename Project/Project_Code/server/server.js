@@ -36,7 +36,7 @@ wss.on('connection', function connection(ws) {
 });
 
 // Create TCP server
-const server = net.createServer(socket => {
+const server = net.createServer({ host: '0.0.0.0' },socket => {
   console.log('Client connected');
 
   // Generate a unique key

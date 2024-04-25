@@ -51,7 +51,7 @@ const baseProperties = {
   fontSizeXXS: pxToRem(10.4),
   fontSizeXS: pxToRem(9),
   fontSizeSM: pxToRem(12),
-  fontSizeMD: pxToRem(12),
+  fontSizeMD: pxToRem(16),
   fontSizeLG: pxToRem(6),
   fontSizeXL: pxToRem(7),
 };

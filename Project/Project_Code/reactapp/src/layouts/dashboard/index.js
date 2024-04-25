@@ -58,6 +58,7 @@ function Dashboard() {
   const [arduinoConnecting, setArduinoConnecting] = useState(false); // State to track reconnection
   const [lastUpdatedArduino, setLastUpdatedArduino] = useState(null);
   const [lastUpdatedSOC, setLastUpdatedSOC] = useState(null);
+  const [aiResponse, setAiResponse] = useState(null);
 
   useEffect(() => {
     console.log("Updated socChartData:", JSON.stringify(socChartData));
@@ -114,6 +115,9 @@ function Dashboard() {
           setArduinoConnecting(false);
           setLastUpdatedArduino(new Date()); // Update timestamp for arduino_data
         } else if (jsonData && jsonData.type == "soc_chart_data") {
+
+          // Trigger animation here
+          setAiResponse("The temperature of the battery is keep on increasing from 10C to 80C - "+Math.floor(Math.random() * (10 - 2) + 2));
           setLastUpdatedSOC(new Date());
 
           if (jsonData.socChartData.labels.length > 0) {
@@ -246,7 +250,7 @@ function Dashboard() {
               <BuildByDevelopers lastUpdated={formatTimeDifference(lastUpdatedArduino)} soc={dashboardData ? dashboardData.soc : null} isCharging={dashboardData ? dashboardData.is_charging : null} />
             </Grid>
             <Grid item xs={12} lg={5}>
-              <WorkWithTheRockets />
+              <WorkWithTheRockets aiResponse={aiResponse} />
             </Grid>
           </Grid>
         </SoftBox>

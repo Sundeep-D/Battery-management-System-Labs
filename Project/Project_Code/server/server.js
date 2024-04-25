@@ -10,7 +10,7 @@ const axios = require('axios');
 const websocketPort = process.env.WEBSOCKET_SERVER_PORT;
 const tcpPort = process.env.TCP_SERVER_PORT;
 data = {
-  query: 'Duration of experiment?'
+  query: 'This is the data collected from battery discharge. It says how much voltage and SOc discharges over the time. Now try to answer me. Based on the time and Soc tell me whcich time the Soc will be below 10 based on prediction? Give answer in format "Below 10% SoC will be at XX:XX AM"'
 };
 
 

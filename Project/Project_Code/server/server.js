@@ -26,10 +26,15 @@ wss.on('connection', function connection(ws) {
 
   // Handle messages from WebSocket clients
   ws.on('message', function incoming(message) {
-    const messageString = message.toString('utf8');
-  // Parse the string as JSON
-  const jsonData = JSON.parse(messageString);
-  console.log('Received JSON:', jsonData);
+    try {
+      const jsonData = JSON.parse(message);
+      console.log('Received JSON:', jsonData);
+      // Handle the JSON data as needed
+    } catch (error) {
+      // If parsing as JSON fails, log the message as a string
+      console.log('Received message:', message);
+      // Handle the non-JSON message as needed
+    }
   });
 
   // Handle WebSocket client disconnection

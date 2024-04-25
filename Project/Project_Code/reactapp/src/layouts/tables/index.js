@@ -53,7 +53,6 @@ function Tables() {
       ws.onopen = () => {
         console.log('WebSocket connected in Chat screen');
         setWebSocket(ws);
-        // const messageObject = { query: "HELLO %%%%%%%%%%%" };
         // wsRef.send(JSON.stringify(messageObject));
         // alert('connected')
         setConnecting(false); // Update connecting state

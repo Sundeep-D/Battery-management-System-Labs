@@ -66,9 +66,10 @@ function Tables() {
         }else{
           const jsonData = JSON.parse(event.data);
 
-        if (jsonData && jsonData.type === "arduino_data") {
+        if (jsonData && jsonData.type === "ai_response") {
           setArduinoConnecting(false);
           setLastUpdatedArduino(new Date()); // Update timestamp for arduino_data
+          alert(jsonData.answer);
         }
         }
       };

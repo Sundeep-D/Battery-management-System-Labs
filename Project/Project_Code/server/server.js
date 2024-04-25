@@ -30,6 +30,11 @@ wss.on('connection', function connection(ws) {
       const jsonData = JSON.parse(message);
       console.log('Received JSON:', jsonData);
       // Handle the JSON data as needed
+      const messageObject = { 
+        type:"ai_response",
+        answer: "This is a demo answer from AI Stash your changes: Stashing your changes will temporarily store them away, allowing you to pull the latest changes from the remote repository. After pulling, you can apply your stashed changes back if needed." 
+      };
+    ws.send(JSON.stringify(messageObject));
     } catch (error) {
       // If parsing as JSON fails, log the message as a string
       console.log('Received message:', message);

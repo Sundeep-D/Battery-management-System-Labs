@@ -17,7 +17,7 @@ async function insertData(dataToInsert) {
 
   try {
     const result = await db.collection(constants.collection_arduino_raw_data).insertOne(dataToInsert);
-    console.log(`Inserted!`);
+    console.log(`Arduino raw Inserted!`);
   } catch (error) {
     console.log("Error occurred while inserting data:", error);
   }

@@ -1,0 +1,16 @@
+/* styles.css */
+
+@keyframes ripple {
+    0% {
+      transform: scale(0);
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
+  

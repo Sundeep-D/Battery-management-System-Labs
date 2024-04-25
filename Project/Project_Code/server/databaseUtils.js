@@ -1,6 +1,6 @@
 const { connect, close } = require('./database');
 const constants = require('./constants');
-
+const fs = require('fs');
 let db = null;
 
 async function connectToDb() {
@@ -141,7 +141,7 @@ function feedDataIntoJson(pickedDocuments) {
       const doc = pickedDocuments[timestamp];
       // labels[startIndex] = doc.timestamp;
       // if (doc.soc) {
-        socData[startIndex] = doc.soc;
+      socData[startIndex] = doc.soc;
       // } 
       // else if (socData[startIndex - 1]) {
       //   socData[startIndex] = socData[startIndex - 1];
@@ -199,7 +199,7 @@ function findVoltageAverage(voltageData) {
 
   // Check if there are non-zero voltages in the array
   if (nonZeroVoltages.length === 0) {
-      return 0; // Return 0 if all values are zero
+    return 0; // Return 0 if all values are zero
   }
 
   // Calculate sum of non-zero voltages
@@ -249,10 +249,52 @@ async function deleteOldDocuments() {
     console.log("Error occurred while deleting documents:", error);
   }
 }
+
+
+async function getLatestRecordsWithinHour() {
+  if (!db) {
+    await connectToDb();
+  }
+
+  const collection = db.collection(constants.collection_arduino_raw_data);
+  const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+  const query = { timestamp: { $gt: oneHourAgo } };
+
+  try {
+    const documents = await collection.find(query).sort({ timestamp: -1 }).limit(50).toArray();
+
+    if (documents.length === 0) {
+      console.log("No documents found in the past 1 hour");
+      return;
+    }
+
+    // Clear contents of data.txt
+    fs.writeFileSync('data.txt', '');
+
+    // Write header to data.txt
+    fs.appendFileSync('data.txt', "Timestamp\t\t\t\tCurrent Capacity\t\tis_charging\t\ttemperature\t\t\tsoc\t\t\tvoltage\n");
+
+    // Write each document to data.txt
+        // Write each document to data.txt
+        documents.forEach(doc => {
+          const { timestamp_human, current_capacity, is_charging, temperature, soc, voltage } = doc;
+          const line = `${timestamp_human}\t\t${current_capacity}\t\t\t\t\t\t${is_charging}\t\t${temperature}\t\t\t\t${soc}\t\t${voltage}\n`;
+          fs.appendFileSync('data.txt', line);
+        });
+    
+
+    console.log("Latest 50 records within 1-hour timeframe written to data.txt");
+
+  } catch (error) {
+    console.log("Error occurred while fetching documents:", error);
+  }
+}
+
+
 module.exports = {
   insertData,
   getSocVoltageDataForChart,
   connectToDb,
-  deleteOldDocuments
-
+  deleteOldDocuments,
+  getLatestRecordsWithinHour
 };

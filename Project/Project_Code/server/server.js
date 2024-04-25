@@ -3,16 +3,18 @@ const net = require('net');
 const { v4: uuidv4 } = require('uuid');
 const WebSocket = require('ws');
 const clear = require('cli-clear');
-const { insertData, getSocVoltageDataForChart, connectToDb, deleteOldDocuments } = require('./databaseUtils'); // Import functions from database utilities
+const { insertData, getSocVoltageDataForChart, connectToDb, deleteOldDocuments, getLatestRecordsWithinHour } = require('./databaseUtils'); // Import functions from database utilities
 const constants = require('./constants'); // Import constant values
 require('dotenv').config();
 const axios = require('axios');
 const websocketPort = process.env.WEBSOCKET_SERVER_PORT;
 const tcpPort = process.env.TCP_SERVER_PORT;
+// data = {
+//   query: 'This is the data collected from battery discharge. It says how much voltage and SOc charges over the time. Now try to answer me. Based on the time and Soc tell me in how many minutes the Soc will be 100% based on prediction?'
+// };
 data = {
-  query: 'This is the data collected from battery discharge. It says how much voltage and SOc discharges over the time. Now try to answer me. Based on the time and Soc tell me whcich time the Soc will be below 10 based on prediction? Give answer in format "Below 10% SoC will be at XX:XX AM"'
+  query: 'Do you see any alerts based on the battery temperature'
 };
-
 
 // Create WebSocket server
 const wss = new WebSocket.Server({ port: websocketPort });
@@ -24,9 +26,10 @@ wss.on('connection', function connection(ws) {
 
   // Handle messages from WebSocket clients
   ws.on('message', function incoming(message) {
-    console.log('Received:', message);
-    // Echo back the received message to the client
-    ws.send(message);
+    const messageString = message.toString('utf8');
+  // Parse the string as JSON
+  const jsonData = JSON.parse(messageString);
+  console.log('Received JSON:', jsonData);
   });
 
   // Handle WebSocket client disconnection
@@ -136,6 +139,7 @@ async function clearOldDocuments() {
 // Set intervals for functions to run
 setInterval(fetchSocDataAndProcess, 5000);
 // setInterval(clearOldDocuments, 5000);
+setInterval(getLatestRecordsWithinHour, 5000);
 
 
 async function getChatResponse() {

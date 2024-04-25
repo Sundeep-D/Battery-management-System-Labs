@@ -12,6 +12,9 @@
     "url": "git+https://github.com/creativetimofficial/soft-ui-dashboard-react.git"
   },
   "dependencies": {
+    "@chatscope/chat-ui-kit-react": "^2.0.3",
+    "@chatscope/chat-ui-kit-styles": "^1.4.0",
+    "@cometchat-pro/chat": "^3.0.13",
     "@emotion/cache": "11.11.0",
     "@emotion/react": "11.11.0",
     "@emotion/styled": "11.11.0",
@@ -24,10 +27,10 @@
     "chart.js": "3.9.1",
     "chroma-js": "2.4.2",
     "prop-types": "15.8.1",
-    "react": "18.2.0",
+    "react": ">=16.8.0",
     "react-chartjs-2": "3.0.5",
     "react-countup": "6.4.2",
-    "react-dom": "18.2.0",
+    "react-dom": ">=16.8.0",
     "react-flatpickr": "3.10.13",
     "react-router-dom": "6.11.1",
     "react-scripts": "5.0.1",

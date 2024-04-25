@@ -112,8 +112,8 @@ export default function App() {
       display="flex"
       justifyContent="center"
       alignItems="center"
-      width="3.5rem"
-      height="3.5rem"
+      width="0rem"
+      height="0rem"
       bgColor="white"
       shadow="sm"
       borderRadius="50%"
@@ -125,9 +125,9 @@ export default function App() {
       sx={{ cursor: "pointer" }}
       onClick={handleConfiguratorOpen}
     >
-      <Icon fontSize="default" color="inherit">
+      {/* <Icon fontSize="default" color="inherit">
         settings
-      </Icon>
+      </Icon> */}
     </SoftBox>
   );
 

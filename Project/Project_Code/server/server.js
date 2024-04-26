@@ -28,13 +28,21 @@ wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(message) {
     try {
       const jsonData = JSON.parse(message);
-      console.log('Received JSON:', jsonData);
-      // Handle the JSON data as needed
+      // console.log('Received JSON:', jsonData);
+      if (jsonData && jsonData.type && jsonData.query && jsonData.type === "ai_query"){
+        console.log('AI query received:', jsonData.query);
+        answer = getChatResponse(data);
+        // Handle the JSON data as needed
       const messageObject = { 
         type:"ai_response",
-        answer: "This is a demo answer from AI Stash your changes: Stashing your changes will temporarily store them away, allowing you to pull the latest changes from the remote repository. After pulling, you can apply your stashed changes back if needed." 
-      };
-    ws.send(JSON.stringify(messageObject));
+      answer: answer  };
+      ws.send(JSON.stringify(messageObject));
+      }
+      
+
+     
+
+    
     } catch (error) {
       // If parsing as JSON fails, log the message as a string
       console.log('Received message:', message);
@@ -153,16 +161,40 @@ setInterval(fetchSocDataAndProcess, 5000);
 setInterval(getLatestRecordsWithinHour, 5000);
 
 
-async function getChatResponse() {
-  axios.post(`http://${process.env.OPENAI_SERVER_HOST}:${process.env.OPENAI_SERVER_PORT}/query`, data)
-  .then(response => {
-    console.log('Response:', response.data);
-    // Handle the response data here
-  })
-  .catch(error => {
-    console.error('Error:', error);
+async function getChatResponse(data) {
+  try {
+    // First, execute the GET request to refresh the model
+    const refreshModelResponse = await axios.get(`http://${process.env.OPENAI_SERVER_HOST}:${process.env.OPENAI_SERVER_PORT}/refresh-model`);
+
+    // Check if the refresh model request was successful (status code 200)
+    if (refreshModelResponse.status === 200) {
+      console.log('Model refreshed successfully.');
+      
+      // If the model refresh was successful, proceed with the POST request to query
+      const queryResponse = await axios.post(`http://${process.env.OPENAI_SERVER_HOST}:${process.env.OPENAI_SERVER_PORT}/query`, data);
+      
+      if(queryResponse && queryResponse.status === 200 && queryResponse.data && queryResponse.data.answer){
+        // Handle the response data here
+      console.log('Response:', queryResponse.data);
+        return {
+          isSuccess : true,
+          answer : queryResponse.data.answer
+        }
+      }
+      
+      
+    } else {
+      console.error('Model refresh failed. Status:', refreshModelResponse.status);
+      // Handle the failure case appropriately
+      return {
+        isSuccess : false,
+        answer : ""
+      }
+    }
+  } catch (error) {
+    console.error('AI Server call failed:', error.message);
     // Handle errors here
-  });
+  }
 }
 
 // Start TCP server
@@ -172,7 +204,7 @@ server.listen(tcpPort, () => {
   // Connect to the database
   connectToDb();
   console.log(`Hello ${process.env.HELLO}`)
-  getChatResponse();
+  getChatResponse(data);
 });
 
 // Function to generate a unique key

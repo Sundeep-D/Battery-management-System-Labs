@@ -74,7 +74,7 @@ def process_query():
     chat_history.append((query, result['answer']))
     return jsonify(result)
 
-@app.route('/restart', methods=['GET'])
+@app.route('/refresh-model', methods=['GET'])
 def restart_server():
     restartModel()
     # chat_history=[]

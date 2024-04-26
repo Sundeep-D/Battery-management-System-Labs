@@ -1,7 +1,7 @@
 
 // @mui material components
 import Card from "@mui/material/Card";
-import React, { useState,useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 // Soft UI Dashboard React components
 import SoftBox from "components/SoftBox";
@@ -27,28 +27,39 @@ function Tables() {
   const [reconnecting, setReconnecting] = useState(false); // State to track reconnection
   const [arduinoConnecting, setArduinoConnecting] = useState(false); // State to track reconnection
   const [lastUpdatedArduino, setLastUpdatedArduino] = useState(null);
+  const [isAiTyping, setIsAiTyping] = useState(false);
 
   const [message, setMessage] = useState(''); // State to track the message typed by the user
   const [showAlert, setShowAlert] = useState(false); // State to control the visibility of the alert
   const [webSocket, setWebSocket] = useState(null);
+  const [messages, setMessages] = useState([]);
 
   // Function to handle sending the message
   const handleSendMessage = (innerHtml, textContent, innerText, nodes) => {
-    if(webSocket){
-      alert(textContent)
-    const messageObject = { query: textContent };
-    webSocket.send(JSON.stringify(messageObject));
+    if (webSocket) {
+      setIsAiTyping(true);
+      const UiMessageObject = {
+        direction: 'outgoing',
+        message: textContent,
+        position: 'single',
+        sender: 'Oliver',
+        sentTime: new Date().toLocaleTimeString()
+      };
+      setMessages([...messages, UiMessageObject]); // Update messages state
+       
+      const messageObject = { type: "ai_query",query: textContent };
+      webSocket.send(JSON.stringify(messageObject));
     }
-    
+
   };
-  
+
   useEffect(() => {
     let ws;
 
     const connectWebSocket = () => {
       ws = new WebSocket('ws://ec2-204-236-220-172.compute-1.amazonaws.com:8001');
 
-      
+
 
       ws.onopen = () => {
         console.log('WebSocket connected in Chat screen');
@@ -61,16 +72,41 @@ function Tables() {
       };
 
       ws.onmessage = event => {
-        if(event.data instanceof Blob){
+        if (event.data instanceof Blob) {
 
-        }else{
+        } else {
           const jsonData = JSON.parse(event.data);
 
-        if (jsonData && jsonData.type === "ai_response") {
-          setArduinoConnecting(false);
-          setLastUpdatedArduino(new Date()); // Update timestamp for arduino_data
-          alert(jsonData.answer);
-        }
+          if (jsonData && jsonData.type === "ai_response") {
+            
+            setArduinoConnecting(false);
+            setLastUpdatedArduino(new Date()); // Update timestamp for arduino_data
+            alert(jsonData.answer);
+            setIsAiTyping(false);
+
+            if(jsonData.isSuccess === true){
+              const messageObject = {
+                direction: 'incoming',
+                message: jsonData.answer,
+                position: 'single',
+                sender: 'SkyBMS AI',
+                sentTime: new Date().toLocaleTimeString()
+              };
+              // Update messages state by concatenating the new message to the existing array
+              setMessages(prevMessages => [...prevMessages, messageObject]);
+            }else{
+              const messageObject = {
+                direction: 'incoming',
+                message: "SkyBMS AI is offline. Please try again later",
+                position: 'single',
+                sender: 'SkyBMS AI',
+                sentTime: new Date().toLocaleTimeString()
+              };
+              // Update messages state by concatenating the new message to the existing array
+              setMessages(prevMessages => [...prevMessages, messageObject]);
+            }
+            
+          }
         }
       };
 
@@ -107,25 +143,25 @@ function Tables() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <div style={{ position: "relative" }}>
+      <div style={{ position: "relative", marginBottom:"20px" }}>
         {reconnecting ? (
           // Show loading animation while connecting
           <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <div
-            style={{
-              border: '2px solid rgba(0, 0, 0, 0.2)',
-              borderRadius: '50%',
-              width: '50px',
-              height: '50px',
-              animation: 'ripple 1s infinite'
-            }}
-          ></div>
-          <div style={{ fontSize: '20px', textAlign: 'center' }}>Establishing connection with SkyBMS AI...</div>
-        </div>
-        
+            <div
+              style={{
+                border: '2px solid rgba(0, 0, 0, 0.2)',
+                borderRadius: '50%',
+                width: '50px',
+                height: '50px',
+                animation: 'ripple 1s infinite'
+              }}
+            ></div>
+            <div style={{ fontSize: '20px', textAlign: 'center' }}>Establishing connection with SkyBMS AI...</div>
+          </div>
+
 
         ) : !reconnecting && (< MainContainer style={{
-          height: '650px'
+          height: '80vh'
         }}  >
           <ChatContainer
 
@@ -145,63 +181,37 @@ function Tables() {
                 <InfoButton /> */}
               </ConversationHeader.Actions>
             </ConversationHeader>
-            <MessageList typingIndicator={<TypingIndicator content="Emily is typing" />}>
-              {/* <MessageSeparator content="Saturday, 30 November 2019" /> */}
-              <Message
-                model={{
-                  direction: 'incoming',
-                  message: 'Hello my friend',
-                  position: 'single',
-                  sender: 'Emily',
-                  sentTime: '15 mins ago'
-                }}
-              >
+            <MessageList typingIndicator={isAiTyping ? <TypingIndicator content="SkyBMS AI is preparing answers" /> : null}>
+            {messages.map((message, index) => (
+            <Message
+            style={{ fontSize: '20px'}}
+              key={index}
+              model={{
+                direction: message.direction,
+                message: message.message,
+                position: message.position,
+                sender: message.sender,
+                sentTime: message.sentTime
+              }}
+            >
+              {message.direction === 'incoming' && (
                 <Avatar
-                  name="Emily"
+                  name={message.sender}
                   src="https://chatscope.io/storybook/react/assets/emily-xzL8sDL2.svg"
                 />
-              </Message>
-              <Message
-                model={{
-                  direction: 'outgoing',
-                  message: 'Hello my friend',
-                  position: 'single',
-                  sener: 'Oliver',
-                  sentTime: '15 mins ago'
-                }}
-              />
-              <Message
-                model={{
-                  direction: 'incoming',
-                  message: 'Hello my friend',
-                  position: 'single',
-                  sender: 'Emily',
-                  sentTime: '15 mins ago'
-                }}
-              >
-                <Avatar
-                  name="Emily"
-                  src="https://chatscope.io/storybook/react/assets/emily-xzL8sDL2.svg"
-                />
-              </Message>
-              <Message
-                model={{
-                  direction: 'outgoing',
-                  message: 'Hello my friend',
-                  position: 'single',
-                  sener: 'Oliver',
-                  sentTime: '15 mins ago'
-                }}
-              />
+              )}
+            </Message>
+          ))}
+
             </MessageList>
-            <MessageInput  placeholder="Type message here"
-        // onChange={handleMessageChange}
-        onSend={handleSendMessage}
-         />
+            <MessageInput placeholder="Ask something with SkyBMS..."
+              // onChange={handleMessageChange}
+              onSend={handleSendMessage}
+            />
           </ChatContainer>
         </MainContainer>)}
       </div>
-      {/* <Footer /> */}
+      <Footer  />
     </DashboardLayout>
   );
 }

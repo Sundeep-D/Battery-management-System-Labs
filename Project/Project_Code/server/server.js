@@ -31,6 +31,10 @@ wss.on('connection', function connection(ws) {
       // console.log('Received JSON:', jsonData);
       if (jsonData && jsonData.type && jsonData.query && jsonData.type === "ai_query"){
         console.log('AI query received:', jsonData.query);
+
+        data = {
+          query: jsonData.query
+        };
         answer = getChatResponse(data);
         // Handle the JSON data as needed
       const messageObject = { 

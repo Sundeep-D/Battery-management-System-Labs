@@ -36,10 +36,13 @@ wss.on('connection', function connection(ws) {
           query: jsonData.query
         };
         answer = getChatResponse(data);
+        console.log('Answer:', answer);
         // Handle the JSON data as needed
       const messageObject = { 
         type:"ai_response",
       answer: answer  };
+
+      console.log('messageObjectnswer:', JSON.stringify(messageObject));
       ws.send(JSON.stringify(messageObject));
       }
       
@@ -179,7 +182,7 @@ async function getChatResponse(data) {
       
       if(queryResponse && queryResponse.status === 200 && queryResponse.data && queryResponse.data.answer){
         // Handle the response data here
-      console.log('Response:', queryResponse.data);
+      // console.log('Response:', queryResponse.data);
         return {
           isSuccess : true,
           answer : queryResponse.data.answer

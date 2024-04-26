@@ -81,13 +81,13 @@ function Tables() {
             
             setArduinoConnecting(false);
             setLastUpdatedArduino(new Date()); // Update timestamp for arduino_data
-            alert(jsonData.answer);
+            // alert(jsonData.answer);
             setIsAiTyping(false);
 
-            if(jsonData.isSuccess === true){
+            if(jsonData.answer && jsonData.answer.isSuccess === true){
               const messageObject = {
                 direction: 'incoming',
-                message: jsonData.answer,
+                message: jsonData.answer.answer,
                 position: 'single',
                 sender: 'SkyBMS AI',
                 sentTime: new Date().toLocaleTimeString()

@@ -272,13 +272,30 @@ async function getLatestRecordsWithinHour() {
     fs.writeFileSync('data.txt', '');
 
     // Write header to data.txt
-    fs.appendFileSync('data.txt', "Timestamp\t\t\t\tCurrent Capacity\t\tis_charging\t\ttemperature\t\t\tsoc\t\t\tvoltage\n");
+    fs.appendFileSync('data.txt', "Timestamp\t\t\t\tCurrent Capacity\t\t\tCharging Status\t\ttemperature\t\t\tsoc\t\t\tvoltage\n");
 
     // Write each document to data.txt
         // Write each document to data.txt
-        documents.forEach(doc => {
-          const { timestamp_human, current_capacity, is_charging, temperature, soc, voltage } = doc;
-          const line = `${timestamp_human}\t\t${current_capacity}\t\t\t\t\t\t${is_charging}\t\t${temperature}\t\t\t\t${soc}\t\t${voltage}\n`;
+        documents.forEach((doc,index) => {
+          let { timestamp_human, current_capacity, is_charging, temperature, soc, voltage } = doc;
+          if(index==0){
+            timestamp_human="Now"
+          }
+
+          if(is_charging){
+            is_charging="Charging"
+          }else{
+            is_charging="Not Charging"
+          }
+
+          let line;
+          if(index==0){
+            line = `${timestamp_human}\t\t\t\t\t\t\t${current_capacity}\t\t\t\t\t\t${is_charging}\t\t${temperature}\t\t\t\t${soc}\t\t${voltage}\n`;
+          
+          }else{
+            line = `${timestamp_human}\t\t${current_capacity}\t\t\t\t\t\t${is_charging}\t\t${temperature}\t\t\t\t${soc}\t\t${voltage}\n`;
+          
+          }
           fs.appendFileSync('data.txt', line);
         });
     

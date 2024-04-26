@@ -261,7 +261,7 @@ async function getLatestRecordsWithinHour() {
   const query = { timestamp: { $gt: oneHourAgo } };
 
   try {
-    const documents = await collection.find(query).sort({ timestamp: -1 }).limit(50).toArray();
+    const documents = await collection.find(query).sort({ timestamp: -1 }).limit(500).toArray();
 
     if (documents.length === 0) {
       console.log("No documents found in the past 1 hour");

@@ -74,7 +74,8 @@ const server = net.createServer({ host: '0.0.0.0' },socket => {
   socket.on('data', data => {
     const jsonData = parseJson(data.toString());
     if (jsonData) {
-      console.log('UNOR4:', jsonData);
+      // console.log('UNOR4:', jsonData);
+      console.log('Arduino Data received!!!!!:');
       // Send Arduino data to WebSocket clients
       wss.clients.forEach(client => {
         if (client.readyState === WebSocket.OPEN) {

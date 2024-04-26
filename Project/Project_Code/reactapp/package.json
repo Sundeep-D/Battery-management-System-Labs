@@ -1,9 +1,8 @@
 {
   "name": "skybms-react",
   "version": "4.0.1",
-  "author": "Creative Tim",
-  "license": "SEE LICENSE IN <https://www.creative-tim.com/license>",
-  "description": "ReactJS version of Soft UI Dashboard by Creative Tim",
+  "author": "Sundeep Dayalan",
+  "description": "Sky BMS by Sundeep",
   "bugs": {
     "url": "https://github.com/creativetimofficial/soft-ui-dashboard-react/issues"
   },

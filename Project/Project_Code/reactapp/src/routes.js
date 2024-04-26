@@ -1,20 +1,10 @@
-/**
-=========================================================
-* Soft UI Dashboard React - v4.0.1
-=========================================================
+// created by Sundeep Dayalan at 2024/04/25 21:39.
+// Website:  www.sundeepdayalan.in
+// Email: contact@sundeepdayalan.in
 
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 
 /** 
-  All of the routes for the Soft UI Dashboard React are added here,
+  All of the routes for the SkyBMS  are added here,
   You can add a new route, customize the routes and delete the routes here.
 
   Once you add a new route on this file it will be visible automatically on
@@ -34,12 +24,11 @@ Coded by www.creative-tim.com
   10. The `title` key is only for the item with the type of `title` and its used for the title text on the Sidenav.
   10. The `component` key is used to store the component of its route.
 */
-
-// Soft UI Dashboard React layouts
+ 
 import Dashboard from "layouts/dashboard";
-import Tables from "layouts/tables";
-
-// Soft UI Dashboard React icons
+import SkyBMSAI from "layouts/tables";
+import SignIn from "layouts/authentication/sign-in";
+ 
 import Shop from "examples/Icons/Shop";
 import Office from "examples/Icons/Office";
 import Settings from "examples/Icons/Settings";
@@ -61,13 +50,22 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Tables",
-    key: "tables",
-    route: "/tables",
+    name: "SkyBMS AI",
+    key: "SkyBMS AI",
+    route: "/skybms-ai",
     icon: <Office size="12px" />,
-    component: <Tables />,
+    component: <SkyBMSAI />,
     noCollapse: true,
-  }
+  },
+  // {
+  //   type: "collapse",
+  //   name: "SkyBMS AI",
+  //   key: "SkyBMS AI",
+  //   route: "/signin",
+  //   icon: <Office size="12px" />,
+  //   component: <SignIn />,
+  //   noCollapse: true,
+  // }
 ];
 
 export default routes;

@@ -1,17 +1,7 @@
-/**
-=========================================================
-* Soft UI Dashboard React - v4.0.1
-=========================================================
+// created by Sundeep Dayalan at 2024/04/25 21:41.
+// Website:  www.sundeepdayalan.in
+// Email: contact@sundeepdayalan.in
 
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 
 import { useState, useEffect, useMemo } from "react";
 
@@ -22,14 +12,11 @@ import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Icon from "@mui/material/Icon";
-
-// Soft UI Dashboard React components
+ 
 import SoftBox from "components/SoftBox";
-
-// Soft UI Dashboard React examples
+ 
 import Sidenav from "examples/Sidenav";
-
-// Soft UI Dashboard React themes
+ 
 import theme from "assets/theme";
 import themeRTL from "assets/theme/theme-rtl";
 
@@ -37,11 +24,9 @@ import themeRTL from "assets/theme/theme-rtl";
 import rtlPlugin from "stylis-plugin-rtl";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
-
-// Soft UI Dashboard React routes
+ 
 import routes from "routes";
-
-// Soft UI Dashboard React contexts
+ 
 import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "context";
 
 // Images
@@ -164,7 +149,7 @@ export default function App() {
           <Sidenav
             color={sidenavColor}
             brand={brand}
-            brandName="Soft UI Dashboard"
+            brandName="Sky BMS"
             routes={routes}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}

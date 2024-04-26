@@ -8,7 +8,7 @@ import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
 
-// Soft UI Dashboard React components
+
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 

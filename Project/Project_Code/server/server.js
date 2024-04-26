@@ -25,7 +25,7 @@ wss.on('connection', function connection(ws) {
   console.log('Websocket Client connected');
 
   // Handle messages from WebSocket clients
-  ws.on('message', function incoming(message) {
+  ws.on('message', async function incoming(message) {
     try {
       const jsonData = JSON.parse(message);
       // console.log('Received JSON:', jsonData);
@@ -35,7 +35,7 @@ wss.on('connection', function connection(ws) {
         data = {
           query: jsonData.query
         };
-        answer = getChatResponse(data);
+        answer = await getChatResponse(data);
         console.log('Answer:', answer);
         // Handle the JSON data as needed
       const messageObject = { 

@@ -48,6 +48,7 @@ function Dashboard() {
   const [lastUpdatedArduino, setLastUpdatedArduino] = useState(null);
   const [lastUpdatedSOC, setLastUpdatedSOC] = useState(null);
   const [aiResponse, setAiResponse] = useState(null);
+  
 
   useEffect(() => {
     console.log("Updated socChartData:", JSON.stringify(socChartData));

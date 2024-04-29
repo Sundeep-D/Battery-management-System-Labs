@@ -41,19 +41,20 @@ initializeLedMatrix();
 
 void loop() {
  
+ sendDataToServer();
+ readDataFromServer();
     displayInfoScreen();
     readChargingState();
     checkWifiConnection();
     
   readTemperature();
-  initializeFuelGauge();
+  // initializeFuelGauge();   //need for future use
   readFuelGaugeData();
-  // testdrawcircle();
   
 
-  printLog();
+  // printLog();
   
 
 
-  // delay(500); // Adjust delay as needed
+  delay(500);
 }

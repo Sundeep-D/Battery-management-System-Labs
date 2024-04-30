@@ -76,9 +76,9 @@ function writePast1hrData(documents){
       console.log("Latest 50 records within 1-hour timeframe written to data.txt");
 }
 
-function updateTemperature(temperature) {
-    console.log("Updating temperature"+temperature);
-    alert = temperature;
+function updateTemperature(temp) {
+    console.log("Updating temperature"+temp);
+    temperature = temp;
 }
 
 function writeAlerts(data){

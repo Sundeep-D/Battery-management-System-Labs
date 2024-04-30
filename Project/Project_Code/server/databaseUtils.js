@@ -196,7 +196,7 @@ function feedDataIntoJson(documents, pickedDocuments) {
   return jsonResult;
 }
 
-async function findMinMaxTemperature(documents,jsonResult) {
+async function findMinMaxTemperature(documents, jsonResult) {
   if (documents.length <= 2) {
     console.log("There are not enough documents to find min and max temperature.");
     return null;
@@ -211,7 +211,7 @@ async function findMinMaxTemperature(documents,jsonResult) {
     if (doc.temperature < minTemperature) {
       secondMinTemperature = minTemperature; // Store the previous minimum as second minimum
       minTemperature = doc.temperature;
-    } else if (doc.temperature < secondMinTemperature) {
+    } else if (doc.temperature < secondMinTemperature && doc.temperature !== minTemperature) {
       secondMinTemperature = doc.temperature; // Update second minimum if a smaller value is found
     }
     if (doc.temperature > maxTemperature) {
@@ -219,20 +219,26 @@ async function findMinMaxTemperature(documents,jsonResult) {
     }
   });
 
+  // If both min and second min are zero, find the next lowest non-zero temperature
+  if (minTemperature === 0 && secondMinTemperature === 0) {
+    documents.forEach(doc => {
+      if (doc.temperature !== 0 && doc.temperature < minTemperature) {
+        minTemperature = doc.temperature;
+      }
+    });
+  }
+
   minTemperature = Number.isFinite(minTemperature) ? minTemperature : 0;
   secondMinTemperature = Number.isFinite(secondMinTemperature) ? secondMinTemperature : 0;
   maxTemperature = Number.isFinite(maxTemperature) ? maxTemperature : 0;
-  
-  // jsonResult = {};
-  // jsonResult.min = minTemperature === 0 ? secondMinTemperature : minTemperature;
-  // jsonResult.max = maxTemperature;
 
   jsonResult.temperatureStat = {}
-  jsonResult.temperatureStat.min=minTemperature === 0 ? secondMinTemperature : minTemperature;
-  jsonResult.temperatureStat.max=maxTemperature;
+  jsonResult.temperatureStat.min = minTemperature === 0 ? secondMinTemperature : minTemperature;
+  jsonResult.temperatureStat.max = maxTemperature;
   console.log("Minimum Temperature:", jsonResult.temperatureStat.min);
   console.log("Maximum Temperature:", jsonResult.temperatureStat.max);
 }
+
 
 
 function findVoltageAverage(voltageData) {

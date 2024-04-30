@@ -58,6 +58,12 @@ void readTemperature() {
   } else {
     Serial.println("Error: Could not read temperature data");
   }
+
+  if(temperature>30){
+    circuitShutdown(true);
+  }else{
+    circuitShutdown(false);
+  }
 }
 void initializeFuelGauge() {
   // FuelGauge.begin();

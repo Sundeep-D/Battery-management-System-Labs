@@ -133,7 +133,7 @@ function Dashboard() {
             delete jsonData.voltageChartData.avg;
           }
 
-          if (jsonData.temperatureStat && jsonData.temperatureStat.min && jsonData.temperatureStat.max) {
+          if (jsonData.temperatureStat ) {
             setMinTemp(jsonData.temperatureStat.min);
             setMaxTemp(jsonData.temperatureStat.max);
             delete jsonData.temperatureStat;

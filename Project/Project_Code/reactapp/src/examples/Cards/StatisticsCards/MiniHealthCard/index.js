@@ -11,12 +11,12 @@ import Icon from "@mui/material/Icon";
 
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
-function MiniHealthCard({ bgColor, title, count, percentage, icon }) {
+function MiniHealthCard({ bgColor, title, min, max, percentage, icon }) {
     return (
-        <Card style={{ 
-            width: "150px", 
-            height: "150px", 
-            boxShadow: "none", 
+        <Card style={{
+            width: "250px",
+            height: "150px",
+            boxShadow: "none",
             borderRadius: "10px", // Adding rounded corners
             border: "0.5px solid #E6E6E6",
             marginBottom: "20px" // Adding bottom padding
@@ -24,7 +24,7 @@ function MiniHealthCard({ bgColor, title, count, percentage, icon }) {
             <SoftBox bgColor={bgColor} variant="gradient">
                 <SoftBox p={2}>
                     <Grid container alignItems="center" >
-                        <Grid item>
+                        <Grid item xs={12} lg={6}>
                             <SoftBox
                                 variant="gradient"
                                 bgColor={bgColor === "white" ? icon.color : "white"}
@@ -41,34 +41,91 @@ function MiniHealthCard({ bgColor, title, count, percentage, icon }) {
                                     {icon.component}
                                 </Icon>
                             </SoftBox>
-                        </Grid>
-                        <Grid item xs={8}>
-                            <SoftBox mt={4} ml={0.5} lineHeight={1}>
-                                <SoftTypography
-                                    variant="button"
-                                    color={bgColor === "white" ? "text" : "white"}
-                                    opacity={bgColor === "white" ? 1 : 0.7}
-                                    textTransform="capitalize"
-                                    fontWeight={title.fontWeight}
-                                >
-                                    {title.text}
-                                </SoftTypography>
-                                <SoftTypography
-                                    variant="h5"
-                                    fontWeight="bold"
-                                    color={bgColor === "white" ? "dark" : "white"}
-                                >
-                                    {count}{" "}
-                                    <SoftTypography variant="button" color={percentage.color} fontWeight="bold">
-                                        {percentage.text}
+                            <Grid  >
+                                <SoftBox mt={4} ml={0.5} lineHeight={1}>
+                                    <SoftTypography
+                                        variant="button"
+                                        color={bgColor === "white" ? "text" : "white"}
+                                        opacity={bgColor === "white" ? 1 : 0.7}
+                                        textTransform="capitalize"
+                                        fontWeight={title.fontWeight}
+                                    >
+                                        Min
                                     </SoftTypography>
-                                </SoftTypography>
-                            </SoftBox>
+                                    <SoftTypography
+                                        variant="h5"
+                                        fontWeight="bold"
+                                        color={bgColor === "white" ? "dark" : "white"}
+                                    >
+                                        {min}{" "}
+                                        <SoftTypography variant="button" color={percentage.color} fontWeight="bold">
+                                            {percentage.text}
+                                        </SoftTypography>
+                                    </SoftTypography>
+                                </SoftBox>
+
+
+
+
+
+                            </Grid>
                         </Grid>
+
+                        <Grid item xs={12} lg={6} sx={{ position: "relative", ml: "auto" }}>
+                            <SoftTypography
+                                variant="button"
+                                color={bgColor === "white" ? "text" : "white"}
+                                opacity={bgColor === "white" ? 1 : 0.7}
+                                textTransform="capitalize"
+                                fontWeight={title.fontWeight}
+                                fontSize={16}
+                            >
+                                Temperature
+                                <p style={{ color:"#b8bfbf", fontSize: "12px" ,fontWeight: "normal"}}>past 1hr</p> 
+                            </SoftTypography>
+                            <Grid  >
+                                <SoftBox mt={4.5} ml={0.5} lineHeight={1}>
+                                    <SoftTypography
+                                        variant="button"
+                                        color={bgColor === "white" ? "text" : "white"}
+                                        opacity={bgColor === "white" ? 1 : 0.7}
+                                        textTransform="capitalize"
+                                        fontWeight={title.fontWeight}
+                                    >
+                                        Max
+                                    </SoftTypography>
+                                    <SoftTypography
+                                        variant="h5"
+                                        fontWeight="bold"
+                                        color={bgColor === "white" ? "dark" : "white"}
+                                    >
+                                        {max}{" "}
+                                        <SoftTypography variant="button" color={percentage.color} fontWeight="bold">
+                                            {percentage.text}
+                                        </SoftTypography>
+                                    </SoftTypography>
+                                </SoftBox>
+
+
+
+
+
+                            </Grid>
+
+
+
+
+                        </Grid>
+
+
+
+
                     </Grid>
                 </SoftBox>
             </SoftBox>
         </Card>
+
+        
     );
 }
 

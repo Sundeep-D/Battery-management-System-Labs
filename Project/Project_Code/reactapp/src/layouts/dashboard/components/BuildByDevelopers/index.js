@@ -17,21 +17,21 @@ import batteryFull from "assets/images/illustrations/battery.png";
 import batteryCharge from "assets/images/illustrations/batteryCharge.png";
 import MiniHealthCard from "examples/Cards/StatisticsCards/MiniHealthCard";
 
-  
+
 import React, { useState, useEffect } from 'react';
 
-function BuildByDevelopers({ soc, isCharging , lastUpdated,minTemp,maxTemp}) {
+function BuildByDevelopers({ soc, isCharging, lastUpdated, minTemp, maxTemp }) {
 
 
 
 
-const [socLoaded, setSocLoaded] = useState(false);
-// Update the SOC loaded state when the SOC value is received
-useEffect(() => {
-  if (soc !== null) {
-    setSocLoaded(true);
-  }
-}, [soc]);
+  const [socLoaded, setSocLoaded] = useState(false);
+  // Update the SOC loaded state when the SOC value is received
+  useEffect(() => {
+    if (soc !== null) {
+      setSocLoaded(true);
+    }
+  }, [soc]);
 
 
   return (
@@ -50,15 +50,16 @@ useEffect(() => {
               </SoftTypography>
               <SoftBox mb={6}>
                 <SoftTypography variant="body2" color="text">
-                  From colors, cards, typography to complex elements, you will find the full
-                  documentation.
+                  No alerts.
                 </SoftTypography>
               </SoftBox>
               <MiniHealthCard
+
                 title={{ text: "Voltage" }}
-                count={minTemp}
-                percentage={{ color: "success", text: "V" }}
-                icon={{ color: "info", component: "bolt" }}
+                min={minTemp}
+                max={maxTemp}
+                percentage={{ color: "success", text: "C" }}
+                icon={{ color: "info", component: "thermostat" }}
               />
               <SoftTypography
                 component="a"
@@ -67,11 +68,11 @@ useEffect(() => {
                   mr: "auto",
                   display: "inline-flex",
                   alignItems: "center",
-                  fontSize: "0.8rem" ,
+                  fontSize: "0.8rem",
                   color: "#b8bfbf"
                 }}
               >
-                Last updated: {lastUpdated!=null ? lastUpdated : "--"}
+                Last updated: {lastUpdated != null ? lastUpdated : "--"}
               </SoftTypography>
             </SoftBox>
           </Grid>
@@ -105,7 +106,7 @@ useEffect(() => {
               {/* Text to display centered on top */}
               {!isCharging && socLoaded && (
                 <SoftTypography
-                variant="h2"
+                  variant="h2"
                   style={{
                     position: "absolute",
                     zIndex: 3,

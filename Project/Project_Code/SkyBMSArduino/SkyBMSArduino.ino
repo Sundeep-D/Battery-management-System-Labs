@@ -34,6 +34,8 @@ initializeLedMatrix();
     delay(2000);
     clearDisplay();
     circuitShutdown(false);
+    // delay(5000);
+    // circuitShutdown(true);
     // displayLogo();
 }
     

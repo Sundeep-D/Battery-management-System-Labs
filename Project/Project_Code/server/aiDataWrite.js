@@ -1,5 +1,6 @@
 const fs = require('fs');
 
+let temperature = 10;
 
 function writeHeaderData(){
     // Clear contents of data.txt
@@ -75,8 +76,20 @@ function writePast1hrData(documents){
       console.log("Latest 50 records within 1-hour timeframe written to data.txt");
 }
 
-function writeAlerts(data){
-    fs.appendFileSync('data.txt', `\n\nALERTS:
-    \nNo Alerts found in the battery\n\n`);
+function updateTemperature(temperature) {
+    console.log("Updating");
+    alert = temperature;
 }
-module.exports = { writePast1hrData,writeHeaderData,writeData };
+
+function writeAlerts(data){
+    if(temperature>30){
+        fs.appendFileSync('data.txt', `\n\nHIGH ALERT:
+        Battery temperature is more than 30 deg C . Current temperature is ${temperature}. All the operations in the battery is suspended. Waiting for battery to cool down to resume all the operations normaally
+        \n\n`);
+    }else{
+        fs.appendFileSync('data.txt', `\n\nALERTS:
+        \nNo Alerts found in the battery\n\n`);
+    }
+    
+}
+module.exports = { writePast1hrData,writeHeaderData,writeData,updateTemperature };

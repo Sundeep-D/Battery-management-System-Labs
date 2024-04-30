@@ -9,6 +9,7 @@ require('dotenv').config();
 const axios = require('axios');
 const websocketPort = process.env.WEBSOCKET_SERVER_PORT;
 const tcpPort = process.env.TCP_SERVER_PORT;
+const writeData = require('./aiDataWrite');
 // data = {
 //   query: 'This is the data collected from battery discharge. It says how much voltage and SOc charges over the time. Now try to answer me. Based on the time and Soc tell me in how many minutes the Soc will be 100% based on prediction?'
 // };
@@ -76,15 +77,20 @@ const server = net.createServer({ host: '0.0.0.0' },socket => {
     if (jsonData) {
       // console.log('UNOR4:', jsonData);
       console.log('Arduino Data received!!!!!:');
+      
       // Send Arduino data to WebSocket clients
       wss.clients.forEach(client => {
         if (client.readyState === WebSocket.OPEN) {
           jsonData.type = "arduino_data";
+          // writeData.updateAlert(20)
           client.send(JSON.stringify(jsonData));
         }
       });
+
+
       // Insert data into the database
       insertData(jsonData).catch(console.error);
+      writeData.updateTemperature(20)
     }
 
     // Send data to WebSocket clients
@@ -147,6 +153,7 @@ async function fetchSocDataAndProcess() {
 // Function to send processed data to UI
 function sendToUI(processedData, type) {
   if (processedData) {
+    
     processedData.type = type;
     // console.log(JSON.stringify(processedData));
     console.log("Chart Data sent to UI");
@@ -166,7 +173,7 @@ async function clearOldDocuments() {
 // Set intervals for functions to run
 setInterval(fetchSocDataAndProcess, 5000);
 // setInterval(clearOldDocuments, 5000);
-setInterval(getLatestRecordsWithinHour, 10000);
+setInterval(getLatestRecordsWithinHour, 5000);
 
 
 async function getChatResponse(data) {

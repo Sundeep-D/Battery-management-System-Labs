@@ -90,7 +90,7 @@ const server = net.createServer({ host: '0.0.0.0' },socket => {
 
       // Insert data into the database
       insertData(jsonData).catch(console.error);
-      writeData.updateTemperature(20)
+      writeData.updateTemperature(jsonData.temperature)
     }
 
     // Send data to WebSocket clients

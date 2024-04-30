@@ -77,7 +77,7 @@ function writePast1hrData(documents){
 }
 
 function updateTemperature(temperature) {
-    console.log("Updating");
+    console.log("Updating temperature"+temperature);
     alert = temperature;
 }
 

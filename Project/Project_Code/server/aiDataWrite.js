@@ -16,11 +16,20 @@ function writeHeaderData(){
     Discharge temperature: ~20 ~+ 60C\n\n
 
     Name: SkyBMS AI
+    If someone ask whats your name tell them "SkyBMS AI"
     Description: I am a SkyBMS AI. I will provide usefull insigths about the battery and i have limited knowledge that are past 30 min only.
     If you ask more insights more than 30 min ago, I coulnt able to provide you information on that sorry\n\n
 
     
     `);
+    
+}
+
+
+function writeData(rawData){
+    writeHeaderData();
+    writeAlerts(rawData);
+    writePast1hrData(rawData);
     
 }
 function writePast1hrData(documents){
@@ -32,7 +41,7 @@ function writePast1hrData(documents){
       
   
       
-      writeHeaderData();
+      
   
       // Write header to data.txt
       fs.appendFileSync('data.txt', "Timestamp\t\t\t\tCurrent Capacity\t\t\tCharging Status\t\ttemperature\t\t\tsoc\t\t\tvoltage\n");
@@ -66,4 +75,8 @@ function writePast1hrData(documents){
       console.log("Latest 50 records within 1-hour timeframe written to data.txt");
 }
 
-module.exports = { writePast1hrData,writeHeaderData };
+function writeAlerts(data){
+    fs.appendFileSync('data.txt', `\n\nALERTS:
+    \nNo Alerts found in the battery\n\n`);
+}
+module.exports = { writePast1hrData,writeHeaderData,writeData };

@@ -166,7 +166,7 @@ async function clearOldDocuments() {
 // Set intervals for functions to run
 setInterval(fetchSocDataAndProcess, 5000);
 // setInterval(clearOldDocuments, 5000);
-setInterval(getLatestRecordsWithinHour, 5000);
+setInterval(getLatestRecordsWithinHour, 10000);
 
 
 async function getChatResponse(data) {

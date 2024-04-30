@@ -1,5 +1,6 @@
 const { connect, close } = require('./database');
 const constants = require('./constants');
+const writeData = require('./aiDataWrite');
 const fs = require('fs');
 let db = null;
 
@@ -311,44 +312,9 @@ async function getLatestRecordsWithinHour() {
   try {
     const documents = await collection.find(query).sort({ timestamp: -1 }).limit(500).toArray();
 
-    if (documents.length === 0) {
-      console.log("No documents found in the past 1 hour");
-      return;
-    }
+    writeData.writePast1hrData(documents);
 
-    // Clear contents of data.txt
-    fs.writeFileSync('data.txt', '');
-
-    // Write header to data.txt
-    fs.appendFileSync('data.txt', "Timestamp\t\t\t\tCurrent Capacity\t\t\tCharging Status\t\ttemperature\t\t\tsoc\t\t\tvoltage\n");
-
-    // Write each document to data.txt
-        // Write each document to data.txt
-        documents.forEach((doc,index) => {
-          let { timestamp_human, current_capacity, is_charging, temperature, soc, voltage } = doc;
-          if(index==0){
-            timestamp_human="Now"
-          }
-
-          if(is_charging){
-            is_charging="Charging"
-          }else{
-            is_charging="Not Charging"
-          }
-
-          let line;
-          if(index==0){
-            line = `${timestamp_human}\t\t\t\t\t\t\t${current_capacity}\t\t\t\t\t\t${is_charging}\t\t${temperature}\t\t\t\t${soc}\t\t${voltage}\n`;
-          
-          }else{
-            line = `${timestamp_human}\t\t${current_capacity}\t\t\t\t\t\t${is_charging}\t\t${temperature}\t\t\t\t${soc}\t\t${voltage}\n`;
-          
-          }
-          fs.appendFileSync('data.txt', line);
-        });
     
-
-    console.log("Latest 50 records within 1-hour timeframe written to data.txt");
 
   } catch (error) {
     console.log("Error occurred while fetching documents:", error);

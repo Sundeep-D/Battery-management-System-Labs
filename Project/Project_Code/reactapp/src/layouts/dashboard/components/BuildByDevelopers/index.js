@@ -20,7 +20,7 @@ import MiniHealthCard from "examples/Cards/StatisticsCards/MiniHealthCard";
 
 import React, { useState, useEffect } from 'react';
 
-function BuildByDevelopers({ soc, isCharging, lastUpdated, minTemp, maxTemp }) {
+function BuildByDevelopers({ soc, isCharging, lastUpdated, minTemp, maxTemp ,shouldBlink}) {
 
 
 
@@ -49,8 +49,9 @@ function BuildByDevelopers({ soc, isCharging, lastUpdated, minTemp, maxTemp }) {
                 Battery Status
               </SoftTypography>
               <SoftBox mb={6}>
-                <SoftTypography variant="body2" color="text">
-                  No alerts.
+                <SoftTypography variant="body2" color="text" style={{
+                width: "450px"}}>
+                  {shouldBlink ? "ALERT! High battery temperature detected." : "No alerts. Optimal performance"}
                 </SoftTypography>
               </SoftBox>
               <MiniHealthCard
@@ -58,6 +59,7 @@ function BuildByDevelopers({ soc, isCharging, lastUpdated, minTemp, maxTemp }) {
                 title={{ text: "Voltage" }}
                 min={minTemp}
                 max={maxTemp}
+                shouldBlink={shouldBlink}
                 percentage={{ color: "success", text: "C" }}
                 icon={{ color: "info", component: "thermostat" }}
               />

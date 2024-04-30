@@ -50,6 +50,7 @@ function Dashboard() {
   const [aiResponse, setAiResponse] = useState(null);
   const [minTemp, setMinTemp] = useState(0);
   const [maxTemp, setMaxTemp] = useState(0);
+  const [temperatureAlert, setTemperatureAlert] =useState(false);
   
 
   useEffect(() => {
@@ -102,10 +103,16 @@ function Dashboard() {
         const jsonData = JSON.parse(event.data);
 
         if (jsonData && jsonData.type == "arduino_data") {
-          // console.log(`Received ${jsonData.type} from server:`, jsonData);
+          console.log(`Received ${jsonData.type} from server:`, jsonData.temperature);
+          if(jsonData &&  jsonData.temperature && jsonData.temperature>30){
+            setTemperatureAlert(true);
+          }else{
+            setTemperatureAlert(false);
+          }
           setDashBoardData(jsonData);
           setArduinoConnecting(false);
           setLastUpdatedArduino(new Date()); // Update timestamp for arduino_data
+          
         } else if (jsonData && jsonData.type == "soc_chart_data") {
 
           // Trigger animation here
@@ -250,7 +257,8 @@ function Dashboard() {
               soc={dashboardData ? dashboardData.soc : null} 
               isCharging={dashboardData ? dashboardData.is_charging : null} 
               minTemp={minTemp}
-              maxTemp={maxTemp}/>
+              maxTemp={maxTemp}
+              shouldBlink={temperatureAlert}/>
             </Grid>
             <Grid item xs={12} lg={5}>
               <WorkWithTheRockets aiResponse={aiResponse} />

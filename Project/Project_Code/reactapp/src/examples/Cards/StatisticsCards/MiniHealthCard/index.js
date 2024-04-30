@@ -1,26 +1,39 @@
+// created by Sundeep Dayalan at 2024/04/30 08:28.
+// Website:  www.sundeepdayalan.in
+// Email: contact@sundeepdayalan.in
 
 
-// prop-types is a library for typechecking of props
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-
-// @mui material components
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
-
-
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
-function MiniHealthCard({ bgColor, title, min, max, percentage, icon }) {
+import '../../../../layouts/tables/table.css';
+
+function MiniHealthCard({ bgColor, title, min, max, percentage, icon, shouldBlink }) {
+    const [isBlinking, setIsBlinking] = useState(false);
+
+    // Toggle blinking state based on the prop 'shouldBlink'
+    React.useEffect(() => {
+        setIsBlinking(shouldBlink);
+    }, [shouldBlink]);
+
     return (
-        <Card style={{
-            width: "250px",
-            height: "150px",
-            boxShadow: "none",
-            borderRadius: "10px", // Adding rounded corners
-            border: "0.5px solid #E6E6E6",
-            marginBottom: "20px" // Adding bottom padding
-        }}>
+        <Card
+            className={`mini-health-card ${isBlinking ? "blink" : ""}`} // Apply CSS class for blinking effect
+            style={{
+                width: "250px",
+                height: "150px",
+                boxShadow: "none",
+                borderRadius: "10px",
+                 border: isBlinking ? "3px solid #E6E6E6" : "0.5px solid #E6E6E6",
+                // border: "0.5px solid #E6E6E6",
+                marginBottom: "20px",
+                borderColor: shouldBlink ? "red" : "#E6E6E6", // Change border color to red if shouldBlink is true
+            }}
+        >
             <SoftBox bgColor={bgColor} variant="gradient">
                 <SoftBox p={2}>
                     <Grid container alignItems="center" >

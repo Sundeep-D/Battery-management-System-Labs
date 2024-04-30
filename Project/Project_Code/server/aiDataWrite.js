@@ -42,7 +42,8 @@ function writePast1hrData(documents){
       
   
       
-      
+      fs.appendFileSync('data.txt', "\n\nThe below data is used to provide insights about when the battery is lastly charged, currently charging or not, current soc, current temperature, whats the rate of change of temperature\n\n");
+  
   
       // Write header to data.txt
       fs.appendFileSync('data.txt', "Timestamp\t\t\t\tCurrent Capacity\t\t\tCharging Status\t\ttemperature\t\t\tsoc\t\t\tvoltage\n");

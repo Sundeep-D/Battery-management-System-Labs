@@ -2,12 +2,25 @@ const fs = require('fs');
 
 
 function writeHeaderData(){
+    // Clear contents of data.txt
+    fs.writeFileSync('data.txt', '');
+
     fs.writeFileSync('data.txt', `This is SkyBMS. SkyBMS is a product that elevates the monitoring and gives valuable insights about the battery operations using the power of the Cloud environment.
     This is a class project and not for commercial purposes. Any insights provided by this tool or by the SkyBMS AI may sometimes be wrong or need revision.\n\n
     \n\n
     This project developed by Sundeep Dayalan. You may contact him using contact@sundeepdayalan.in
     \n\n
-    Not for commercial use`);
+    Not for commercial use\n\n
+    Battery used: EEMB 3.7V Lithium Polymer Battery Total capacity:250mAh Nominal voltage:3.7v Weight:5g 
+    Charge temperature: 0 ~ 30 C 
+    Discharge temperature: ~20 ~+ 60C\n\n
+
+    Name: SkyBMS AI
+    Description: I am a SkyBMS AI. I will provide usefull insigths about the battery and i have limited knowledge that are past 30 min only.
+    If you ask more insights more than 30 min ago, I coulnt able to provide you information on that sorry\n\n
+
+    
+    `);
     
 }
 function writePast1hrData(documents){
@@ -18,8 +31,7 @@ function writePast1hrData(documents){
 
       
   
-      // Clear contents of data.txt
-      fs.writeFileSync('data.txt', '');
+      
       writeHeaderData();
   
       // Write header to data.txt
@@ -41,10 +53,10 @@ function writePast1hrData(documents){
   
             let line;
             if(index==0){
-              line = `${timestamp_human}\t\t\t\t\t\t\t${current_capacity}\t\t\t\t\t\t${is_charging}\t\t${temperature}\t\t\t\t${soc}\t\t${voltage}\n`;
+              line = `${timestamp_human}\t\t\t\t\t\t\t${current_capacity}\t\t\t\t\t\t${is_charging}\t\t\t\t${temperature}\t\t\t\t${Math.floor(soc)}\t\t\t${voltage.toFixed(2)}\n`;
             
             }else{
-              line = `${timestamp_human}\t\t${current_capacity}\t\t\t\t\t\t${is_charging}\t\t${temperature}\t\t\t\t${soc}\t\t${voltage}\n`;
+              line = `${timestamp_human}\t\t${current_capacity}\t\t\t\t\t\t${is_charging}\t\t\t\t${temperature}\t\t\t\t${Math.floor(soc)}\t\t\t${voltage.toFixed(2)}\n`;
             
             }
             fs.appendFileSync('data.txt', line);
@@ -54,4 +66,4 @@ function writePast1hrData(documents){
       console.log("Latest 50 records within 1-hour timeframe written to data.txt");
 }
 
-module.exports = { writePast1hrData };
+module.exports = { writePast1hrData,writeHeaderData };

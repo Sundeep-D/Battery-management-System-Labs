@@ -304,7 +304,9 @@ async function getLatestRecordsWithinHour() {
   if (!db) {
     await connectToDb();
   }
-
+  
+  writeData.writeHeaderData();
+  
   const collection = db.collection(constants.collection_arduino_raw_data);
   const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
   const query = { timestamp: { $gt: oneHourAgo } };

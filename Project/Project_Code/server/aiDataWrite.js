@@ -42,7 +42,8 @@ function writePast1hrData(documents){
       
   
       
-      fs.appendFileSync('data.txt', "\n\nThe below data is used to provide insights about when the battery is lastly charged, currently charging or not, current soc, current temperature, whats the rate of change of temperature\n\n");
+      fs.appendFileSync('data.txt', `\n\nThe below data is used to provide insights about when the battery is lastly charged, currently charging or not, current soc, current temperature, whats the rate of change of temperature
+      "Charging" means the battery is conencted to power source to chrage or charger is connected and"Not charging" its not connected to power source. If user ask when the charger us lastly connected pick a recent row that is in Charging status and say it correspodning time\n\n`);
   
   
       // Write header to data.txt

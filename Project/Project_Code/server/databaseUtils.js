@@ -31,7 +31,7 @@ async function getSocVoltageDataForChart() {
   const collection = db.collection(constants.collection_arduino_raw_data);
   const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
   const query = { timestamp: { $gt: oneHourAgo } };
-  const projection = { _id: 0, voltage: 1, soc: 1, timestamp: 1 };
+  const projection = { _id: 0, voltage: 1, soc: 1, timestamp: 1,temperature:1 };
 
   try {
     const documents = await collection.find(query, { projection }).sort({ timestamp: 1 }).toArray();
@@ -74,6 +74,8 @@ async function getSocVoltageDataForChart() {
       return jsonObject;
     }
 
+    console.log(`${documents.length} records found in 1hr`);
+
     // Initialize an object to store documents in 3-minute intervals
     const segregatedData = {};
 
@@ -106,7 +108,7 @@ async function getSocVoltageDataForChart() {
       }
     }
 
-    return feedDataIntoJson(pickedDocuments);
+    return feedDataIntoJson(documents,pickedDocuments);
     // Now, pickedDocuments contains one document from each 3-minute interval
     // console.log("One document picked from each 3-minute interval:", JSON.stringify(feedDataIntoJson(pickedDocuments)));
 
@@ -119,7 +121,7 @@ async function getSocVoltageDataForChart() {
 }
 
 
-function feedDataIntoJson(pickedDocuments) {
+function feedDataIntoJson(documents, pickedDocuments) {
   const labels = new Array(20).fill(0);
   const socData = new Array(20).fill(0);
   const voltageData = new Array(20).fill(0);
@@ -190,8 +192,45 @@ function feedDataIntoJson(pickedDocuments) {
   jsonResult = {};
   jsonResult.socChartData = socJsonData
   jsonResult.voltageChartData = voltageJsonData
+  jsonResult.temperatureStat = findMinMaxTemperature(documents)
   return jsonResult;
 }
+
+async function findMinMaxTemperature(documents) {
+  if (documents.length <= 2) {
+    console.log("There are not enough documents to find min and max temperature.");
+    return null;
+  }
+
+  let minTemperature = Infinity;
+  let secondMinTemperature = Infinity;
+  let maxTemperature = -Infinity;
+
+  // Iterate over each document to find min and max temperature
+  documents.forEach(doc => {
+    if (doc.temperature < minTemperature) {
+      secondMinTemperature = minTemperature; // Store the previous minimum as second minimum
+      minTemperature = doc.temperature;
+    } else if (doc.temperature < secondMinTemperature) {
+      secondMinTemperature = doc.temperature; // Update second minimum if a smaller value is found
+    }
+    if (doc.temperature > maxTemperature) {
+      maxTemperature = doc.temperature;
+    }
+  });
+
+  minTemperature = Number.isFinite(minTemperature) ? minTemperature : 0;
+  secondMinTemperature = Number.isFinite(secondMinTemperature) ? secondMinTemperature : 0;
+  maxTemperature = Number.isFinite(maxTemperature) ? maxTemperature : 0;
+  
+  jsonResult = {};
+  jsonResult.min = minTemperature === 0 ? secondMinTemperature : minTemperature;
+  jsonResult.max = maxTemperature;
+  console.log("Minimum Temperature:", jsonResult.min);
+  console.log("Maximum Temperature:", jsonResult.max);
+  return jsonResult;
+}
+
 
 function findVoltageAverage(voltageData) {
   // Filter out zeros from voltageData

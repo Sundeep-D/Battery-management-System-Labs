@@ -48,6 +48,8 @@ function Dashboard() {
   const [lastUpdatedArduino, setLastUpdatedArduino] = useState(null);
   const [lastUpdatedSOC, setLastUpdatedSOC] = useState(null);
   const [aiResponse, setAiResponse] = useState(null);
+  const [minTemp, setMinTemp] = useState(0);
+  const [maxTemp, setMaxTemp] = useState(0);
   
 
   useEffect(() => {
@@ -129,6 +131,12 @@ function Dashboard() {
           if (jsonData.voltageChartData && jsonData.voltageChartData.avg) {
             setVoltageChartAvg(jsonData.voltageChartData.avg);
             delete jsonData.voltageChartData.avg;
+          }
+
+          if (jsonData.temperatureStat && jsonData.temperatureStat.min && jsonData.temperatureStat.max) {
+            setMinTemp(jsonData.temperatureStat.min);
+            setMaxTemp(jsonData.temperatureStat.max);
+            delete jsonData.temperatureStat;
           }
 
           delete jsonData.type;
@@ -237,7 +245,12 @@ function Dashboard() {
         <SoftBox mb={3}>
           <Grid container spacing={3}>
             <Grid item xs={12} lg={7}>
-              <BuildByDevelopers lastUpdated={formatTimeDifference(lastUpdatedArduino)} soc={dashboardData ? dashboardData.soc : null} isCharging={dashboardData ? dashboardData.is_charging : null} />
+              <BuildByDevelopers 
+              lastUpdated={formatTimeDifference(lastUpdatedArduino)} 
+              soc={dashboardData ? dashboardData.soc : null} 
+              isCharging={dashboardData ? dashboardData.is_charging : null} 
+              minTemp={minTemp}
+              maxTemp={maxTemp}/>
             </Grid>
             <Grid item xs={12} lg={5}>
               <WorkWithTheRockets aiResponse={aiResponse} />

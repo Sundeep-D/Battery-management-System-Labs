@@ -20,7 +20,7 @@ import MiniHealthCard from "examples/Cards/StatisticsCards/MiniHealthCard";
   
 import React, { useState, useEffect } from 'react';
 
-function BuildByDevelopers({ soc, isCharging , lastUpdated}) {
+function BuildByDevelopers({ soc, isCharging , lastUpdated,minTemp,maxTemp}) {
 
 
 
@@ -56,7 +56,7 @@ useEffect(() => {
               </SoftBox>
               <MiniHealthCard
                 title={{ text: "Voltage" }}
-                count={"--"}
+                count={minTemp}
                 percentage={{ color: "success", text: "V" }}
                 icon={{ color: "info", component: "bolt" }}
               />

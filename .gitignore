@@ -8,3 +8,4 @@ Project/Project_Code/server/.env
 # Ignore .pem files and .env files
 *.pem
 .env
+*.txt

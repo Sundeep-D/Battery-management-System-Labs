@@ -192,11 +192,11 @@ function feedDataIntoJson(documents, pickedDocuments) {
   jsonResult = {};
   jsonResult.socChartData = socJsonData
   jsonResult.voltageChartData = voltageJsonData
-  jsonResult.temperatureStat = findMinMaxTemperature(documents)
+   findMinMaxTemperature(documents,jsonResult)
   return jsonResult;
 }
 
-async function findMinMaxTemperature(documents) {
+async function findMinMaxTemperature(documents,jsonResult) {
   if (documents.length <= 2) {
     console.log("There are not enough documents to find min and max temperature.");
     return null;
@@ -223,12 +223,15 @@ async function findMinMaxTemperature(documents) {
   secondMinTemperature = Number.isFinite(secondMinTemperature) ? secondMinTemperature : 0;
   maxTemperature = Number.isFinite(maxTemperature) ? maxTemperature : 0;
   
-  jsonResult = {};
-  jsonResult.min = minTemperature === 0 ? secondMinTemperature : minTemperature;
-  jsonResult.max = maxTemperature;
-  console.log("Minimum Temperature:", jsonResult.min);
-  console.log("Maximum Temperature:", jsonResult.max);
-  return jsonResult;
+  // jsonResult = {};
+  // jsonResult.min = minTemperature === 0 ? secondMinTemperature : minTemperature;
+  // jsonResult.max = maxTemperature;
+
+  jsonResult.temperatureStat = {}
+  jsonResult.temperatureStat.min=minTemperature === 0 ? secondMinTemperature : minTemperature;
+  jsonResult.temperatureStat.max=maxTemperature;
+  console.log("Minimum Temperature:", jsonResult.temperatureStat.min);
+  console.log("Maximum Temperature:", jsonResult.temperatureStat.max);
 }
 
 

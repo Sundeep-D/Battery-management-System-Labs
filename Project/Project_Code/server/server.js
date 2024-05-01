@@ -83,7 +83,7 @@ wss.on('connection', function connection(ws) {
       }
       else if(jsonData && jsonData.type && jsonData.type === "dash"){
         console.log("Dashboard connected %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-        isChatBotConnected = false;
+        // isChatBotConnected = false;
       }
 
 

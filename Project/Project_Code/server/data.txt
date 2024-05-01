@@ -44,7 +44,9 @@ The below data is used to provide insights about when the battery is lastly char
       "Charging" means the battery is conencted to power source to chrage or charger is connected and"Not charging" its not connected to power source. If user ask when the charger us lastly connected pick a recent row that is in Charging status and say it correspodning time
 
 Timestamp				Current Capacity			Charging Status		temperature			soc			voltage
-Now							249						Charging				25.5				99			4.19
+Now							249						Charging				25				99			4.19
+5/1/2024, 11:49:01 AM		249						Charging				25.5				99			4.19
+5/1/2024, 11:48:59 AM		249						Charging				25.5				99			4.19
 5/1/2024, 11:48:57 AM		249						Charging				25.5				99			4.19
 5/1/2024, 11:48:55 AM		249						Charging				25.5				99			4.19
 5/1/2024, 11:48:54 AM		249						Charging				25				99			4.19
@@ -542,5 +544,3 @@ Now							249						Charging				25.5				99			4.19
 5/1/2024, 11:34:20 AM		248						Charging				26				99			4.19
 5/1/2024, 11:34:19 AM		248						Charging				26				99			4.19
 5/1/2024, 11:34:17 AM		248						Charging				26				99			4.19
-5/1/2024, 11:34:15 AM		248						Charging				26				99			4.19
-5/1/2024, 11:34:13 AM		248						Charging				26				99			4.19

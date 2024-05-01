@@ -17,6 +17,9 @@ data = {
   query: 'Do you see any alerts based on the battery temperature'
 };
 
+let questionIndex = 0; // Initialize the index to 0
+ questionsArray = ['How are you?', 'What is the weather today?', 'Tell me a joke'];
+
 // Create WebSocket server
 const wss = new WebSocket.Server({ port: websocketPort , host: '0.0.0.0'});
 console.log(`Websocket Server running on ${process.env.MONGODB_HOST}:${websocketPort}`);
@@ -170,10 +173,39 @@ async function clearOldDocuments() {
   await deleteOldDocuments();
 }
 
+async function aiInsights(){
+
+  const question = questionsArray[questionIndex];
+    
+  // Increment the index for the next iteration
+  questionIndex = (questionIndex + 1) % questionsArray.length;
+  console.log(questionsArray[questionIndex]);
+
+  answer = await getChatResponse(question);
+       
+        // Handle the JSON data as needed
+
+        if(answer){
+          console.log('AI Insight Answer:', answer);
+          const messageObject = { 
+            type:"ai_insight",
+          answer: answer  };
+    
+          console.log('ai_insight:', JSON.stringify(messageObject));
+    
+          wss.clients.forEach(client => {
+            if (client.readyState === WebSocket.OPEN) {
+              client.send(JSON.stringify(messageObject));
+            }
+          });
+        }
+      
+}
 // Set intervals for functions to run
 setInterval(fetchSocDataAndProcess, 5000);
 // setInterval(clearOldDocuments, 5000);
 setInterval(getLatestRecordsWithinHour, 5000);
+setInterval(aiInsights, 5000);
 
 
 async function getChatResponse(data) {

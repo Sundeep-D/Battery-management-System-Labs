@@ -116,7 +116,7 @@ function Dashboard() {
         } else if (jsonData && jsonData.type == "soc_chart_data") {
 
           // Trigger animation here
-          setAiResponse("The temperature of the battery is keep on increasing from 10C to 80C - "+Math.floor(Math.random() * (10 - 2) + 2));
+          // setAiResponse("The temperature of the battery is keep on increasing from 10C to 80C - "+Math.floor(Math.random() * (10 - 2) + 2));
           setLastUpdatedSOC(new Date());
 
           if (jsonData.socChartData.labels.length > 0) {
@@ -154,6 +154,10 @@ function Dashboard() {
           console.log(socChartData);
           console.log(jsonData.voltageChartData);
           console.log(jsonData.socChartData.stat);
+        }else if (jsonData && jsonData.type == "ai_insight") {
+
+          // Trigger animation here
+          setAiResponse(jsonData.answer+Math.floor(Math.random() * (10 - 2) + 2));
         }
       };
 

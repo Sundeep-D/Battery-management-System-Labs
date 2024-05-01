@@ -95,9 +95,13 @@ function Dashboard() {
       ws.onopen = () => {
         console.log('WebSocket connected');
 
-        if(ws){
-          const messageObject = { type: "dashboard" };
-          ws.send(JSON.stringify(messageObject));
+        try{
+          if(ws){
+            const messageObject = { type: "dashboard" };
+            ws.send(JSON.stringify(messageObject));
+          }
+        }catch(err){
+
         }
        
 

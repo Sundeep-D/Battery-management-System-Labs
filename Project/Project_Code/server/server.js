@@ -18,7 +18,7 @@ data = {
 };
 
 // Create WebSocket server
-const wss = new WebSocket.Server({ port: websocketPort });
+const wss = new WebSocket.Server({ port: websocketPort , host: '0.0.0.0'});
 console.log(`Websocket Server running on ${process.env.MONGODB_HOST}:${websocketPort}`);
 
 // WebSocket connection handling

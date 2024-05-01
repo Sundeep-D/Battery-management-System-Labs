@@ -88,7 +88,7 @@ function Dashboard() {
     let ws;
 
     const connectWebSocket = () => {
-      ws = new WebSocket('ws://ec2-204-236-220-172.compute-1.amazonaws.com:8001');
+      ws = new WebSocket('wss://ec2-204-236-220-172.compute-1.amazonaws.com:8001');
       // const ws = new WebSocket('ws://localhost:8001');
       // const ws = new WebSocket('wss://echo.websocket.org');
 

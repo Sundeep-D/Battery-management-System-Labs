@@ -155,9 +155,11 @@ function Dashboard() {
           console.log(jsonData.voltageChartData);
           console.log(jsonData.socChartData.stat);
         }else if (jsonData && jsonData.type == "ai_insight") {
+          console.log("jsonData.answer: ",jsonData.answer.answer);
+          let ans = jsonData.answer.answer;
 
           // Trigger animation here
-          setAiResponse(jsonData.answer+Math.floor(Math.random() * (10 - 2) + 2));
+          setAiResponse(ans);
         }
       };
 

@@ -19,12 +19,19 @@ data = {
 
 let questionIndex = 0; // Initialize the index to 0
  questionsArray = [{
-  query: 'How are you'
+  query: 'Is the temperature is increasing or decreasing?'
 }, {
-  query: 'Whats you rname'
+  query: 'Whats the current SoC?'
 }, {
-  query: 'Whats the time'
-}];
+  query: 'Whats the average voltage noted?'
+}, {
+  query: 'Is there any alerts?'
+}, {
+  query: 'Whats the current temperature of the battery?'
+}, {
+  query: 'Whats the battery connected to skyBMS?'
+}
+];
 
 // Create WebSocket server
 const wss = new WebSocket.Server({ port: websocketPort , host: '0.0.0.0'});

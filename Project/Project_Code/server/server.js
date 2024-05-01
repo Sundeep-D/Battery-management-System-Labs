@@ -48,6 +48,7 @@ console.log(`Websocket Server running on ${process.env.MONGODB_HOST}:${websocket
 // WebSocket connection handling
 wss.on('connection', function connection(ws) {
   console.log('Websocket Client connected');
+  isChatBotConnected = false;
 
   // Handle messages from WebSocket clients
   ws.on('message', async function incoming(message) {

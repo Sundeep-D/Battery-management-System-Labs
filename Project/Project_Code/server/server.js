@@ -179,7 +179,7 @@ async function aiInsights(){
     
   // Increment the index for the next iteration
   questionIndex = (questionIndex + 1) % questionsArray.length;
-  console.log(questionsArray[questionIndex]);
+  console.log(question);
 
   answer = await getChatResponse(question);
        
@@ -198,6 +198,8 @@ async function aiInsights(){
               client.send(JSON.stringify(messageObject));
             }
           });
+        }else{
+          console.log("!!! AOI INSIGHT QUERTY FAILLED");
         }
       
 }

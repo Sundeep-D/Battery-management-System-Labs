@@ -131,12 +131,14 @@ function writeAlerts(data){
         fs.appendFileSync('data.txt', `\n\nSOC rate of change:
         Current state: Battery is discharging\n\n
         Battery is discharging at rate of change of ${socRateOfChange}% in ${socRateOfChangeTime} minutes. 
+        Battery is discharging at rate of ${socRateOfChange}% in ${socRateOfChangeTime} minutes. 
         Battery is discharging at speed of ${socRateOfChange}% in ${socRateOfChangeTime} minutes. 
         \n\n`);
     }else if(socRateOfChange>0){
         fs.appendFileSync('data.txt', `\n\nSOC rate of change:
         Current state: Battery is charging\n\n
         Battery is charging at rate of change of ${socRateOfChange}%  in ${socRateOfChangeTime} minutes. 
+        Battery is charging at rate of ${socRateOfChange}%  in ${socRateOfChangeTime} minutes.
         Battery is charging at a speed of ${socRateOfChange}%  in ${socRateOfChangeTime} minutes.
         \n\n`);
     }else{

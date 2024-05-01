@@ -18,7 +18,13 @@ data = {
 };
 
 let questionIndex = 0; // Initialize the index to 0
- questionsArray = ['How are you?', 'What is the weather today?', 'Tell me a joke'];
+ questionsArray = [{
+  query: 'How are you'
+}, {
+  query: 'Whats you rname'
+}, {
+  query: 'Whats the time'
+}];
 
 // Create WebSocket server
 const wss = new WebSocket.Server({ port: websocketPort , host: '0.0.0.0'});

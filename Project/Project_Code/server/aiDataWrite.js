@@ -2,6 +2,8 @@ const fs = require('fs');
 
 let temperature = 10;
 
+let temperatureRateOfChange = 10;
+
 function writeHeaderData(){
     // Clear contents of data.txt
     fs.writeFileSync('data.txt', '');
@@ -83,7 +85,19 @@ function updateTemperature(temp) {
     temperature = temp;
 }
 
+function updateTemperatureRateOfChange(tempRate) {
+    console.log("Updating temperature rate of change"+tempRate);
+    temperatureRateOfChange = tempRate;
+}
+
+
 function writeAlerts(data){
+
+    fs.appendFileSync('data.txt', `\n\nTemperature rate of change:
+    Battery temperature is increasing/decreasing in rate of change of ${temperatureRateOfChange}. 
+    \n\n`);
+
+
     if(temperature>30){
         fs.appendFileSync('data.txt', `\n\nHIGH ALERT:
         Battery temperature is more than 30 deg C . Current temperature is ${temperature}. All the operations in the battery is suspended. Waiting for battery to cool down to resume all the operations normaally
@@ -94,4 +108,4 @@ function writeAlerts(data){
     }
     
 }
-module.exports = { writePast1hrData,writeHeaderData,writeData,updateTemperature };
+module.exports = { writePast1hrData,writeHeaderData,writeData,updateTemperature,updateTemperatureRateOfChange };

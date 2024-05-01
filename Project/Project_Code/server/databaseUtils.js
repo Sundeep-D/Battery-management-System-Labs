@@ -194,7 +194,36 @@ function feedDataIntoJson(documents, pickedDocuments) {
   jsonResult.socChartData = socJsonData
   jsonResult.voltageChartData = voltageJsonData
    findMinMaxTemperature(documents,jsonResult)
+   findTemperatureRateOfChange(documents,jsonResult)
   return jsonResult;
+}
+async function findTemperatureRateOfChange(documents, jsonResult) {
+  const recentTemperatureData = documents.slice(-50).map(doc => doc.temperature);
+  // console.log(recentTemperatureData);
+
+  // Calculate the rate of change
+  const rateOfChange = calculateRateOfChange(recentTemperatureData);
+
+  // Add rate of change to jsonResult
+  jsonResult.temperatureStat.temperatureRateOfChange = Math.round(rateOfChange*100);
+  writeData.updateTemperatureRateOfChange(jsonResult.temperatureStat.temperatureRateOfChange);
+
+  console.log("Temperature Rate of Change:", jsonResult.temperatureStat.temperatureRateOfChange);
+}
+
+function calculateRateOfChange(temperatureData) {
+  // Ensure that there are at least two data points for calculation
+  if (temperatureData.length < 2) {
+    return 0; // If there are less than two data points, rate of change is 0
+  }
+
+  // Calculate the difference between the first and last temperature
+  const temperatureDifference = temperatureData[temperatureData.length - 1] - temperatureData[0];
+  
+  // Calculate the rate of change as the difference divided by the number of data points minus one
+  const rateOfChange = temperatureDifference / (temperatureData.length - 1);
+
+  return rateOfChange;
 }
 
 async function findMinMaxTemperature(documents, jsonResult) {

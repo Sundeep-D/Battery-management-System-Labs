@@ -74,10 +74,18 @@ function writePast1hrData(documents){
   
             let line;
             if(index==0){
-              line = `${timestamp_human}\t\t\t\t\t\t\t${current_capacity}\t\t\t\t\t\t${is_charging}\t\t\t\t${temperature}\t\t\t\t${Math.floor(soc)}\t\t\t${voltage.toFixed(2)}\n`;
+                let v=0;
+                if(voltage){
+                    v=voltage.toFixed(2)
+                }
+              line = `${timestamp_human}\t\t\t\t\t\t\t${current_capacity}\t\t\t\t\t\t${is_charging}\t\t\t\t${temperature}\t\t\t\t${Math.floor(soc)}\t\t\t${v}\n`;
             
             }else{
-              line = `${timestamp_human}\t\t${current_capacity}\t\t\t\t\t\t${is_charging}\t\t\t\t${temperature}\t\t\t\t${Math.floor(soc)}\t\t\t${voltage.toFixed(2)}\n`;
+                let v=0;
+                if(voltage){
+                    v=voltage.toFixed(2)
+                }
+              line = `${timestamp_human}\t\t${current_capacity}\t\t\t\t\t\t${is_charging}\t\t\t\t${temperature}\t\t\t\t${Math.floor(soc)}\t\t\t${v}\n`;
             
             }
 

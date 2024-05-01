@@ -195,6 +195,7 @@ function feedDataIntoJson(documents, pickedDocuments) {
   jsonResult.voltageChartData = voltageJsonData
    findMinMaxTemperature(documents,jsonResult)
    findTemperatureRateOfChange(documents,jsonResult)
+   findSOCRateOfChange(documents,jsonResult)
   return jsonResult;
 }
 async function findTemperatureRateOfChange(documents, jsonResult) {
@@ -209,6 +210,26 @@ async function findTemperatureRateOfChange(documents, jsonResult) {
   writeData.updateTemperatureRateOfChange(jsonResult.temperatureStat.temperatureRateOfChange);
 
   console.log("Temperature Rate of Change:", jsonResult.temperatureStat.temperatureRateOfChange);
+}
+
+async function findSOCRateOfChange(documents, jsonResult) {
+  const recentSOCData = documents.slice(-50).map(doc => doc.soc);
+  const recentTimestamps = documents.slice(-50).map(doc => doc.timestamp);
+
+  // Calculate the rate of change
+  const rateOfChange = calculateRateOfChange(recentSOCData);
+
+  // Find the timestamp difference between the first and last document
+  const firstTimestamp = recentTimestamps[0].getTime();
+  const lastTimestamp = recentTimestamps[recentTimestamps.length - 1].getTime();
+  const timeDifferenceInMinutes = Math.abs(lastTimestamp - firstTimestamp) / (1000 * 60);
+
+  // Add rate of change and time difference to jsonResult
+  const rate = Math.round(rateOfChange * 100);
+  const timediff = timeDifferenceInMinutes.toFixed(2);
+  writeData.updateSocRateOfChange(rate,timediff)
+
+  console.log("SOC Rate of Change:", rate, "in", timediff, "minutes");
 }
 
 function calculateRateOfChange(temperatureData) {

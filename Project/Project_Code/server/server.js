@@ -33,7 +33,7 @@ let questionIndex = 0; // Initialize the index to 0
 }, {
   query: 'Whats the current capacity of the battery?'
 }, {
-  query: 'When the battery lastly charged?'
+  query: 'is Battery currently charging?'
 }, {
   query: 'Whats the current voltage output?'
 }

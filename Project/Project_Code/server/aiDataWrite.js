@@ -4,6 +4,9 @@ let temperature = 10;
 
 let temperatureRateOfChange = 10;
 
+let socRateOfChange = 0;
+let socRateOfChangeTime = 0;
+
 function writeHeaderData(){
     // Clear contents of data.txt
     fs.writeFileSync('data.txt', '');
@@ -90,20 +93,41 @@ function updateTemperatureRateOfChange(tempRate) {
     temperatureRateOfChange = tempRate;
 }
 
+function updateSocRateOfChange(socRate,socRateTime) {
+    console.log("Updating soc rate of change"+socRate +" in "+socRateTime+" minutes");
+    socRateOfChange = socRate;
+    socRateOfChangeTime = socRateTime;
+}
+
 
 function writeAlerts(data){
 
     if(temperatureRateOfChange<0){
         fs.appendFileSync('data.txt', `\n\nTemperature rate of change:
-        Battery temperature is decreasing in rate of change of ${temperatureRateOfChange}. 
+        Battery temperature is decreasing in rate of change of ${temperatureRateOfChange}%. 
         \n\n`);
     }else if(temperatureRateOfChange>0){
         fs.appendFileSync('data.txt', `\n\nTemperature rate of change:
-        Battery temperature is increasing in rate of change of ${temperatureRateOfChange}. 
+        Battery temperature is increasing in rate of change of ${temperatureRateOfChange}%. 
         \n\n`);
     }else{
         fs.appendFileSync('data.txt', `\n\nTemperature rate of change:
         Battery temperature is stable. 
+        \n\n`);
+    }
+    
+
+    if(socRateOfChange<0){
+        fs.appendFileSync('data.txt', `\n\nSOC rate of change:
+        Battery is discharging at rate of change of ${socRateOfChange}% in ${socRateOfChangeTime} minutes. 
+        \n\n`);
+    }else if(socRateOfChange>0){
+        fs.appendFileSync('data.txt', `\n\nSOC rate of change:
+        Battery is charging at rate of change of ${socRateOfChange}%  in ${socRateOfChangeTime} minutes. 
+        \n\n`);
+    }else{
+        fs.appendFileSync('data.txt', `\n\nSOC rate of change:
+        Battery soc is stable. 
         \n\n`);
     }
     
@@ -119,4 +143,4 @@ function writeAlerts(data){
     }
     
 }
-module.exports = { writePast1hrData,writeHeaderData,writeData,updateTemperature,updateTemperatureRateOfChange };
+module.exports = { writePast1hrData,updateSocRateOfChange,writeHeaderData,writeData,updateTemperature,updateTemperatureRateOfChange };

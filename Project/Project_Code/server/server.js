@@ -243,7 +243,7 @@ async function aiInsights() {
 setInterval(fetchSocDataAndProcess, 5000);
 // setInterval(clearOldDocuments, 5000);
 setInterval(getLatestRecordsWithinHour, 5000);
-setInterval(aiInsights, 5000);
+setInterval(aiInsights, 10000);
 
 
 async function getChatResponse(data) {

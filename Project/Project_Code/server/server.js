@@ -18,10 +18,10 @@ data = {
 };
 
 let questionIndex = 0; // Initialize the index to 0
- questionsArray = [{
+questionsArray = [{
   query: 'Is the temperature is increasing or decreasing?'
 }, {
-  query: 'Whats the current SoC?'
+  query: 'is Battery currently charging? is charging tell me when it will reach the full charge or is discharging tell me when it will fully drain'
 }, {
   query: 'Whats the average voltage noted?'
 }, {
@@ -39,8 +39,10 @@ let questionIndex = 0; // Initialize the index to 0
 }
 ];
 
+
+let websocketAiQueryAnswerMessageSent = false;
 // Create WebSocket server
-const wss = new WebSocket.Server({ port: websocketPort , host: '0.0.0.0'});
+const wss = new WebSocket.Server({ port: websocketPort, host: '0.0.0.0' });
 console.log(`Websocket Server running on ${process.env.MONGODB_HOST}:${websocketPort}`);
 
 // WebSocket connection handling
@@ -50,29 +52,38 @@ wss.on('connection', function connection(ws) {
   // Handle messages from WebSocket clients
   ws.on('message', async function incoming(message) {
     try {
+      let websocketAiQueryAnswerMessageSent = false;
       const jsonData = JSON.parse(message);
       // console.log('Received JSON:', jsonData);
-      if (jsonData && jsonData.type && jsonData.query && jsonData.type === "ai_query"){
+      if (jsonData && jsonData.type && jsonData.query && jsonData.type === "ai_query") {
         console.log('AI query received:', jsonData.query);
 
         data = {
           query: jsonData.query
         };
         answer = await getChatResponse(data);
-        console.log('Answer:', answer);
-        // Handle the JSON data as needed
-      const messageObject = { 
-        type:"ai_response",
-      answer: answer  };
+        if (answer) {
+          console.log('Answer:', answer);
+          // Handle the JSON data as needed
+          const messageObject = {
+            type: "ai_response",
+            answer: answer
+          };
 
-      console.log('messageObjectnswer:', JSON.stringify(messageObject));
-      ws.send(JSON.stringify(messageObject));
+          console.log('messageObjectnswer:', JSON.stringify(messageObject));
+          ws.send(JSON.stringify(messageObject));
+          websocketAiQueryAnswerMessageSent = true;
+        } else {
+          console.log('ai_query failed!!!!!!!!!!:');
+          websocketAiQueryAnswerMessageSent = true;
+        }
+
       }
-      
 
-     
 
-    
+
+
+
     } catch (error) {
       // If parsing as JSON fails, log the message as a string
       console.log('Received message:', message);
@@ -87,7 +98,7 @@ wss.on('connection', function connection(ws) {
 });
 
 // Create TCP server
-const server = net.createServer({ host: '0.0.0.0' },socket => {
+const server = net.createServer({ host: '0.0.0.0' }, socket => {
   console.log('Client connected');
 
   // Generate a unique key
@@ -99,7 +110,7 @@ const server = net.createServer({ host: '0.0.0.0' },socket => {
     if (jsonData) {
       // console.log('UNOR4:', jsonData);
       console.log('Arduino Data received!!!!!:');
-      
+
       // Send Arduino data to WebSocket clients
       wss.clients.forEach(client => {
         if (client.readyState === WebSocket.OPEN) {
@@ -175,7 +186,7 @@ async function fetchSocDataAndProcess() {
 // Function to send processed data to UI
 function sendToUI(processedData, type) {
   if (processedData) {
-    
+
     processedData.type = type;
     // console.log(JSON.stringify(processedData));
     console.log("Chart Data sent to UI");
@@ -192,35 +203,40 @@ async function clearOldDocuments() {
   await deleteOldDocuments();
 }
 
-async function aiInsights(){
+async function aiInsights() {
 
-  const question = questionsArray[questionIndex];
-    
-  // Increment the index for the next iteration
-  questionIndex = (questionIndex + 1) % questionsArray.length;
-  console.log(question);
+  if (websocketAiQueryAnswerMessageSent) {
+    const question = questionsArray[questionIndex];
 
-  answer = await getChatResponse(question);
-       
-        // Handle the JSON data as needed
+    // Increment the index for the next iteration
+    questionIndex = (questionIndex + 1) % questionsArray.length;
+    console.log(question);
 
-        if(answer){
-          console.log('AI Insight Answer:', answer);
-          const messageObject = { 
-            type:"ai_insight",
-          answer: answer  };
-    
-          console.log('ai_insight:', JSON.stringify(messageObject));
-    
-          wss.clients.forEach(client => {
-            if (client.readyState === WebSocket.OPEN) {
-              client.send(JSON.stringify(messageObject));
-            }
-          });
-        }else{
-          console.log("!!! AOI INSIGHT QUERTY FAILLED");
+    answer = await getChatResponse(question);
+
+    // Handle the JSON data as needed
+
+    if (answer) {
+      console.log('AI Insight Answer:', answer);
+      const messageObject = {
+        type: "ai_insight",
+        answer: answer
+      };
+
+      console.log('ai_insight:', JSON.stringify(messageObject));
+
+      wss.clients.forEach(client => {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(JSON.stringify(messageObject));
         }
-      
+      });
+    } else {
+      console.log("!!! AOI INSIGHT QUERTY FAILLED");
+    }
+  }
+
+
+
 }
 // Set intervals for functions to run
 setInterval(fetchSocDataAndProcess, 5000);
@@ -237,26 +253,26 @@ async function getChatResponse(data) {
     // Check if the refresh model request was successful (status code 200)
     if (refreshModelResponse.status === 200) {
       console.log('Model refreshed successfully.');
-      
+
       // If the model refresh was successful, proceed with the POST request to query
       const queryResponse = await axios.post(`http://${process.env.OPENAI_SERVER_HOST}:${process.env.OPENAI_SERVER_PORT}/query`, data);
-      
-      if(queryResponse && queryResponse.status === 200 && queryResponse.data && queryResponse.data.answer){
+
+      if (queryResponse && queryResponse.status === 200 && queryResponse.data && queryResponse.data.answer) {
         // Handle the response data here
-      // console.log('Response:', queryResponse.data);
+        // console.log('Response:', queryResponse.data);
         return {
-          isSuccess : true,
-          answer : queryResponse.data.answer
+          isSuccess: true,
+          answer: queryResponse.data.answer
         }
       }
-      
-      
+
+
     } else {
       console.error('Model refresh failed. Status:', refreshModelResponse.status);
       // Handle the failure case appropriately
       return {
-        isSuccess : false,
-        answer : ""
+        isSuccess: false,
+        answer: ""
       }
     }
   } catch (error) {

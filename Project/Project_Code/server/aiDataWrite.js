@@ -53,14 +53,16 @@ function writePast1hrData(documents){
   
       // Write header to data.txt
       fs.appendFileSync('data.txt', "Timestamp\t\t\t\tCurrent Capacity\t\t\tCharging Status\t\ttemperature\t\t\tsoc\t\t\tvoltage\n");
-  
+  let currentSoc;
       // Write each document to data.txt
           // Write each document to data.txt
           documents.forEach((doc,index) => {
             let { timestamp_human, current_capacity, is_charging, temperature, soc, voltage } = doc;
             if(index==0){
               timestamp_human="Now"
+              currentSoc = soc
             }
+
   
             if(is_charging){
               is_charging="Charging"
@@ -79,6 +81,8 @@ function writePast1hrData(documents){
             fs.appendFileSync('data.txt', line);
           });
       
+
+          fs.appendFileSync('data.txt', `\n\n\n Current SOC or charge level of the battery is ${currentSoc}`);
   
       console.log("Latest 50 records within 1-hour timeframe written to data.txt");
 }

@@ -72,6 +72,8 @@ function SkyBMSAI() {
          ws.onopen = () => {
             console.log('WebSocket connected in Chat screen');
             setWebSocket(ws);
+            const messageObject = { type: "bot" };
+            ws.send(JSON.stringify(messageObject));
             // wsRef.send(JSON.stringify(messageObject));
             // alert('connected')
             setConnecting(false); // Update connecting state

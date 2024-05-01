@@ -40,7 +40,7 @@ questionsArray = [{
 ];
 
 
-let websocketAiQueryAnswerMessageSent = true;
+let isChatBotConnected = false;
 // Create WebSocket server
 const wss = new WebSocket.Server({ port: websocketPort, host: '0.0.0.0' });
 console.log(`Websocket Server running on ${process.env.MONGODB_HOST}:${websocketPort}`);
@@ -57,7 +57,7 @@ wss.on('connection', function connection(ws) {
       // console.log('Received JSON:', jsonData);
       if (jsonData && jsonData.type && jsonData.query && jsonData.type === "ai_query") {
         console.log('AI query received:', jsonData.query);
-        let websocketAiQueryAnswerMessageSent = false;
+        
 
         data = {
           query: jsonData.query
@@ -73,12 +73,13 @@ wss.on('connection', function connection(ws) {
 
           console.log('messageObjectnswer:', JSON.stringify(messageObject));
           ws.send(JSON.stringify(messageObject));
-          websocketAiQueryAnswerMessageSent = true;
         } else {
           console.log('ai_query failed!!!!!!!!!!:');
-          websocketAiQueryAnswerMessageSent = true;
         }
 
+      }else if(jsonData && jsonData.type && jsonData.type === "bot"){
+        console.log("Chat bot connected %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+        isChatBotConnected = true;
       }
 
 
@@ -206,7 +207,7 @@ async function clearOldDocuments() {
 
 async function aiInsights() {
 
-  if (websocketAiQueryAnswerMessageSent) {
+  if (!isChatBotConnected) {
     const question = questionsArray[questionIndex];
 
     // Increment the index for the next iteration

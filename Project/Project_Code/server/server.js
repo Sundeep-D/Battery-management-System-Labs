@@ -29,7 +29,13 @@ let questionIndex = 0; // Initialize the index to 0
 }, {
   query: 'Whats the current temperature of the battery?'
 }, {
-  query: 'Whats the battery connected to skyBMS?'
+  query: 'Whats the Battery used in skyBMS?'
+}, {
+  query: 'Whats the current capacity of the battery?'
+}, {
+  query: 'When the battery lastly charged?'
+}, {
+  query: 'Whats the current voltage output?'
 }
 ];
 

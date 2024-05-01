@@ -82,7 +82,7 @@ function writePast1hrData(documents){
           });
       
 
-          fs.appendFileSync('data.txt', `\n\n\n Current SOC or charge level of the battery is ${currentSoc}`);
+          fs.appendFileSync('data.txt', `\n\n\n Current SOC or charge level of the battery is ${Math.round(currentSoc)}`);
   
       console.log("Latest 50 records within 1-hour timeframe written to data.txt");
 }
@@ -123,10 +123,12 @@ function writeAlerts(data){
 
     if(socRateOfChange<0){
         fs.appendFileSync('data.txt', `\n\nSOC rate of change:
+        Current state: Battery is discharging\n\n
         Battery is discharging at rate of change of ${socRateOfChange}% in ${socRateOfChangeTime} minutes. 
         \n\n`);
     }else if(socRateOfChange>0){
         fs.appendFileSync('data.txt', `\n\nSOC rate of change:
+        Current state: Battery is charging\n\n
         Battery is charging at rate of change of ${socRateOfChange}%  in ${socRateOfChangeTime} minutes. 
         \n\n`);
     }else{

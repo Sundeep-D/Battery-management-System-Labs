@@ -35,7 +35,7 @@ Temperature rate of change:
 
 
 SOC rate of change:
-        Battery is charging at rate of change of 1%  in 1.44 minutes. 
+        Battery soc is stable. 
         
 
 
@@ -50,7 +50,95 @@ The below data is used to provide insights about when the battery is lastly char
       "Charging" means the battery is conencted to power source to chrage or charger is connected and"Not charging" its not connected to power source. If user ask when the charger us lastly connected pick a recent row that is in Charging status and say it correspodning time
 
 Timestamp				Current Capacity			Charging Status		temperature			soc			voltage
-Now							233						Charging				23.5				93			4.18
+Now							234						Charging				23.5				93			4.18
+5/1/2024, 12:25:54 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:52 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:50 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:48 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:47 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:45 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:43 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:41 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:40 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:38 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:36 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:34 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:33 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:31 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:29 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:27 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:26 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:24 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:22 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:20 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:19 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:17 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:15 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:13 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:12 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:10 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:08 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:06 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:04 PM		234						Charging				23.5				93			4.18
+5/1/2024, 12:25:02 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:25:00 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:59 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:57 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:55 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:53 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:52 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:50 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:48 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:46 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:45 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:43 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:41 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:39 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:38 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:36 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:34 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:32 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:31 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:29 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:27 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:25 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:24 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:22 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:20 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:18 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:17 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:15 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:13 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:11 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:10 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:08 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:06 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:04 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:03 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:24:01 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:23:59 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:23:57 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:23:56 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:23:54 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:23:52 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:23:50 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:23:49 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:23:47 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:23:45 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:23:43 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:23:42 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:23:40 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:23:38 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:23:31 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:23:29 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:23:27 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:23:25 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:23:24 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:23:22 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:23:20 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:23:18 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:23:17 PM		233						Charging				23.5				93			4.18
+5/1/2024, 12:23:15 PM		233						Charging				23.5				93			4.18
 5/1/2024, 12:23:13 PM		233						Charging				23.5				93			4.18
 5/1/2024, 12:23:11 PM		233						Charging				23.5				93			4.18
 5/1/2024, 12:23:10 PM		233						Charging				23.5				93			4.18
@@ -462,95 +550,7 @@ Now							233						Charging				23.5				93			4.18
 5/1/2024, 12:11:04 PM		227						Not Charging				24.5				90			3.82
 5/1/2024, 12:11:02 PM		227						Not Charging				24.5				91			3.82
 5/1/2024, 12:11:00 PM		227						Not Charging				24.5				91			3.82
-5/1/2024, 12:10:58 PM		227						Not Charging				24.5				91			3.82
-5/1/2024, 12:10:57 PM		227						Not Charging				24.5				91			3.82
-5/1/2024, 12:10:55 PM		227						Not Charging				24.5				91			3.82
-5/1/2024, 12:10:53 PM		227						Not Charging				24.5				91			3.82
-5/1/2024, 12:10:51 PM		227						Not Charging				24.5				91			3.82
-5/1/2024, 12:10:50 PM		227						Not Charging				24.5				91			3.82
-5/1/2024, 12:10:48 PM		228						Not Charging				24.5				91			3.82
-5/1/2024, 12:10:46 PM		228						Not Charging				24.5				91			3.82
-5/1/2024, 12:10:44 PM		228						Not Charging				24.5				91			3.82
-5/1/2024, 12:10:43 PM		228						Not Charging				24.5				91			3.82
-5/1/2024, 12:10:41 PM		228						Not Charging				24.5				91			3.83
-5/1/2024, 12:10:39 PM		228						Not Charging				24.5				91			3.83
-5/1/2024, 12:10:37 PM		228						Not Charging				24.5				91			3.83
-5/1/2024, 12:10:36 PM		228						Not Charging				24.5				91			3.83
-5/1/2024, 12:10:34 PM		229						Not Charging				24.5				91			3.83
-5/1/2024, 12:10:32 PM		229						Not Charging				24.5				91			3.83
-5/1/2024, 12:10:30 PM		229						Not Charging				24.5				91			3.83
-5/1/2024, 12:10:29 PM		229						Not Charging				24.5				91			3.83
-5/1/2024, 12:10:27 PM		229						Not Charging				24.5				91			3.83
-5/1/2024, 12:10:25 PM		229						Not Charging				24.5				91			3.83
-5/1/2024, 12:10:23 PM		229						Not Charging				24.5				91			3.83
-5/1/2024, 12:10:22 PM		229						Not Charging				24.5				91			3.83
-5/1/2024, 12:10:20 PM		229						Not Charging				24.5				91			3.83
-5/1/2024, 12:10:18 PM		229						Not Charging				24.5				91			3.83
-5/1/2024, 12:10:16 PM		229						Not Charging				24.5				91			3.84
-5/1/2024, 12:10:15 PM		229						Not Charging				24.5				91			3.84
-5/1/2024, 12:10:12 PM		230						Not Charging				24.5				92			3.84
-5/1/2024, 12:10:10 PM		230						Not Charging				24.5				92			3.84
-5/1/2024, 12:10:09 PM		230						Not Charging				24.5				92			3.84
-5/1/2024, 12:10:07 PM		230						Not Charging				24.5				92			3.84
-5/1/2024, 12:10:05 PM		230						Not Charging				24.5				92			3.84
-5/1/2024, 12:10:03 PM		230						Not Charging				24.5				92			3.84
-5/1/2024, 12:10:02 PM		230						Not Charging				24.5				92			3.84
-5/1/2024, 12:10:00 PM		230						Not Charging				24.5				92			3.84
-5/1/2024, 12:09:58 PM		231						Not Charging				24.5				92			3.84
-5/1/2024, 12:09:56 PM		231						Not Charging				24.5				92			3.84
-5/1/2024, 12:09:55 PM		231						Not Charging				24.5				92			3.84
-5/1/2024, 12:09:53 PM		231						Not Charging				24.5				92			3.84
-5/1/2024, 12:09:51 PM		231						Not Charging				24.5				92			3.84
-5/1/2024, 12:09:49 PM		231						Not Charging				24.5				92			3.84
-5/1/2024, 12:09:48 PM		231						Not Charging				24.5				92			3.85
-5/1/2024, 12:09:46 PM		231						Not Charging				24.5				92			3.85
-5/1/2024, 12:09:44 PM		231						Not Charging				24.5				92			3.85
-5/1/2024, 12:09:42 PM		231						Not Charging				24.5				92			3.85
-5/1/2024, 12:09:41 PM		231						Not Charging				24.5				92			3.85
-5/1/2024, 12:09:39 PM		231						Not Charging				24.5				92			3.85
-5/1/2024, 12:09:37 PM		231						Not Charging				24.5				92			3.85
-5/1/2024, 12:09:35 PM		232						Not Charging				24.5				92			3.85
-5/1/2024, 12:09:34 PM		232						Not Charging				24.5				92			3.85
-5/1/2024, 12:09:32 PM		232						Not Charging				24.5				92			3.85
-5/1/2024, 12:09:30 PM		232						Not Charging				24.5				92			3.85
-5/1/2024, 12:09:28 PM		232						Not Charging				24.5				93			3.85
-5/1/2024, 12:09:27 PM		232						Not Charging				24.5				93			3.85
-5/1/2024, 12:09:25 PM		232						Not Charging				24.5				93			3.85
-5/1/2024, 12:09:23 PM		232						Not Charging				24.5				93			3.85
-5/1/2024, 12:09:21 PM		232						Not Charging				24.5				93			3.85
-5/1/2024, 12:09:20 PM		233						Not Charging				24.5				93			3.85
-5/1/2024, 12:09:18 PM		233						Not Charging				24.5				93			3.85
-5/1/2024, 12:09:16 PM		233						Not Charging				24.5				93			3.85
-5/1/2024, 12:09:14 PM		233						Not Charging				24.5				93			3.85
-5/1/2024, 12:09:13 PM		233						Not Charging				24.5				93			3.86
-5/1/2024, 12:09:11 PM		233						Not Charging				24.5				93			3.86
-5/1/2024, 12:09:09 PM		233						Not Charging				24.5				93			3.86
-5/1/2024, 12:09:07 PM		233						Not Charging				24.5				93			3.86
-5/1/2024, 12:09:06 PM		233						Not Charging				24.5				93			3.86
-5/1/2024, 12:09:04 PM		233						Not Charging				24.5				93			3.86
-5/1/2024, 12:09:02 PM		233						Not Charging				24.5				93			3.86
-5/1/2024, 12:09:00 PM		233						Not Charging				24.5				93			3.86
-5/1/2024, 12:08:59 PM		234						Not Charging				24.5				93			3.86
-5/1/2024, 12:08:57 PM		234						Not Charging				24.5				93			3.86
-5/1/2024, 12:08:55 PM		234						Not Charging				24.5				93			3.86
-5/1/2024, 12:08:53 PM		234						Not Charging				24.5				93			3.86
-5/1/2024, 12:08:52 PM		234						Not Charging				24.5				93			3.86
-5/1/2024, 12:08:50 PM		234						Not Charging				24.5				93			3.86
-5/1/2024, 12:08:48 PM		234						Not Charging				24.5				93			3.86
-5/1/2024, 12:08:46 PM		234						Not Charging				24.5				93			3.86
-5/1/2024, 12:08:45 PM		234						Not Charging				24.5				93			3.86
-5/1/2024, 12:08:42 PM		235						Not Charging				24.5				94			3.86
-5/1/2024, 12:08:40 PM		235						Not Charging				24.5				94			3.87
-5/1/2024, 12:08:39 PM		235						Not Charging				24.5				94			3.87
-5/1/2024, 12:08:37 PM		235						Not Charging				24.5				94			3.87
-5/1/2024, 12:08:35 PM		235						Not Charging				24.5				94			3.87
-5/1/2024, 12:08:33 PM		235						Not Charging				24.5				94			3.87
-5/1/2024, 12:08:32 PM		235						Not Charging				24.5				94			3.87
-5/1/2024, 12:08:30 PM		235						Not Charging				24.5				94			3.87
-5/1/2024, 12:08:28 PM		235						Not Charging				24.5				94			3.87
-5/1/2024, 12:08:26 PM		235						Not Charging				24.5				94			3.87
-5/1/2024, 12:08:25 PM		235						Not Charging				24.5				94			3.87
 
 
 
- Current SOC or charge level of the battery is 93.23046875
+ Current SOC or charge level of the battery is 93.86328125

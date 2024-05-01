@@ -81,6 +81,10 @@ wss.on('connection', function connection(ws) {
         console.log("Chat bot connected %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
         isChatBotConnected = true;
       }
+      else if(jsonData && jsonData.type && jsonData.type === "bot"){
+        console.log("Dashboard connected %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+        isChatBotConnected = false;
+      }
 
 
 

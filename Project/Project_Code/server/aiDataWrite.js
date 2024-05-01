@@ -93,9 +93,20 @@ function updateTemperatureRateOfChange(tempRate) {
 
 function writeAlerts(data){
 
-    fs.appendFileSync('data.txt', `\n\nTemperature rate of change:
-    Battery temperature is increasing/decreasing in rate of change of ${temperatureRateOfChange}. 
-    \n\n`);
+    if(temperatureRateOfChange<0){
+        fs.appendFileSync('data.txt', `\n\nTemperature rate of change:
+        Battery temperature is decreasing in rate of change of ${temperatureRateOfChange}. 
+        \n\n`);
+    }else if(temperatureRateOfChange>0){
+        fs.appendFileSync('data.txt', `\n\nTemperature rate of change:
+        Battery temperature is increasing in rate of change of ${temperatureRateOfChange}. 
+        \n\n`);
+    }else{
+        fs.appendFileSync('data.txt', `\n\nTemperature rate of change:
+        Battery temperature is stable. 
+        \n\n`);
+    }
+    
 
 
     if(temperature>30){

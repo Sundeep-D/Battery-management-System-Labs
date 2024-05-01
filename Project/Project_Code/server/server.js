@@ -52,11 +52,12 @@ wss.on('connection', function connection(ws) {
   // Handle messages from WebSocket clients
   ws.on('message', async function incoming(message) {
     try {
-      let websocketAiQueryAnswerMessageSent = false;
+      
       const jsonData = JSON.parse(message);
       // console.log('Received JSON:', jsonData);
       if (jsonData && jsonData.type && jsonData.query && jsonData.type === "ai_query") {
         console.log('AI query received:', jsonData.query);
+        let websocketAiQueryAnswerMessageSent = false;
 
         data = {
           query: jsonData.query

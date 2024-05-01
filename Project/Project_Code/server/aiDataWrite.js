@@ -82,7 +82,7 @@ function writePast1hrData(documents){
           });
       
 
-          fs.appendFileSync('data.txt', `\n\n\n Current SOC or charge level of the battery is ${Math.round(currentSoc)}`);
+          fs.appendFileSync('data.txt', `\n\n\n Current charge level of the battery is ${Math.round(currentSoc)}`);
   
       console.log("Latest 50 records within 1-hour timeframe written to data.txt");
 }

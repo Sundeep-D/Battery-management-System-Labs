@@ -99,6 +99,7 @@ wss.on('connection', function connection(ws) {
 
   // Handle WebSocket client disconnection
   ws.on('close', function () {
+    isChatBotConnected = false;
     console.log('Websocket Client disconnected');
   });
 });

@@ -94,8 +94,12 @@ function Dashboard() {
 
       ws.onopen = () => {
         console.log('WebSocket connected');
-        const messageObject = { type: "dashboard" };
-            ws.send(JSON.stringify(messageObject));
+
+        if(ws){
+          const messageObject = { type: "dashboard" };
+          ws.send(JSON.stringify(messageObject));
+        }
+       
 
         setConnecting(false); // Update connecting state
         setReconnecting(false); // Reset reconnecting state

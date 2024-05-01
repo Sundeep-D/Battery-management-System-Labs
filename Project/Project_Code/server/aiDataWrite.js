@@ -47,8 +47,10 @@ function writePast1hrData(documents){
       
   
       
-      fs.appendFileSync('data.txt', `\n\nThe below data is used to provide insights about when the battery is lastly charged, currently charging or not, current soc, current temperature, whats the rate of change of temperature
-      "Charging" means the battery is conencted to power source to chrage or charger is connected and"Not charging" its not connected to power source. If user ask when the charger us lastly connected pick a recent row that is in Charging status and say it correspodning time\n\n`);
+    //   fs.appendFileSync('data.txt', `\n\nThe below data is used to provide insights about when the battery is lastly charged, currently charging or not, current soc, current temperature, whats the rate of change of temperature
+    //   "Charging" means the battery is conencted to power source to chrage or charger is connected and"Not charging" its not connected to power source. If user ask when the charger us lastly connected pick a recent row that is in Charging status and say it correspodning time\n\n`);
+    
+      fs.appendFileSync('data.txt', `\n\nBelow is the Realtime battery data table\n\n`);
   
   
       // Write header to data.txt
@@ -78,11 +80,15 @@ function writePast1hrData(documents){
               line = `${timestamp_human}\t\t${current_capacity}\t\t\t\t\t\t${is_charging}\t\t\t\t${temperature}\t\t\t\t${Math.floor(soc)}\t\t\t${voltage.toFixed(2)}\n`;
             
             }
-            fs.appendFileSync('data.txt', line);
+
+            if(index==0){
+                fs.appendFileSync('data.txt', line);
+            }
+            
           });
       
 
-          fs.appendFileSync('data.txt', `\n\n\n Current charge level of the battery is ${Math.round(currentSoc)}`);
+          fs.appendFileSync('data.txt', `\n\n\n Current charge level of the battery is ${Math.round(currentSoc)} %`);
   
       console.log("Latest 50 records within 1-hour timeframe written to data.txt");
 }
